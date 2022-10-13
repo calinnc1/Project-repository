@@ -1,0 +1,9 @@
+../Bsw/Sys/BswM/BswM.c:26:6:BswM_Init	8	static
+../Bsw/Sys/BswM/BswM.c:46:13:SystemClock_Config	160	static
+../Bsw/Sys/BswM/BswM.c:97:13:MX_ADC1_Init	48	static
+../Bsw/Sys/BswM/BswM.c:163:13:MX_I2C1_Init	8	static
+../Bsw/Sys/BswM/BswM.c:211:13:MX_SPI3_Init	8	static
+../Bsw/Sys/BswM/BswM.c:251:13:MX_USART1_UART_Init	8	static
+../Bsw/Sys/BswM/BswM.c:286:13:MX_USART2_UART_Init	8	static
+../Bsw/Sys/BswM/BswM.c:321:13:MX_GPIO_Init	40	static
+../Bsw/Sys/BswM/BswM.c:357:13:Error_Handler	4	static,ignoring_inline_asm
