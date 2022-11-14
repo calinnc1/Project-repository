@@ -5,6 +5,8 @@
  *      Author: cosmin.marcu
  */
 
+#include <string.h>
+#include <stdio.h>
 
 #include "Rte.h"
 #include "Rte_Os.h"
@@ -23,6 +25,11 @@
 #include "LED.h"
 
 static volatile uint8 Int_ButtonState = 0;
+extern UART_HandleTypeDef huart2;
+extern ADC_HandleTypeDef hadc1;
+char databuf[16];
+uint16 count = 0;
+uint8 crlf[1] = { 0x0A };
 
 void Rte_Init(void)
 {
@@ -89,7 +96,12 @@ void Rte_Task_100ms(void)
 
 void Rte_Task_500ms(void)
 {
+	sprintf(databuf, "%4d X", count);
+	databuf[strlen(databuf)] = 0;
+	HAL_UART_Transmit(&huart2, (uint8 *)databuf, strlen(databuf), 1000);
+	HAL_UART_Transmit(&huart2, crlf, 1, 1000);
 
+	count++;
 }
 
 

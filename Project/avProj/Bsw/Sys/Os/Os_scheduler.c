@@ -24,7 +24,7 @@ tcb_t tcbs[NUM_OF_THREADS];
 tcb_t *pCurntTcb;
 
 
-#define STACKSIZE       100
+#define STACKSIZE       400
 /// Define stack for each task. Node that the processor expects the stacks
 /// to be ended on word boundaries.
 int32_t TCB_STACK[NUM_OF_THREADS][STACKSIZE];

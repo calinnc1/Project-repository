@@ -13,8 +13,8 @@ I2C_HandleTypeDef hi2c1;
 SPI_HandleTypeDef hspi3;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
-
-
+volatile uint32 adc_val = 0;
+volatile uint16 ADC_AN0_Voltage = 0;
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void MX_GPIO_Init(void);
@@ -42,7 +42,14 @@ void BswM_Init(void)
 
 void BswM_MainFunction(void)
 {
+	/* Start ADC AN1 conversion */
+	HAL_ADC_Start_IT(&hadc1);
+}
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+  adc_val = HAL_ADC_GetValue(&hadc1);
+  ADC_AN0_Voltage = (uint16)((adc_val*3300u)/4095u);
 }
 
 /**
@@ -103,63 +110,64 @@ static void SystemClock_Config(void)
 static void MX_ADC1_Init(void)
 {
 
-  /* USER CODE BEGIN ADC1_Init 0 */
+	  /* USER CODE BEGIN ADC1_Init 0 */
 
-  /* USER CODE END ADC1_Init 0 */
+	  /* USER CODE END ADC1_Init 0 */
 
-  ADC_MultiModeTypeDef multimode = {0};
-  ADC_ChannelConfTypeDef sConfig = {0};
+	  ADC_MultiModeTypeDef multimode = {0};
+	  ADC_ChannelConfTypeDef sConfig = {0};
 
-  /* USER CODE BEGIN ADC1_Init 1 */
+	  /* USER CODE BEGIN ADC1_Init 1 */
 
-  /* USER CODE END ADC1_Init 1 */
+	  /* USER CODE END ADC1_Init 1 */
 
-  /** Common config
-  */
-  hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
-  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  hadc1.Init.LowPowerAutoWait = DISABLE;
-  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	  /** Common config
+	  */
+	  hadc1.Instance = ADC1;
+	  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV1;
+	  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+	  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+	  hadc1.Init.ContinuousConvMode = DISABLE;
+	  hadc1.Init.DiscontinuousConvMode = DISABLE;
+	  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+	  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+	  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+	  hadc1.Init.NbrOfConversion = 1;
+	  hadc1.Init.DMAContinuousRequests = DISABLE;
+	  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+	  hadc1.Init.LowPowerAutoWait = DISABLE;
+	  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+	  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
 
-  /** Configure the ADC multi-mode
-  */
-  multimode.Mode = ADC_MODE_INDEPENDENT;
-  if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	  /** Configure the ADC multi-mode
+	  */
+	  multimode.Mode = ADC_MODE_INDEPENDENT;
+	  if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
 
-  /** Configure Regular Channel
-  */
-  sConfig.Channel = ADC_CHANNEL_6;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SingleDiff = ADC_SINGLE_ENDED;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  sConfig.OffsetNumber = ADC_OFFSET_NONE;
-  sConfig.Offset = 0;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN ADC1_Init 2 */
+	  /** Configure Regular Channel
+	  */
+	  sConfig.Channel = ADC_CHANNEL_1;
+	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+	  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+	  sConfig.Offset = 0;
+	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
+	  /* USER CODE BEGIN ADC1_Init 2 */
 
-  /* USER CODE END ADC1_Init 2 */
+	  /* USER CODE END ADC1_Init 2 */
 
 }
+
 
 /**
   * @brief I2C1 Initialization Function
@@ -300,7 +308,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
