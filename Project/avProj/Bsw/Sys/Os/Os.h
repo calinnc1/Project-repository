@@ -11,8 +11,6 @@
 #include "stm32f3xx_hal.h"
 #include "Gpt.h"
 
-extern uint8_t tim3_count;
-
-void Os_Scheduler(void);
+extern void Os_Start(void);
 
 #endif /* BSW_SYS_OS_OS_H_ */

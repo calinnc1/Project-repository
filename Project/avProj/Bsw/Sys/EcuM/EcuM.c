@@ -6,16 +6,22 @@
  */
 
 #include "EcuM.h"
+#include "Os_task.h"
 #include "BswM.h"
-#include "Rte_Bsw_Int.h"
 
-int EcuM_main(void)
+void EcuM_StartUp_Two()
 {
 	(void)HAL_Init();
 	BswM_Init();
+}
+
+int EcuM_Init(void)
+{
+
+	Os_Task_StartUp();
 
 	/* Start Scheduler */
-	Os_Scheduler();
+	Os_Start();
 
 	return 0;
 }

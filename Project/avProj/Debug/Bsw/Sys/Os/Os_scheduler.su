@@ -1,0 +1,10 @@
+../Bsw/Sys/Os/Os_scheduler.c:45:29:SysTick_Handler	0	static,ignoring_inline_asm
+../Bsw/Sys/Os/Os_scheduler.c:96:6:Os_Scheduler_Init	4	static,ignoring_inline_asm
+../Bsw/Sys/Os/Os_scheduler.c:160:29:Os_Scheduler_Start	0	static,ignoring_inline_asm
+../Bsw/Sys/Os/Os_scheduler.c:193:6:Os_Task_StartUp_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:198:15:Task5ms_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:213:15:Task10ms_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:228:15:Task20ms_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:244:15:Task50ms_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:260:15:Task100ms_0	8	static
+../Bsw/Sys/Os/Os_scheduler.c:276:15:Task500ms_0	8	static

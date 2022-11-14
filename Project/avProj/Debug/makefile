@@ -26,7 +26,12 @@ RM := rm -rf
 -include Bsw/MCal/Dma/subdir.mk
 -include Bsw/MCal/Dio/subdir.mk
 -include Bsw/MCal/Adc/subdir.mk
+-include Bsw/Cdd/Cdd_Servo/subdir.mk
+-include Asw/Steering/subdir.mk
 -include Asw/LED/subdir.mk
+-include Asw/Engine/subdir.mk
+-include Asw/Brakes/subdir.mk
+-include Asw/Access/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

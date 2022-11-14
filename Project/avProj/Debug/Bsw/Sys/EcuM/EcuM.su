@@ -1,1 +1,2 @@
-../Bsw/Sys/EcuM/EcuM.c:12:5:EcuM_main	8	static
+../Bsw/Sys/EcuM/EcuM.c:12:6:EcuM_StartUp_Two	8	static
+../Bsw/Sys/EcuM/EcuM.c:18:5:EcuM_Init	8	static

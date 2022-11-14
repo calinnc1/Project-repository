@@ -7,7 +7,13 @@
 
 #include "Gpt.h"
 
-volatile uint8_t tim3_count = 0u;
+volatile uint32_t tim3_count = 0u;
+volatile uint32_t tim3_5count = 0u;
+volatile uint32_t tim3_10count = 0u;
+volatile uint32_t tim3_20count = 0u;
+volatile uint32_t tim3_50count = 0u;
+volatile uint32_t tim3_100count = 0u;
+volatile uint32_t tim3_500count = 0u;
 
 TIM_HandleTypeDef htim3;
 
@@ -41,15 +47,51 @@ void Gpt_TIM3_Stop_IT(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
 	//TODO: Remove and redirect timer callback
-	if(tim3_count == 99)
+	if(tim3_count == 9999)
 	{
 		tim3_count = 0u;
+		tim3_5count = 0u;
+		tim3_10count = 0u;
+		tim3_20count = 0u;
+		tim3_50count = 0u;
+		tim3_100count = 0u;
+		tim3_500count = 0u;
 	}
 	else
 	{
 		tim3_count++;
 	}
 
+	if((tim3_count % 5) == 0u)
+	{
+		tim3_5count++;
+	}
+
+	if((tim3_count % 10) == 0u)
+	{
+		tim3_10count++;
+	}
+
+	if((tim3_count % 20) == 0u)
+	{
+		tim3_20count++;
+	}
+
+	if((tim3_count % 50) == 0u)
+	{
+		tim3_50count++;
+	}
+
+	if((tim3_count % 100) == 0u)
+	{
+		tim3_100count++;
+	}
+
+	if((tim3_count % 500) == 0u)
+	{
+		tim3_500count++;
+	}
+	//HAL_IncTick();
 }
 
 /**
@@ -71,7 +113,7 @@ static void Gpt_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 100;
+  htim3.Init.Prescaler = 10;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 7200;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

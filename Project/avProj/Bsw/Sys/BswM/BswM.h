@@ -15,5 +15,6 @@
 #include "Tm.h"
 
 extern void BswM_Init(void);
+extern void BswM_MainFunction(void);
 
 #endif /* BSW_SYS_BSWM_BSWM_H_ */

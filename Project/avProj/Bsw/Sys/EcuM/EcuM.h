@@ -10,6 +10,8 @@
 #include "stm32f3xx_hal.h"
 #include "avProj_Config.h"
 #include "Os.h"
-extern int EcuM_main(void);
+
+extern int EcuM_Init(void);
+extern void EcuM_StartUp_Two(void);
 
 #endif /* BSW_SYS_ECUM_ECUM_H_ */

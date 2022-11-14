@@ -1,0 +1,7 @@
+../Bsw/Sys/Os/Os_task.c:14:1:Os_Task_StartUp	8	static
+../Bsw/Sys/Os/Os_task.c:19:1:Os_Task_5ms	8	static
+../Bsw/Sys/Os/Os_task.c:24:1:Os_Task_10ms	8	static
+../Bsw/Sys/Os/Os_task.c:29:1:Os_Task_20ms	8	static
+../Bsw/Sys/Os/Os_task.c:34:1:Os_Task_50ms	8	static
+../Bsw/Sys/Os/Os_task.c:39:1:Os_Task_100ms	8	static
+../Bsw/Sys/Os/Os_task.c:44:1:Os_Task_500ms	8	static

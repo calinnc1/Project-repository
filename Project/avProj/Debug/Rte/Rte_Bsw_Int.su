@@ -1,4 +1,0 @@
-../Rte/Rte_Bsw_Int.c:14:6:Rte_Trigger_Bsw_Int_ButtonEvent	4	static
-../Rte/Rte_Bsw_Int.c:27:6:Rte_Read_ButtonState	16	static
-../Rte/Rte_Bsw_Int.c:32:6:Rte_Switch_LEDState	8	static
-../Rte/Rte_Bsw_Int.c:37:6:Rte_Call_Asw_Main	8	static

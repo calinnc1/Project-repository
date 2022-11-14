@@ -1,4 +1,1 @@
-../Bsw/Sys/Os/Os.c:18:6:Os_Scheduler	8	static
-../Bsw/Sys/Os/Os.c:43:6:Os_Task_10ms	4	static
-../Bsw/Sys/Os/Os.c:48:6:Os_Task_20ms	4	static
-../Bsw/Sys/Os/Os.c:53:6:Os_Task_500ms	8	static
+../Bsw/Sys/Os/Os.c:15:6:Os_Start	8	static

@@ -8,6 +8,7 @@
 #ifndef ASW_LED_LED_H_
 #define ASW_LED_LED_H_
 
-void LED_Main(void);
+extern void LED_Init(void);
+extern void LED_MainFunction(void);
 
 #endif /* ASW_LED_LED_H_ */

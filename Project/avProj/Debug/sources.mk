@@ -21,7 +21,12 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Asw/Access \
+Asw/Brakes \
+Asw/Engine \
 Asw/LED \
+Asw/Steering \
+Bsw/Cdd/Cdd_Servo \
 Bsw/MCal/Adc \
 Bsw/MCal/Dio \
 Bsw/MCal/Dma \

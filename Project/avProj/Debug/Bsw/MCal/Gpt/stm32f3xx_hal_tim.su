@@ -84,8 +84,6 @@
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:5929:13:HAL_TIM_TriggerCallback	16	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:5944:13:HAL_TIM_TriggerHalfCpltCallback	16	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:5959:13:HAL_TIM_ErrorCallback	16	static
-../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:6008:19:HAL_TIM_RegisterCallback	32	static
-../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:6260:19:HAL_TIM_UnRegisterCallback	24	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:6536:22:HAL_TIM_Base_GetState	16	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:6546:22:HAL_TIM_OC_GetState	16	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:6556:22:HAL_TIM_PWM_GetState	16	static
@@ -121,4 +119,3 @@
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:7822:13:TIM_ITRx_SetConfig	24	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:7852:6:TIM_ETR_SetConfig	32	static
 ../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:7884:6:TIM_CCxChannelCmd	32	static
-../Bsw/MCal/Gpt/stm32f3xx_hal_tim.c:7908:6:TIM_ResetCallback	16	static

@@ -52,9 +52,18 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/MCal/Int}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Rte}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/LED}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Sys/Tm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Sys/Os}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Cdd/Cdd_Servo}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/LED}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Access}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Engine}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Steering}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Brakes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Front}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Rear}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Blinker}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Interior}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1913930769" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
