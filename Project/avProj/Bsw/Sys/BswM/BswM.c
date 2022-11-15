@@ -7,17 +7,23 @@
 
 #include "BswM.h"
 #include "Rte.h"
+#include "Rte_Bsw_Int.h"
 
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 I2C_HandleTypeDef hi2c1;
 SPI_HandleTypeDef hspi3;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
-volatile uint32 adc_val = 0;
+
+volatile uint16 adc_val[1] = {0};
+uint32 adc_len = (uint32)(sizeof(adc_val)/sizeof(adc_val[0]));
 volatile uint16 ADC_AN0_Voltage = 0;
+
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI3_Init(void);
@@ -28,6 +34,7 @@ void BswM_Init(void)
 {
 	/* Init MCal drivers */
 	SystemClock_Config();
+	MX_DMA_Init();
 	MX_GPIO_Init();
 	MX_ADC1_Init();
 	MX_I2C1_Init();
@@ -38,18 +45,21 @@ void BswM_Init(void)
 
 	/* Init system services */
 	Tm_Init();
+
 }
 
 void BswM_MainFunction(void)
 {
 	/* Start ADC AN1 conversion */
-	HAL_ADC_Start_IT(&hadc1);
+	//HAL_ADC_Start_IT(&hadc1);
+	HAL_ADC_Start_DMA(&hadc1, (uint32 *)adc_val, adc_len);
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
-  adc_val = HAL_ADC_GetValue(&hadc1);
-  ADC_AN0_Voltage = (uint16)((adc_val*3300u)/4095u);
+	/* Convert ADC value to Voltage (mV) */
+	ADC_AN0_Voltage = (uint16)((adc_val[0]*3300u)/4095u);
+	Rte_Write_ADC_AN0_Voltage_u16(ADC_AN0_Voltage);
 }
 
 /**
@@ -103,6 +113,22 @@ static void SystemClock_Config(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+
+}
+
+/**
   * @brief ADC1 Initialization Function
   * @param None
   * @retval None
@@ -133,7 +159,7 @@ static void MX_ADC1_Init(void)
 	  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
 	  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
 	  hadc1.Init.NbrOfConversion = 1;
-	  hadc1.Init.DMAContinuousRequests = DISABLE;
+	  hadc1.Init.DMAContinuousRequests = ENABLE;
 	  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 	  hadc1.Init.LowPowerAutoWait = DISABLE;
 	  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;

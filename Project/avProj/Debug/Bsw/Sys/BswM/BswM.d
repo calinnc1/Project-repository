@@ -38,7 +38,9 @@ Bsw/Sys/BswM/BswM.o: ../Bsw/Sys/BswM/BswM.c ../Bsw/Sys/BswM/BswM.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte.h \
- C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
+ C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h \
+ C:/Work/Embedded/SVN/avProj/Rte/Rte.h
 ../Bsw/Sys/BswM/BswM.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
@@ -80,3 +82,5 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte.h:
 C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
+C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h:
+C:/Work/Embedded/SVN/avProj/Rte/Rte.h:

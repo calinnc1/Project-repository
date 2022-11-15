@@ -9,13 +9,13 @@
 
 typedef struct
 {
-	uint16_t  Period_Min;
-	uint16_t  Period_Max;
+	uint16_t  Period_Min_u16;
+	uint16_t  Period_Max_u16;
 }Cdd_Servo_info;
 
-static Cdd_Servo_info gs_SERVO_info = {0};
+static Cdd_Servo_info gs_SERVO_info_s = {0};
 
-const Cdd_Servo_CfgType SERVO_CfgParam =
+const Cdd_Servo_CfgType c_SERVO_CfgParam_s =
 {
 	/* Servo Motor Configuration */
     GPIOA,
@@ -41,59 +41,59 @@ void Cdd_Servo_Init(void)
 
 	/*--------[ Configure The Servo PWM GPIO Pin ]-------*/
 
-    if(SERVO_CfgParam.SERVO_GPIO == GPIOA)
+    if(c_SERVO_CfgParam_s.SERVO_GPIO == GPIOA)
     {
     	__HAL_RCC_GPIOA_CLK_ENABLE();
     }
-    else if(SERVO_CfgParam.SERVO_GPIO == GPIOB)
+    else if(c_SERVO_CfgParam_s.SERVO_GPIO == GPIOB)
     {
     	__HAL_RCC_GPIOB_CLK_ENABLE();
     }
-    else if(SERVO_CfgParam.SERVO_GPIO == GPIOC)
+    else if(c_SERVO_CfgParam_s.SERVO_GPIO == GPIOC)
     {
         __HAL_RCC_GPIOC_CLK_ENABLE();
     }
-    else if(SERVO_CfgParam.SERVO_GPIO == GPIOD)
+    else if(c_SERVO_CfgParam_s.SERVO_GPIO == GPIOD)
     {
         __HAL_RCC_GPIOD_CLK_ENABLE();
     }
-    else if(SERVO_CfgParam.SERVO_GPIO == GPIOE)
+    else if(c_SERVO_CfgParam_s.SERVO_GPIO == GPIOE)
     {
         __HAL_RCC_GPIOE_CLK_ENABLE();
     }
-	GPIO_InitStruct.Pin = SERVO_CfgParam.SERVO_PIN;
+	GPIO_InitStruct.Pin = c_SERVO_CfgParam_s.SERVO_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-	HAL_GPIO_Init(SERVO_CfgParam.SERVO_GPIO, &GPIO_InitStruct);
+	HAL_GPIO_Init(c_SERVO_CfgParam_s.SERVO_GPIO, &GPIO_InitStruct);
 
 	/*--------[ Calculate The PSC & ARR Values To Maximize PWM Resolution ]-------*/
 
 	/* Those Equations Sets The F_pwm = 50Hz & Maximizes The Resolution*/
-	PSC_Value = (uint32) (SERVO_CfgParam.TIM_CLK / 3276800.0);
-	ARR_Value = (uint32) ((SERVO_CfgParam.TIM_CLK / (50.0*(PSC_Value+1.0)))-1.0);
+	PSC_Value = (uint32) (c_SERVO_CfgParam_s.TIM_CLK / 3276800.0);
+	ARR_Value = (uint32) ((c_SERVO_CfgParam_s.TIM_CLK / (50.0*(PSC_Value+1.0)))-1.0);
 
 	/*--------[ Configure The Servo PWM Timer Channel ]-------*/
 
 	/*--[Check The Timer & Enable Its Clock]--*/
-	if(SERVO_CfgParam.TIM_Instance == TIM1)
+	if(c_SERVO_CfgParam_s.TIM_Instance == TIM1)
 	{
 		__HAL_RCC_TIM1_CLK_ENABLE();
 	}
-	else if(SERVO_CfgParam.TIM_Instance == TIM2)
+	else if(c_SERVO_CfgParam_s.TIM_Instance == TIM2)
 	{
 		__HAL_RCC_TIM2_CLK_ENABLE();
 	}
-	else if(SERVO_CfgParam.TIM_Instance == TIM3)
+	else if(c_SERVO_CfgParam_s.TIM_Instance == TIM3)
 	{
 		__HAL_RCC_TIM3_CLK_ENABLE();
 	}
-	else if(SERVO_CfgParam.TIM_Instance == TIM4)
+	else if(c_SERVO_CfgParam_s.TIM_Instance == TIM4)
 	{
 		__HAL_RCC_TIM4_CLK_ENABLE();
 	}
 
-	htim.Instance = SERVO_CfgParam.TIM_Instance;
+	htim.Instance = c_SERVO_CfgParam_s.TIM_Instance;
 	htim.Init.Prescaler = PSC_Value;
 	htim.Init.CounterMode = TIM_COUNTERMODE_UP;
 	htim.Init.Period = ARR_Value;
@@ -110,66 +110,66 @@ void Cdd_Servo_Init(void)
 	sConfigOC.Pulse = 0;
 	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
 	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-	HAL_TIM_PWM_ConfigChannel(&htim, &sConfigOC, SERVO_CfgParam.PWM_TIM_CH);
+	HAL_TIM_PWM_ConfigChannel(&htim, &sConfigOC, c_SERVO_CfgParam_s.PWM_TIM_CH);
 
 	/*--------[ Calculate & Save The Servo Pulse Information ]-------*/
 
-	gs_SERVO_info.Period_Min = (uint16) (ARR_Value * (SERVO_CfgParam.MinPulse/20.0));
-	gs_SERVO_info.Period_Max = (uint16) (ARR_Value * (SERVO_CfgParam.MaxPulse/20.0));
+	gs_SERVO_info_s.Period_Min_u16 = (uint16) (ARR_Value * (c_SERVO_CfgParam_s.MinPulse/20.0));
+	gs_SERVO_info_s.Period_Max_u16 = (uint16) (ARR_Value * (c_SERVO_CfgParam_s.MaxPulse/20.0));
 
 	/*--------[ Start The PWM Channel ]-------*/
 
-	HAL_TIM_PWM_Start(&htim, SERVO_CfgParam.PWM_TIM_CH);
+	HAL_TIM_PWM_Start(&htim, c_SERVO_CfgParam_s.PWM_TIM_CH);
 }
 
 /* Moves A Specific Motor To A Specific Degree That Can Be Float Number */
 void Cdd_Servo_MoveTo(float32 Angle)
 {
-	uint16 Pulse = 0;
+	uint16 l_Pulse_u16 = 0;
 
-	Pulse = ((Angle*(gs_SERVO_info.Period_Max - gs_SERVO_info.Period_Min))/180.0)
-			+ gs_SERVO_info.Period_Min;
+	l_Pulse_u16 = ((Angle*(gs_SERVO_info_s.Period_Max_u16 - gs_SERVO_info_s.Period_Min_u16))/180.0)
+			+ gs_SERVO_info_s.Period_Min_u16;
 
-	*(SERVO_CfgParam.TIM_CCRx) = Pulse;
+	*(c_SERVO_CfgParam_s.TIM_CCRx) = l_Pulse_u16;
 }
 
 /* Moves A Specific Motor With A Raw Pulse Width Value */
 void Cdd_Servo_RawMove(uint16 Pulse)
 {
-	if(Pulse <= gs_SERVO_info.Period_Max && Pulse >= gs_SERVO_info.Period_Min)
+	if(Pulse <= gs_SERVO_info_s.Period_Max_u16 && Pulse >= gs_SERVO_info_s.Period_Min_u16)
 	{
-		*(SERVO_CfgParam.TIM_CCRx) = Pulse;
+		*(c_SERVO_CfgParam_s.TIM_CCRx) = Pulse;
 	}
 }
 
 /* Gets The Maximum Pulse Width Value For A Specific Motor */
 uint16 Cdd_Servo_Get_MaxPulse(void)
 {
-	return (gs_SERVO_info.Period_Max);
+	return (gs_SERVO_info_s.Period_Max_u16);
 }
 
 
 /* Gets The Minimum Pulse Width Value For A Specific Motor */
 uint16 Cdd_Servo_Get_MinPulse(void)
 {
-	return (gs_SERVO_info.Period_Min);
+	return (gs_SERVO_info_s.Period_Min_u16);
 }
 
 
 /* Move A Motor From 0 deg to 180 And Back to 0 again */
 void Cdd_Servo_Sweep(void)
 {
-	uint8 Angle = 0;
+	uint8 l_Angle_u8 = 0;
 
 	Cdd_Servo_MoveTo(0);
 
-	while(Angle < 180)
+	while(l_Angle_u8 < 180)
 	{
-		Cdd_Servo_MoveTo(Angle++);
+		Cdd_Servo_MoveTo(l_Angle_u8++);
 	}
-	while(Angle > 0)
+	while(l_Angle_u8 > 0)
 	{
-		Cdd_Servo_MoveTo(Angle--);
+		Cdd_Servo_MoveTo(l_Angle_u8--);
 	}
 }
 

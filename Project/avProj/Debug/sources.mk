@@ -25,6 +25,10 @@ Asw/Access \
 Asw/Brakes \
 Asw/Engine \
 Asw/LED \
+Asw/Lights/Blinker \
+Asw/Lights/FrontLights \
+Asw/Lights/InteriorLights \
+Asw/Lights/RearLights \
 Asw/Steering \
 Bsw/Cdd/Cdd_Servo \
 Bsw/MCal/Adc \

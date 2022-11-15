@@ -14,7 +14,7 @@
 /* TYPES: */
 
 /* VARIABLES: */
-static boolean Engine_InitDone_b = FALSE;							///< Module initialization flag
+static boolean g_Engine_InitDone_b = FALSE;							///< Module initialization flag
 
 /* CONSTANTS: */
 
@@ -31,7 +31,7 @@ void Engine_Init(void)
 {
 
 	/* Set initialization flag to done */
-	Engine_InitDone_b = TRUE;
+	g_Engine_InitDone_b = TRUE;
 }
 
 /**
@@ -41,7 +41,7 @@ void Engine_Init(void)
 void Engine_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == Engine_InitDone_b)
+	if(TRUE == g_Engine_InitDone_b)
 	{
 
 	}

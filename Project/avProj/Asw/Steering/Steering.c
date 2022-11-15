@@ -14,7 +14,7 @@
 /* TYPES: */
 
 /* VARIABLES: */
-static boolean Steering_InitDone_b = FALSE;							///< Module initialization flag
+static boolean g_Steering_InitDone_b = FALSE;							///< Module initialization flag
 
 /* CONSTANTS: */
 
@@ -31,7 +31,7 @@ void Steering_Init(void)
 {
 
 	/* Set initialization flag to done */
-	Steering_InitDone_b = TRUE;
+	g_Steering_InitDone_b = TRUE;
 }
 
 /**
@@ -41,7 +41,7 @@ void Steering_Init(void)
 void Steering_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == Steering_InitDone_b)
+	if(TRUE == g_Steering_InitDone_b)
 	{
 
 	}

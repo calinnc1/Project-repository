@@ -60,10 +60,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Engine}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Steering}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Brakes}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Front}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Rear}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Blinker}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/Interior}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/FrontLights}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/RearLights}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Lights/InteriorLights}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1913930769" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

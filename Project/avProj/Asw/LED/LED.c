@@ -19,10 +19,10 @@
 /* TYPES: */
 
 /* VARIABLES: */
-static boolean LED_InitDone_b = FALSE;							///< Module initialization flag
-static boolean LED_ButtonState_b = FALSE;						///< Blue button state
-static uint16 LED_Pulse_u16 = 0u;								///< PWM Pulse width
-static uint8 LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP;	///< PWM Pulse direction
+static boolean g_LED_InitDone_b = FALSE;							///< Module initialization flag
+static boolean g_LED_ButtonState_b = FALSE;							///< Blue button state
+static uint16 g_LED_Pulse_u16 = 0u;									///< PWM Pulse width
+static uint8 g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP;		///< PWM Pulse direction
 
 /* CONSTANTS: */
 
@@ -38,16 +38,16 @@ static void LED_UpdatePulseWidth(void);
 static void LED_UpdatePulseDirection(void)
 {
 	/* Check is pulse value reached the maximum allowed value */
-	if(LED_Pulse_u16 >= LED_FADE_MAX_PULSE)
+	if(g_LED_Pulse_u16 >= LED_FADE_MAX_PULSE)
 	{
 		/* Switch pulse direction to downward */
-		LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_DOWN;
+		g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_DOWN;
 	}
 	/* Check is pulse value reached the minimum allowed value */
-	if(LED_Pulse_u16 <= LED_FADE_MIN_PULSE)
+	if(g_LED_Pulse_u16 <= LED_FADE_MIN_PULSE)
 	{
 		/* Switch pulse direction to upward */
-		LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP;
+		g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP;
 	}
 }
 
@@ -58,20 +58,20 @@ static void LED_UpdatePulseDirection(void)
 static void LED_UpdatePulseWidth(void)
 {
 	/* Check if pulse direction is upward */
-	if(LED_PULSE_DIRECTION_UP == LED_Pulse_Direction_u8)
+	if(LED_PULSE_DIRECTION_UP == g_LED_Pulse_Direction_u8)
 	{
-		if(LED_Pulse_u16 <= LED_FADE_MAX_PULSE)
+		if(g_LED_Pulse_u16 <= LED_FADE_MAX_PULSE)
 		{
 			/* Increment the pulse width */
-			LED_Pulse_u16 = LED_Pulse_u16+LED_FADE_PULSE_STEP;
+			g_LED_Pulse_u16 = g_LED_Pulse_u16+LED_FADE_PULSE_STEP;
 		}
 	}
 	else
 	{
-		if(LED_Pulse_u16 >= LED_FADE_PULSE_STEP)
+		if(g_LED_Pulse_u16 >= LED_FADE_PULSE_STEP)
 		{
 			/* Decrement the pulse width */
-			LED_Pulse_u16 = LED_Pulse_u16-LED_FADE_PULSE_STEP;
+			g_LED_Pulse_u16 = g_LED_Pulse_u16-LED_FADE_PULSE_STEP;
 		}
 	}
 	/* Update pulse direction */
@@ -88,7 +88,7 @@ void LED_Init(void)
 	/* Set servo initial position */
 	Rte_Write_Servo_RawPulseWidth_u16(0u);
 	/* Set initialization flag to done */
-	LED_InitDone_b = TRUE;
+	g_LED_InitDone_b = TRUE;
 }
 
 /**
@@ -98,17 +98,17 @@ void LED_Init(void)
 void LED_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == LED_InitDone_b)
+	if(TRUE == g_LED_InitDone_b)
 	{
 		/* Read the blue button state */
-		Rte_Read_Button_State(&LED_ButtonState_b);
+		Rte_Read_Button_State(&g_LED_ButtonState_b);
 		/* Check if the button is released */
-		if(TRUE == (boolean)LED_ButtonState_b)
+		if(TRUE == (boolean)g_LED_ButtonState_b)
 		{
 			/* Update PWM pulse width */
 			LED_UpdatePulseWidth();
 			/* Call the servo interface with the new pulse width */
-			Rte_Write_Servo_RawPulseWidth_u16(LED_Pulse_u16);
+			Rte_Write_Servo_RawPulseWidth_u16(g_LED_Pulse_u16);
 		}
 		else
 		{

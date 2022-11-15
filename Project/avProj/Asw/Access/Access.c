@@ -14,7 +14,7 @@
 /* TYPES: */
 
 /* VARIABLES: */
-static boolean Access_InitDone_b = FALSE;							///< Module initialization flag
+static boolean g_Access_InitDone_b = FALSE;							///< Module initialization flag
 
 /* CONSTANTS: */
 
@@ -31,7 +31,7 @@ void Access_Init(void)
 {
 
 	/* Set initialization flag to done */
-	Access_InitDone_b = TRUE;
+	g_Access_InitDone_b = TRUE;
 }
 
 /**
@@ -41,7 +41,7 @@ void Access_Init(void)
 void Access_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == Access_InitDone_b)
+	if(TRUE == g_Access_InitDone_b)
 	{
 
 	}

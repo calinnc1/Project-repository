@@ -25,4 +25,6 @@ extern void Rte_Write_PC13_Pin_State(uint8 state);
 extern void Rte_Switch_PA5_Pin_State(void);
 extern void Rte_Read_PC13_Pin_State(uint8 *state);
 extern void Rte_Cdd_Servo_RawMove(uint16 pulse);
+extern void Rte_Write_AN0_Voltage_u16(uint16 voltage);
+extern void Rte_Read_AN0_Voltage_u16(uint16 *voltage);
 #endif /* RTE_RTE_H_ */

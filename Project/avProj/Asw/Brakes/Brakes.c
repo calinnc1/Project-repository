@@ -14,7 +14,8 @@
 /* TYPES: */
 
 /* VARIABLES: */
-static boolean Brakes_InitDone_b = FALSE;							///< Module initialization flag
+static boolean g_Brakes_InitDone_b = FALSE;							///< Module initialization flag
+static uint16 g_Brakes_AN0_Voltage_u16 = 0u;						///< ADC AN0 analog voltage
 
 /* CONSTANTS: */
 
@@ -31,7 +32,7 @@ void Brakes_Init(void)
 {
 
 	/* Set initialization flag to done */
-	Brakes_InitDone_b = TRUE;
+	g_Brakes_InitDone_b = TRUE;
 }
 
 /**
@@ -41,9 +42,10 @@ void Brakes_Init(void)
 void Brakes_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == Brakes_InitDone_b)
+	if(TRUE == g_Brakes_InitDone_b)
 	{
-
+		/* Read AN0 analog voltage (mV) */
+		Rte_Read_AN0_Voltage_u16(&g_Brakes_AN0_Voltage_u16);
 	}
 }
 /* END OF FILE */

@@ -47,6 +47,10 @@ Rte/Rte.o: ../Rte/Rte.c ../Rte/Rte.h \
  C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h \
  C:/Work/Embedded/SVN/avProj/Asw/Brakes/Brakes.h \
  C:/Work/Embedded/SVN/avProj/Asw/Steering/Steering.h \
+ C:/Work/Embedded/SVN/avProj/Asw/Lights/Blinker/Blinker.h \
+ C:/Work/Embedded/SVN/avProj/Asw/Lights/FrontLights/FrontLights.h \
+ C:/Work/Embedded/SVN/avProj/Asw/Lights/InteriorLights/InteriorLights.h \
+ C:/Work/Embedded/SVN/avProj/Asw/Lights/RearLights/RearLights.h \
  C:/Work/Embedded/SVN/avProj/Asw/LED/LED.h
 ../Rte/Rte.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
@@ -99,4 +103,8 @@ C:/Work/Embedded/SVN/avProj/Asw/Access/Access.h:
 C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h:
 C:/Work/Embedded/SVN/avProj/Asw/Brakes/Brakes.h:
 C:/Work/Embedded/SVN/avProj/Asw/Steering/Steering.h:
+C:/Work/Embedded/SVN/avProj/Asw/Lights/Blinker/Blinker.h:
+C:/Work/Embedded/SVN/avProj/Asw/Lights/FrontLights/FrontLights.h:
+C:/Work/Embedded/SVN/avProj/Asw/Lights/InteriorLights/InteriorLights.h:
+C:/Work/Embedded/SVN/avProj/Asw/Lights/RearLights/RearLights.h:
 C:/Work/Embedded/SVN/avProj/Asw/LED/LED.h:
