@@ -15,6 +15,8 @@
 
 #include "EcuM.h"
 #include "BswM.h"
+#include "NvM.h"
+#include "Ea.h"
 #include "Cdd_Servo.h"
 
 #include "Access.h"
@@ -62,7 +64,8 @@ void Rte_Task_StartUp(void)
 	EcuM_StartUp_Two();
 
 	/* Bsw stacks init */
-
+	NvM_Init();
+	Ea_Init();
 	/* Rte init */
 	Rte_Init();
 	/* Cdd init */
@@ -78,6 +81,8 @@ void Rte_Task_StartUp(void)
 	RearLights_Init();
 	/* Init function of ASW module used for testing purposes. TODO: remove after tests */
 	LED_Init();
+
+
 }
 
 /* Periodic tasks */
@@ -90,6 +95,7 @@ void Rte_Task_10ms(void)
 {
 	/* BSW */
 	BswM_MainFunction();
+	NvM_MainFunction();
 	/* CDD */
 	Cdd_Servo_MainFunction();
 	/* ASW */
@@ -152,6 +158,11 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 void Rte_Cdd_Servo_RawMove(uint16 pulse)
 {
 	Cdd_Servo_RawMove(pulse);
+}
+
+void Rte_Read_NvM_Block_0(uint8 *data)
+{
+	NvM_ReadBlock(0, data);
 }
 
 void Rte_Write_AN0_Voltage_u16(uint16 voltage)

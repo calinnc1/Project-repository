@@ -23,6 +23,8 @@ static boolean g_LED_InitDone_b = FALSE;							///< Module initialization flag
 static boolean g_LED_ButtonState_b = FALSE;							///< Blue button state
 static uint16 g_LED_Pulse_u16 = 0u;									///< PWM Pulse width
 static uint8 g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP;		///< PWM Pulse direction
+static boolean g_LED_NvMReadRequestFinished_b = FALSE;				///< Saves the status of NvM Read request
+static uint8 g_LED_NvMBlock_a[32] = {0u};							///< LED NvM block
 
 /* CONSTANTS: */
 
@@ -100,6 +102,12 @@ void LED_MainFunction(void)
 	/* Check if initialization is done */
 	if(TRUE == g_LED_InitDone_b)
 	{
+		/* Send NvM Read request once */
+		if(FALSE == g_LED_NvMReadRequestFinished_b)
+		{
+			Rte_Read_NvM_LED_Block(g_LED_NvMBlock_a);
+			g_LED_NvMReadRequestFinished_b = TRUE;
+		}
 		/* Read the blue button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);
 		/* Check if the button is released */

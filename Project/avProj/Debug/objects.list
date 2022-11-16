@@ -36,6 +36,8 @@
 "./Bsw/MCal/Spi/stm32f3xx_hal_spi_ex.o"
 "./Bsw/MCal/Uart/stm32f3xx_hal_uart.o"
 "./Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.o"
+"./Bsw/Mem/Ea/Ea.o"
+"./Bsw/Mem/NvM/NvM.o"
 "./Bsw/Sys/BswM/BswM.o"
 "./Bsw/Sys/EcuM/EcuM.o"
 "./Bsw/Sys/Os/Os.o"

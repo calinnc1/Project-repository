@@ -12,14 +12,17 @@
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 I2C_HandleTypeDef hi2c1;
+DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c1_tx;
 SPI_HandleTypeDef hspi3;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 volatile uint16 adc_val[1] = {0};
 uint32 adc_len = (uint32)(sizeof(adc_val)/sizeof(adc_val[0]));
-volatile uint16 ADC_AN0_Voltage = 0;
-
+volatile uint16 ADC_AN0_Voltage = 0u;
+volatile uint32 I2cRxCnt = 0u;
+volatile uint32 I2cTxCnt = 0u;
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void MX_GPIO_Init(void);
@@ -51,8 +54,8 @@ void BswM_Init(void)
 void BswM_MainFunction(void)
 {
 	/* Start ADC AN1 conversion */
-	//HAL_ADC_Start_IT(&hadc1);
 	HAL_ADC_Start_DMA(&hadc1, (uint32 *)adc_val, adc_len);
+
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
@@ -60,6 +63,30 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	/* Convert ADC value to Voltage (mV) */
 	ADC_AN0_Voltage = (uint16)((adc_val[0]*3300u)/4095u);
 	Rte_Write_ADC_AN0_Voltage_u16(ADC_AN0_Voltage);
+}
+
+
+/* USER CODE BEGIN 4 */
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+{
+	I2cTxCnt++;
+}
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+{
+	I2cRxCnt++;
+}
+
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
+{
+  /** Error_Handler() function is called when error occurs.
+    * 1- When Slave don't acknowledge it's address, Master restarts communication.
+    * 2- When Master don't acknowledge the last data transferred, Slave don't care in this example.
+    */
+  if (HAL_I2C_GetError(I2cHandle) != HAL_I2C_ERROR_AF)
+  {
+    Error_Handler();
+  }
 }
 
 /**
@@ -117,15 +144,19 @@ static void SystemClock_Config(void)
   */
 static void MX_DMA_Init(void)
 {
+	  /* DMA controller clock enable */
+	  __HAL_RCC_DMA1_CLK_ENABLE();
 
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-
+	  /* DMA interrupt init */
+	  /* DMA1_Channel1_IRQn interrupt configuration */
+	  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+	  /* DMA1_Channel6_IRQn interrupt configuration */
+	  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+	  /* DMA1_Channel7_IRQn interrupt configuration */
+	  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
 }
 
 /**
@@ -202,45 +233,43 @@ static void MX_ADC1_Init(void)
   */
 static void MX_I2C1_Init(void)
 {
+	  /* USER CODE BEGIN I2C1_Init 0 */
 
-  /* USER CODE BEGIN I2C1_Init 0 */
+	  /* USER CODE END I2C1_Init 0 */
 
-  /* USER CODE END I2C1_Init 0 */
+	  /* USER CODE BEGIN I2C1_Init 1 */
 
-  /* USER CODE BEGIN I2C1_Init 1 */
+	  /* USER CODE END I2C1_Init 1 */
+	  hi2c1.Instance = I2C1;
+	  hi2c1.Init.Timing = 0x00702681;
+	  hi2c1.Init.OwnAddress1 = 0;
+	  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	  hi2c1.Init.OwnAddress2 = 0;
+	  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+	  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
 
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00702681;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	  /** Configure Analogue filter
+	  */
+	  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
 
-  /** Configure Analogue filter
-  */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	  /** Configure Digital filter
+	  */
+	  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+	  {
+	    Error_Handler();
+	  }
+	  /* USER CODE BEGIN I2C1_Init 2 */
 
-  /** Configure Digital filter
-  */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
+	  /* USER CODE END I2C1_Init 2 */
 }
 
 /**

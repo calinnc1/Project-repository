@@ -54,6 +54,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Rte}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Sys/Tm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Sys/Os}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Mem/NvM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Mem/Ea}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Bsw/Cdd/Cdd_Servo}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/LED}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/avProj/Asw/Access}&quot;"/>

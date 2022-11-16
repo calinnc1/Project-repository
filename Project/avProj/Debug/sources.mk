@@ -42,6 +42,8 @@ Bsw/MCal/Mcu \
 Bsw/MCal/Pwr \
 Bsw/MCal/Spi \
 Bsw/MCal/Uart \
+Bsw/Mem/Ea \
+Bsw/Mem/NvM \
 Bsw/Sys/BswM \
 Bsw/Sys/EcuM \
 Bsw/Sys/Os \

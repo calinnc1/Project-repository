@@ -15,6 +15,8 @@ RM := rm -rf
 -include Bsw/Sys/Os/subdir.mk
 -include Bsw/Sys/EcuM/subdir.mk
 -include Bsw/Sys/BswM/subdir.mk
+-include Bsw/Mem/NvM/subdir.mk
+-include Bsw/Mem/Ea/subdir.mk
 -include Bsw/MCal/Uart/subdir.mk
 -include Bsw/MCal/Spi/subdir.mk
 -include Bsw/MCal/Pwr/subdir.mk

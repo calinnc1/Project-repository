@@ -13,6 +13,8 @@
 
 #include "Gpt.h"
 #include "Tm.h"
+void DMA1_ReceiveComplete_Callback(void);
+void DMA1_TransmitComplete_Callback(void);
 
 extern void BswM_Init(void);
 extern void BswM_MainFunction(void);

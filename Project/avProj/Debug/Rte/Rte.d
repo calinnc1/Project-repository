@@ -42,6 +42,8 @@ Rte/Rte.o: ../Rte/Rte.c ../Rte/Rte.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h \
+ C:/Work/Embedded/SVN/avProj/Bsw/Mem/NvM/NvM.h \
+ C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h \
  C:/Work/Embedded/SVN/avProj/Asw/Access/Access.h \
  C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h \
@@ -98,6 +100,8 @@ C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h:
+C:/Work/Embedded/SVN/avProj/Bsw/Mem/NvM/NvM.h:
+C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h:
 C:/Work/Embedded/SVN/avProj/Asw/Access/Access.h:
 C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h:

@@ -19,6 +19,7 @@ extern uint32_t tim3_100count;
 extern uint32_t tim3_500count;
 
 __attribute__((naked))void Os_Scheduler_Start(void);
+
 void Os_Task_StartUp_0();
 void Os_Scheduler_Init();
 volatile void Task5ms_0();

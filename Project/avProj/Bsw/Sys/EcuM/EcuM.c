@@ -18,8 +18,6 @@ void EcuM_StartUp_Two()
 int EcuM_Init(void)
 {
 
-	Os_Task_StartUp();
-
 	/* Start Scheduler */
 	Os_Start();
 

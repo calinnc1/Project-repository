@@ -46,6 +46,8 @@ void Gpt_TIM3_Stop_IT(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
+	/* Increment HAL counter */
+	HAL_IncTick();
 	//TODO: Remove and redirect timer callback
 	if(tim3_count == 9999)
 	{
