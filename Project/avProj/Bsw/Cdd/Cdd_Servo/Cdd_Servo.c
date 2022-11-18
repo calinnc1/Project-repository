@@ -13,6 +13,8 @@ typedef struct
 	uint16_t  Period_Max_u16;
 }Cdd_Servo_info;
 
+TIM_HandleTypeDef htim;
+
 static Cdd_Servo_info gs_SERVO_info_s = {0};
 
 const Cdd_Servo_CfgType c_SERVO_CfgParam_s =
@@ -28,13 +30,12 @@ const Cdd_Servo_CfgType c_SERVO_CfgParam_s =
 	20.0
 };
 
-void Cdd_Servo_Init(void)
+void Cdd_Servo_Driver_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 	TIM_ClockConfigTypeDef sClockSourceConfig = {0};
     TIM_MasterConfigTypeDef sMasterConfig = {0};
     TIM_OC_InitTypeDef sConfigOC = {0};
-    TIM_HandleTypeDef htim;
     uint32 PSC_Value = 0;
     uint32 ARR_Value = 0;
     //DWT_Delay_Init();
@@ -116,11 +117,14 @@ void Cdd_Servo_Init(void)
 
 	gs_SERVO_info_s.Period_Min_u16 = (uint16) (ARR_Value * (c_SERVO_CfgParam_s.MinPulse/20.0));
 	gs_SERVO_info_s.Period_Max_u16 = (uint16) (ARR_Value * (c_SERVO_CfgParam_s.MaxPulse/20.0));
+}
 
+void Cdd_Servo_Init(void)
+{
 	/*--------[ Start The PWM Channel ]-------*/
-
 	HAL_TIM_PWM_Start(&htim, c_SERVO_CfgParam_s.PWM_TIM_CH);
 }
+
 
 /* Moves A Specific Motor To A Specific Degree That Can Be Float Number */
 void Cdd_Servo_MoveTo(float32 Angle)

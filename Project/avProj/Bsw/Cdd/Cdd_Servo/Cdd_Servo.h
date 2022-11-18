@@ -24,6 +24,7 @@ typedef struct
 } Cdd_Servo_CfgType;
 
 extern void Cdd_Servo_Init(void);
+extern void Cdd_Servo_Driver_Init(void);
 extern void Cdd_Servo_MainFunction(void);
 extern void Cdd_Servo_MoveTo(float32 Angle);
 extern void Cdd_Servo_RawMove(uint16 Pulse);

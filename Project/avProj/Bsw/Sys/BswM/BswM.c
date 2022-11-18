@@ -8,6 +8,7 @@
 #include "BswM.h"
 #include "Rte.h"
 #include "Rte_Bsw_Int.h"
+#include "Cdd_Servo.h"
 
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
@@ -46,6 +47,8 @@ void BswM_Init(void)
 	MX_USART2_UART_Init();
 	Gpt_Init();
 
+	/* Init Cdd drivers */
+	Cdd_Servo_Driver_Init();
 	/* Init system services */
 	Tm_Init();
 
