@@ -8,8 +8,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define OS_NUM_TASKS  	5
-#define OS_DEBUG		0
+#define OS_NUM_TASKS  				5u
+#define OS_TASK_STACKSIZE       	200u
+#define OS_BASETIMER_COUNT_MAX		9999u
+#define OS_DEBUG					0u
 
 #if OS_DEBUG
  #define OS_VAR
@@ -41,39 +43,104 @@ typedef enum Os_Scheduler_State_e {
 	OS_STATE_ERROR		= 5u
 } Os_Scheduler_State_t;
 
-#define OS_TASK_STACKSIZE       200
 /// Define stack for each task. Node that the processor expects the stacks
 /// to be ended on word boundaries.
 int32_t TCB_STACK[OS_NUM_TASKS][OS_TASK_STACKSIZE];
 
+OS_VAR volatile uint32_t g_Os_BaseTimerISR_count_u32 = 0u;
+OS_VAR volatile uint32_t g_Os_5msTimerISR_count_u32 = 0u;
+OS_VAR volatile uint32_t g_Os_10msTimerISR_count_u32 = 0u;
+OS_VAR volatile uint32_t g_Os_50msTimerISR_count_u32 = 0u;
+OS_VAR volatile uint32_t g_Os_100msTimerISR_count_u32 = 0u;
+OS_VAR volatile uint32_t g_Os_500msTimerISR_count_u32 = 0u;
+
 OS_VAR volatile uint32_t Os_Task5ms_0_cnt = 0;
-OS_VAR volatile uint32_t task5ms_cnt = 0;
+OS_VAR volatile uint32_t g_Os_Task5ms_count_u32 = 0;
 OS_VAR volatile uint32_t Os_Task10ms_0_cnt = 0;
-OS_VAR volatile uint32_t task10ms_cnt = 0;
+OS_VAR volatile uint32_t g_Os_Task10ms_count_u32 = 0;
 OS_VAR volatile uint32_t Os_Task50ms_0_cnt = 0;
-OS_VAR volatile uint32_t task50ms_cnt = 0;
+OS_VAR volatile uint32_t g_Os_Task50ms_count_u32 = 0;
 OS_VAR volatile uint32_t Os_Task100ms_0_cnt = 0;
-OS_VAR volatile uint32_t task100ms_cnt = 0;
+OS_VAR volatile uint32_t g_Os_Task100ms_count_u32 = 0;
 OS_VAR volatile uint32_t Os_Task500ms_0_cnt = 0;
-OS_VAR volatile uint32_t task500ms_cnt = 0;
+OS_VAR volatile uint32_t g_Os_Task500ms_count_u32 = 0;
 
 OS_VAR volatile Os_Scheduler_State_t g_OS_State_e = OS_STATE_RESET;
 
 static void Os_TaskMaster_WaitForContextSwitch(void);
+static volatile void Os_Task_Master_0(void);
+static volatile void Task10ms_0(void);
+static volatile void Task50ms_0(void);
+static volatile void Task100ms_0(void);
+static volatile void Task500ms_0(void);
+
 
 static void Os_TaskMaster_WaitForContextSwitch(void)
 {
-	while(task5ms_cnt == tim3_5count)
+	while(g_Os_Task5ms_count_u32 == g_Os_5msTimerISR_count_u32)
 	{
 
 	}
 	Os_Task5ms_0_cnt++;
-	task5ms_cnt = tim3_5count;
+	g_Os_Task5ms_count_u32 = g_Os_5msTimerISR_count_u32;
 }
 
 void SysTick_Handler(void)
 {
+	/* Increment general counter */
 	HAL_IncTick();
+	/* Reset counters if base counter reached maximum value */
+	if(g_Os_BaseTimerISR_count_u32 == OS_BASETIMER_COUNT_MAX)
+	{
+		g_Os_BaseTimerISR_count_u32 = 0u;
+		g_Os_5msTimerISR_count_u32 = 0u;
+		g_Os_10msTimerISR_count_u32 = 0u;
+		g_Os_50msTimerISR_count_u32 = 0u;
+		g_Os_100msTimerISR_count_u32 = 0u;
+		g_Os_500msTimerISR_count_u32 = 0u;
+	}
+	else
+	{
+		/* Increment base counter */
+		g_Os_BaseTimerISR_count_u32++;
+	}
+
+	/* Check for 5ms condition */
+	if((g_Os_BaseTimerISR_count_u32 % 5) == 0u)
+	{
+		/* Increment 5ms counter */
+		g_Os_5msTimerISR_count_u32++;
+	}
+
+	/* Check for 10ms condition */
+	if((g_Os_BaseTimerISR_count_u32 % 10) == 0u)
+	{
+		/* Increment 10ms counter */
+		g_Os_10msTimerISR_count_u32++;
+	}
+
+	/* Check for 50ms condition */
+	if((g_Os_BaseTimerISR_count_u32 % 50) == 0u)
+	{
+		/* Increment 50ms counter */
+		g_Os_50msTimerISR_count_u32++;
+	}
+
+	/* Check for 100ms condition */
+	if((g_Os_BaseTimerISR_count_u32 % 100) == 0u)
+	{
+		/* Increment 100ms counter */
+		g_Os_100msTimerISR_count_u32++;
+	}
+
+	/* Check for 500ms condition */
+	if((g_Os_BaseTimerISR_count_u32 % 500) == 0u)
+	{
+		/* Increment 500ms counter */
+		g_Os_500msTimerISR_count_u32++;
+	}
+
+	/* Call PendSV_Handler for context switch */
 	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
 }
 
@@ -224,12 +291,13 @@ __attribute__((naked)) void Os_Scheduler_Start(void)
   * @brief  Initialization task
   * @return None
   */
-void Os_Task_Master_0()
+static volatile void Os_Task_Master_0(void)
 {
     while(1)
     {
     	/* Wait for context switch of master task */
     	Os_TaskMaster_WaitForContextSwitch();
+
     	/* Check Os state */
     	switch (g_OS_State_e)
     	{
@@ -271,20 +339,24 @@ void Os_Task_Master_0()
   * @brief  Periodic 10ms task
   * @return None
   */
-volatile void Task10ms_0()
+static volatile void Task10ms_0(void)
 {
     while(1)
     {
     	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
-			while(task10ms_cnt == tim3_10count)
+			while(g_Os_Task10ms_count_u32 == g_Os_10msTimerISR_count_u32)
 			{
 
 			}
 			Os_Task10ms_0_cnt++;
-			task10ms_cnt = tim3_10count;
+			g_Os_Task10ms_count_u32 = g_Os_10msTimerISR_count_u32;
 
 			Os_Task_10ms();
+    	}
+    	else
+    	{
+    		g_Os_Task10ms_count_u32 = g_Os_10msTimerISR_count_u32;
     	}
     }
 }
@@ -293,20 +365,24 @@ volatile void Task10ms_0()
   * @brief  Periodic 50ms task
   * @return None
   */
-volatile void Task50ms_0()
+static volatile void Task50ms_0(void)
 {
     while(1)
     {
     	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
-			while(task50ms_cnt == tim3_50count)
+			while(g_Os_Task50ms_count_u32 == g_Os_50msTimerISR_count_u32)
 			{
 
 			}
 			Os_Task50ms_0_cnt++;
-			task50ms_cnt = tim3_50count;
+			g_Os_Task50ms_count_u32 = g_Os_50msTimerISR_count_u32;
 
 			Os_Task_50ms();
+    	}
+    	else
+    	{
+    		g_Os_Task50ms_count_u32 = g_Os_50msTimerISR_count_u32;
     	}
     }
 }
@@ -315,20 +391,24 @@ volatile void Task50ms_0()
   * @brief  Periodic 100ms task
   * @return None
   */
-volatile void Task100ms_0()
+static volatile void Task100ms_0(void)
 {
     while(1)
     {
     	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
-			while(task100ms_cnt == tim3_100count)
+			while(g_Os_Task100ms_count_u32 == g_Os_100msTimerISR_count_u32)
 			{
 
 			}
 			Os_Task100ms_0_cnt++;
-			task100ms_cnt = tim3_100count;
+			g_Os_Task100ms_count_u32 = g_Os_100msTimerISR_count_u32;
 
 			Os_Task_100ms();
+    	}
+    	else
+    	{
+    		g_Os_Task100ms_count_u32 = g_Os_100msTimerISR_count_u32;
     	}
     }
 }
@@ -337,20 +417,24 @@ volatile void Task100ms_0()
   * @brief  Periodic 500ms task
   * @return None
   */
-volatile void Task500ms_0()
+static volatile void Task500ms_0(void)
 {
     while(1)
     {
     	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
-			while(task500ms_cnt == tim3_500count)
+			while(g_Os_Task500ms_count_u32 == g_Os_500msTimerISR_count_u32)
 			{
 
 			}
 			Os_Task500ms_0_cnt++;
-			task500ms_cnt = tim3_500count;
+			g_Os_Task500ms_count_u32 = g_Os_500msTimerISR_count_u32;
 
 			Os_Task_500ms();
+    	}
+    	else
+    	{
+    		g_Os_Task500ms_count_u32 = g_Os_500msTimerISR_count_u32;
     	}
     }
 }

@@ -10,5 +10,5 @@
 
 void Tm_Init(void)
 {
-	Gpt_TIM3_Start_IT();
+
 }

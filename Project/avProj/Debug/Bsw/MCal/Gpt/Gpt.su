@@ -2,5 +2,5 @@
 ../Bsw/MCal/Gpt/Gpt.c:30:6:Gpt_TIM3_Start_IT	8	static
 ../Bsw/MCal/Gpt/Gpt.c:38:6:Gpt_TIM3_Stop_IT	8	static
 ../Bsw/MCal/Gpt/Gpt.c:46:6:HAL_TIM_PeriodElapsedCallback	16	static
-../Bsw/MCal/Gpt/Gpt.c:97:13:Gpt_TIM3_Init	40	static
-../Bsw/MCal/Gpt/Gpt.c:141:13:Gpt_Error_Handler	4	static,ignoring_inline_asm
+../Bsw/MCal/Gpt/Gpt.c:56:13:Gpt_TIM3_Init	40	static
+../Bsw/MCal/Gpt/Gpt.c:100:13:Gpt_Error_Handler	4	static,ignoring_inline_asm

@@ -7,12 +7,12 @@
 
 #include "Gpt.h"
 
-volatile uint32_t tim3_count = 0u;
-volatile uint32_t tim3_5count = 0u;
-volatile uint32_t tim3_10count = 0u;
-volatile uint32_t tim3_50count = 0u;
-volatile uint32_t tim3_100count = 0u;
-volatile uint32_t tim3_500count = 0u;
+//volatile uint32_t tim3_count = 0u;
+//volatile uint32_t tim3_5count = 0u;
+//volatile uint32_t tim3_10count = 0u;
+//volatile uint32_t tim3_50count = 0u;
+//volatile uint32_t tim3_100count = 0u;
+//volatile uint32_t tim3_500count = 0u;
 
 TIM_HandleTypeDef htim3;
 
@@ -45,48 +45,7 @@ void Gpt_TIM3_Stop_IT(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	/* Increment HAL counter */
-	HAL_IncTick();
-	//TODO: Remove and redirect timer callback
-	if(tim3_count == 9999)
-	{
-		tim3_count = 0u;
-		tim3_5count = 0u;
-		tim3_10count = 0u;
-		tim3_50count = 0u;
-		tim3_100count = 0u;
-		tim3_500count = 0u;
-	}
-	else
-	{
-		tim3_count++;
-	}
 
-	if((tim3_count % 5) == 0u)
-	{
-		tim3_5count++;
-	}
-
-	if((tim3_count % 10) == 0u)
-	{
-		tim3_10count++;
-	}
-
-	if((tim3_count % 50) == 0u)
-	{
-		tim3_50count++;
-	}
-
-	if((tim3_count % 100) == 0u)
-	{
-		tim3_100count++;
-	}
-
-	if((tim3_count % 500) == 0u)
-	{
-		tim3_500count++;
-	}
-	//HAL_IncTick();
 }
 
 /**
