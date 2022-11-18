@@ -7,14 +7,10 @@
 
 
 #include "Os.h"
-#include "Rte_Bsw_Int.h"
 #include "Os_scheduler.h"
-#include "Os_task.h"
-
 
 void Os_Start()
 {
-	Os_Task_StartUp_0();
 	Os_Scheduler_Init();
 	Os_Scheduler_Start();
 

@@ -9,15 +9,20 @@
 #include "Os_task.h"
 #include "BswM.h"
 
-void EcuM_StartUp_Two()
+void EcuM_StartUp_One()
 {
 	(void)HAL_Init();
 	BswM_Init();
 }
 
-int EcuM_Init(void)
+void EcuM_StartUp_Two()
 {
 
+}
+
+int EcuM_Init(void)
+{
+	EcuM_StartUp_One();
 	/* Start Scheduler */
 	Os_Start();
 

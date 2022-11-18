@@ -11,7 +11,7 @@
 #define TASK_FCT(x) void Os_Task_ ## x
 #define TASK(x)	TASK_FCT(x)
 
-void Os_Task_StartUp(void);
+void Os_Task_Master(void);
 void Os_Task_5ms(void);
 void Os_Task_10ms(void);
 void Os_Task_20ms(void);

@@ -8,27 +8,14 @@
 #include "Os_task.h"
 #include "Rte_Os.h"
 
-#include "Cdd_Servo.h"
-#include "LED.h"
-
-TASK(StartUp)()
+TASK(Master)()
 {
-	Rte_Os_Task_StartUp();
-}
-
-TASK(5ms)()
-{
-	Rte_Os_Task_5ms();
+	Rte_Os_Task_Master();
 }
 
 TASK(10ms)()
 {
 	Rte_Os_Task_10ms();
-}
-
-TASK(20ms)()
-{
-	Rte_Os_Task_20ms();
 }
 
 TASK(50ms)()

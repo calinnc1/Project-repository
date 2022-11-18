@@ -8,7 +8,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define NUM_OF_THREADS  6
+#define OS_NUM_TASKS  	5
+#define OS_DEBUG		0
+
+#if OS_DEBUG
+ #define OS_VAR
+#else
+ #define OS_VAR	static
+#endif
 
 /// Task control block, implemented as a linked list to point to the
 /// TCB of the next task.
@@ -16,33 +23,61 @@ struct tcb{
   int32_t    *stackPt;
   struct tcb *nextPt;
 };
+
 /// Define tcb_t datatype
 typedef struct tcb tcb_t;
 /// Define an array to store TCB's for the tasks.
-tcb_t tcbs[NUM_OF_THREADS];
+tcb_t tcbs[OS_NUM_TASKS];
 /// Points to the TCB of the currently active task
 tcb_t *pCurntTcb;
 
+/* Os states structure */
+typedef enum Os_Scheduler_State_e {
+	OS_STATE_RESET 		= 0u,
+	OS_STATE_INIT		= 1u,
+	OS_STATE_NVMREAD	= 2u,
+	OS_STATE_RUNNING	= 3u,
+	OS_STATE_SHUTDOWN	= 4u,
+	OS_STATE_ERROR		= 5u
+} Os_Scheduler_State_t;
 
-#define STACKSIZE       200
+#define OS_TASK_STACKSIZE       200
 /// Define stack for each task. Node that the processor expects the stacks
 /// to be ended on word boundaries.
-int32_t TCB_STACK[NUM_OF_THREADS][STACKSIZE];
+int32_t TCB_STACK[OS_NUM_TASKS][OS_TASK_STACKSIZE];
 
-volatile uint32_t Os_Task5ms_0_cnt = 0;
-volatile uint32_t task5ms_cnt = 0;
-volatile uint32_t Os_Task10ms_0_cnt = 0;
-volatile uint32_t task10ms_cnt = 0;
-volatile uint32_t Os_Task20ms_0_cnt = 0;
-volatile uint32_t task20ms_cnt = 0;
-volatile uint32_t Os_Task50ms_0_cnt = 0;
-volatile uint32_t task50ms_cnt = 0;
-volatile uint32_t Os_Task100ms_0_cnt = 0;
-volatile uint32_t task100ms_cnt = 0;
-volatile uint32_t Os_Task500ms_0_cnt = 0;
-volatile uint32_t task500ms_cnt = 0;
+OS_VAR volatile uint32_t Os_Task5ms_0_cnt = 0;
+OS_VAR volatile uint32_t task5ms_cnt = 0;
+OS_VAR volatile uint32_t Os_Task10ms_0_cnt = 0;
+OS_VAR volatile uint32_t task10ms_cnt = 0;
+OS_VAR volatile uint32_t Os_Task50ms_0_cnt = 0;
+OS_VAR volatile uint32_t task50ms_cnt = 0;
+OS_VAR volatile uint32_t Os_Task100ms_0_cnt = 0;
+OS_VAR volatile uint32_t task100ms_cnt = 0;
+OS_VAR volatile uint32_t Os_Task500ms_0_cnt = 0;
+OS_VAR volatile uint32_t task500ms_cnt = 0;
 
-__attribute__((naked)) void SysTick_Handler(void)
+OS_VAR volatile Os_Scheduler_State_t g_OS_State_e = OS_STATE_RESET;
+
+static void Os_TaskMaster_WaitForContextSwitch(void);
+
+static void Os_TaskMaster_WaitForContextSwitch(void)
+{
+	while(task5ms_cnt == tim3_5count)
+	{
+
+	}
+	Os_Task5ms_0_cnt++;
+	task5ms_cnt = tim3_5count;
+}
+
+void SysTick_Handler(void)
+{
+	HAL_IncTick();
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+}
+
+__attribute__((naked)) void PendSV_Handler(void)
 {
 	/// STEP 1 - SAVE THE CURRENT TASK CONTEXT
 
@@ -103,52 +138,47 @@ void Os_Scheduler_Init()
 	tcbs[1].nextPt = &tcbs[2];
 	tcbs[2].nextPt = &tcbs[3];
 	tcbs[3].nextPt = &tcbs[4];
-	tcbs[4].nextPt = &tcbs[5];
-	tcbs[5].nextPt = &tcbs[0];
+	tcbs[4].nextPt = &tcbs[0];
 
 	/// Setup stack for task0
 
 	/// Setup the stack such that it is holding one task context.
 	/// Remember it is a descending stack and a context consists of 16 registers.
-	tcbs[0].stackPt = &TCB_STACK[0][STACKSIZE-16];
+	tcbs[0].stackPt = &TCB_STACK[0][OS_TASK_STACKSIZE-16];
 	/// Set the 'T' bit in stacked xPSR to '1' to notify processor
 	/// on exception return about the thumb state. V6-m and V7-m cores
 	/// can only support thumb state hence this should be always set
 	/// to '1'.
-	TCB_STACK[0][STACKSIZE-1] = 0x01000000;
+	TCB_STACK[0][OS_TASK_STACKSIZE-1] = 0x01000000;
 	/// Set the stacked PC to point to the task
-	TCB_STACK[0][STACKSIZE-2] = (int32_t)(Task5ms_0);
+	TCB_STACK[0][OS_TASK_STACKSIZE-2] = (int32_t)(Os_Task_Master_0);
 
 
 	/// Setup stack for task1
 
 	/// Setup the stack such that it is holding one task context.
 	/// Remember it is a descending stack and a context consists of 16 registers.
-    tcbs[1].stackPt = &TCB_STACK[1][STACKSIZE-16];
+    tcbs[1].stackPt = &TCB_STACK[1][OS_TASK_STACKSIZE-16];
     /// Set the 'T' bit in stacked xPSR to '1' to notify processor
     /// on exception return about the thumb state. V6-m and V7-m cores
     /// can only support thumb state hence this should be always set
     /// to '1'.
-    TCB_STACK[1][STACKSIZE-1] = 0x01000000;
+    TCB_STACK[1][OS_TASK_STACKSIZE-1] = 0x01000000;
     /// Set the stacked PC to point to the task
-    TCB_STACK[1][STACKSIZE-2] = (int32_t)(Task10ms_0);
+    TCB_STACK[1][OS_TASK_STACKSIZE-2] = (int32_t)(Task10ms_0);
 
 
-    tcbs[2].stackPt = &TCB_STACK[2][STACKSIZE-16];
-    TCB_STACK[2][STACKSIZE-1] = 0x01000000;
-    TCB_STACK[2][STACKSIZE-2] = (int32_t)(Task20ms_0);
+    tcbs[2].stackPt = &TCB_STACK[2][OS_TASK_STACKSIZE-16];
+    TCB_STACK[2][OS_TASK_STACKSIZE-1] = 0x01000000;
+    TCB_STACK[2][OS_TASK_STACKSIZE-2] = (int32_t)(Task50ms_0);
 
-    tcbs[3].stackPt = &TCB_STACK[3][STACKSIZE-16];
-    TCB_STACK[3][STACKSIZE-1] = 0x01000000;
-    TCB_STACK[3][STACKSIZE-2] = (int32_t)(Task50ms_0);
+    tcbs[3].stackPt = &TCB_STACK[3][OS_TASK_STACKSIZE-16];
+    TCB_STACK[3][OS_TASK_STACKSIZE-1] = 0x01000000;
+    TCB_STACK[3][OS_TASK_STACKSIZE-2] = (int32_t)(Task100ms_0);
 
-    tcbs[4].stackPt = &TCB_STACK[4][STACKSIZE-16];
-    TCB_STACK[4][STACKSIZE-1] = 0x01000000;
-    TCB_STACK[4][STACKSIZE-2] = (int32_t)(Task100ms_0);
-
-    tcbs[5].stackPt = &TCB_STACK[5][STACKSIZE-16];
-    TCB_STACK[5][STACKSIZE-1] = 0x01000000;
-    TCB_STACK[5][STACKSIZE-2] = (int32_t)(Task500ms_0);
+    tcbs[4].stackPt = &TCB_STACK[4][OS_TASK_STACKSIZE-16];
+    TCB_STACK[4][OS_TASK_STACKSIZE-1] = 0x01000000;
+    TCB_STACK[4][OS_TASK_STACKSIZE-2] = (int32_t)(Task500ms_0);
 
     /// Make current tcb pointer point to task0
     pCurntTcb = &tcbs[0];
@@ -190,100 +220,137 @@ __attribute__((naked)) void Os_Scheduler_Start(void)
     __asm("BX      LR");
 }
 
-void Os_Task_StartUp_0()
-{
-	Os_Task_StartUp();
-}
-
-volatile void Task5ms_0()
+/**
+  * @brief  Initialization task
+  * @return None
+  */
+void Os_Task_Master_0()
 {
     while(1)
     {
-    	while(task5ms_cnt == tim3_5count)
+    	/* Wait for context switch of master task */
+    	Os_TaskMaster_WaitForContextSwitch();
+    	/* Check Os state */
+    	switch (g_OS_State_e)
     	{
+    		case OS_STATE_RESET:
+    		{
+    			g_OS_State_e = OS_STATE_INIT;
+    		} break;
+    		case OS_STATE_INIT:
+    		{
+    			Os_Task_Master();
+    			g_OS_State_e = OS_STATE_NVMREAD;
+    		} break;
+    		case OS_STATE_NVMREAD:
+    		{
+    			/* Todo: preform readall here */
+    			g_OS_State_e = OS_STATE_RUNNING;
+    		} break;
+    		case OS_STATE_RUNNING:
+    		{
+    			/* TODO: add task activate/suspend here */
+    		} break;
+    		case OS_STATE_SHUTDOWN:
+    		{
+    			/* TODO: add shutdown procedure here */
+    		} break;
+    		case OS_STATE_ERROR:
+    		{
+    			/* NvM write all, write error */
+    		} break;
+    		default:
+    		{
 
+    		} break;
     	}
-   		Os_Task5ms_0_cnt++;
-    	task5ms_cnt = tim3_5count;
-
-    	Os_Task_5ms();
     }
 }
 
+/**
+  * @brief  Periodic 10ms task
+  * @return None
+  */
 volatile void Task10ms_0()
 {
     while(1)
     {
-    	while(task10ms_cnt == tim3_10count)
+    	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
+			while(task10ms_cnt == tim3_10count)
+			{
 
+			}
+			Os_Task10ms_0_cnt++;
+			task10ms_cnt = tim3_10count;
+
+			Os_Task_10ms();
     	}
-   		Os_Task10ms_0_cnt++;
-    	task10ms_cnt = tim3_10count;
-
-    	Os_Task_10ms();
     }
 }
 
-volatile void Task20ms_0()
-{
-    while(1)
-    {
-    	while(task20ms_cnt == tim3_20count)
-    	{
-
-    	}
-   		Os_Task20ms_0_cnt++;
-    	task20ms_cnt = tim3_20count;
-
-    	Os_Task_20ms();
-    }
-}
-
-
+/**
+  * @brief  Periodic 50ms task
+  * @return None
+  */
 volatile void Task50ms_0()
 {
     while(1)
     {
-    	while(task50ms_cnt == tim3_50count)
+    	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
+			while(task50ms_cnt == tim3_50count)
+			{
 
+			}
+			Os_Task50ms_0_cnt++;
+			task50ms_cnt = tim3_50count;
+
+			Os_Task_50ms();
     	}
-   		Os_Task50ms_0_cnt++;
-    	task50ms_cnt = tim3_50count;
-
-    	Os_Task_50ms();
     }
 }
 
-
+/**
+  * @brief  Periodic 100ms task
+  * @return None
+  */
 volatile void Task100ms_0()
 {
     while(1)
     {
-    	while(task100ms_cnt == tim3_100count)
+    	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
+			while(task100ms_cnt == tim3_100count)
+			{
 
+			}
+			Os_Task100ms_0_cnt++;
+			task100ms_cnt = tim3_100count;
+
+			Os_Task_100ms();
     	}
-   		Os_Task100ms_0_cnt++;
-    	task100ms_cnt = tim3_100count;
-
-    	Os_Task_100ms();
     }
 }
 
-
+/**
+  * @brief  Periodic 500ms task
+  * @return None
+  */
 volatile void Task500ms_0()
 {
     while(1)
     {
-    	while(task500ms_cnt == tim3_500count)
+    	if(OS_STATE_RUNNING == g_OS_State_e)
     	{
+			while(task500ms_cnt == tim3_500count)
+			{
 
+			}
+			Os_Task500ms_0_cnt++;
+			task500ms_cnt = tim3_500count;
+
+			Os_Task_500ms();
     	}
-   		Os_Task500ms_0_cnt++;
-    	task500ms_cnt = tim3_500count;
-
-    	Os_Task_500ms();
     }
 }

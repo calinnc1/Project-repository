@@ -10,10 +10,8 @@
 
 #include "Rte.h"
 
-#define Rte_Os_Task_StartUp			Rte_Task_StartUp
-#define Rte_Os_Task_5ms				Rte_Task_5ms
+#define Rte_Os_Task_Master			Rte_Task_Master
 #define Rte_Os_Task_10ms			Rte_Task_10ms
-#define Rte_Os_Task_20ms			Rte_Task_20ms
 #define Rte_Os_Task_50ms			Rte_Task_50ms
 #define Rte_Os_Task_100ms			Rte_Task_100ms
 #define Rte_Os_Task_500ms			Rte_Task_500ms

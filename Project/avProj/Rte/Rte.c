@@ -58,7 +58,7 @@ void Rte_Init(void)
 
 /* Os Tasks*/
 /* Init task */
-void Rte_Task_StartUp(void)
+void Rte_Task_Master(void)
 {
 	/* EcuM startup two: MCal drivers init, BswM init */
 	EcuM_StartUp_Two();
@@ -82,13 +82,7 @@ void Rte_Task_StartUp(void)
 	/* Init function of ASW module used for testing purposes. TODO: remove after tests */
 	LED_Init();
 
-
-}
-
-/* Periodic tasks */
-void Rte_Task_5ms(void)
-{
-
+	/* Add new ASW init functions here */
 }
 
 void Rte_Task_10ms(void)
@@ -105,11 +99,6 @@ void Rte_Task_10ms(void)
 	Steering_MainFunction();
 	/* MainFunction of ASW module used for testing purposes. TODO: remove after tests */
 	LED_MainFunction();
-}
-
-void Rte_Task_20ms(void)
-{
-
 }
 
 void Rte_Task_50ms(void)

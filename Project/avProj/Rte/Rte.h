@@ -13,10 +13,8 @@
 
 extern void Rte_Init(void);
 /* Rte Tasks */
-extern void Rte_Task_StartUp(void);
-extern void Rte_Task_5ms(void);
+extern void Rte_Task_Master(void);
 extern void Rte_Task_10ms(void);
-extern void Rte_Task_20ms(void);
 extern void Rte_Task_50ms(void);
 extern void Rte_Task_100ms(void);
 extern void Rte_Task_500ms(void);

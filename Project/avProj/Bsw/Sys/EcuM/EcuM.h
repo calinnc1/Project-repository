@@ -12,6 +12,7 @@
 #include "Os.h"
 
 extern int EcuM_Init(void);
+extern void EcuM_StartUp_One(void);
 extern void EcuM_StartUp_Two(void);
 
 #endif /* BSW_SYS_ECUM_ECUM_H_ */

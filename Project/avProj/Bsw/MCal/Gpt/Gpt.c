@@ -10,7 +10,6 @@
 volatile uint32_t tim3_count = 0u;
 volatile uint32_t tim3_5count = 0u;
 volatile uint32_t tim3_10count = 0u;
-volatile uint32_t tim3_20count = 0u;
 volatile uint32_t tim3_50count = 0u;
 volatile uint32_t tim3_100count = 0u;
 volatile uint32_t tim3_500count = 0u;
@@ -54,7 +53,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 		tim3_count = 0u;
 		tim3_5count = 0u;
 		tim3_10count = 0u;
-		tim3_20count = 0u;
 		tim3_50count = 0u;
 		tim3_100count = 0u;
 		tim3_500count = 0u;
@@ -72,11 +70,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 	if((tim3_count % 10) == 0u)
 	{
 		tim3_10count++;
-	}
-
-	if((tim3_count % 20) == 0u)
-	{
-		tim3_20count++;
 	}
 
 	if((tim3_count % 50) == 0u)

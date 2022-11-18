@@ -229,6 +229,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   if (TickPriority < (1UL << __NVIC_PRIO_BITS))
   {
     HAL_NVIC_SetPriority(SysTick_IRQn, TickPriority, 0U);
+    HAL_NVIC_SetPriority(PendSV_IRQn, 15, 0);
     uwTickPrio = TickPriority;
   }
   else
