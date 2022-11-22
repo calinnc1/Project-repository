@@ -1,5 +1,5 @@
 Bsw/Sys/Os/Os_scheduler.o: ../Bsw/Sys/Os/Os_scheduler.c \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_scheduler.h \
+ ../Bsw/Sys/Os/Os_scheduler.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_rcc.h \
@@ -35,8 +35,9 @@ Bsw/Sys/Os/Os_scheduler.o: ../Bsw/Sys/Os/Os_scheduler.c \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_task.h
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_scheduler.h:
+ ../Bsw/Sys/Os/Os_task.h \
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h
+../Bsw/Sys/Os/Os_scheduler.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_rcc.h:
@@ -72,4 +73,5 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_task.h:
+../Bsw/Sys/Os/Os_task.h:
+C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:

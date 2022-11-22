@@ -10,9 +10,9 @@
 #include "Rte_LED.h"
 
 /* DEFINES: */
-#define LED_FADE_MIN_PULSE_U16					1000u					///< Minimum PWM pulse width
-#define LED_FADE_MAX_PULSE_U16					64000u					///< Maximum PWM pulse width
-#define LED_FADE_PULSE_STEP_U16					800u					///< Pulse step
+#define LED_FADE_MIN_PULSE_U16					1500u					///< Minimum PWM pulse width
+#define LED_FADE_MAX_PULSE_U16					8000u					///< Maximum PWM pulse width
+#define LED_FADE_PULSE_STEP_U16					500u					///< Pulse step
 #define LED_PULSE_DIRECTION_UP_U8				0u						///< Upward pulse direction
 #define LED_PULSE_DIRECTION_DOWN_U8				1u						///< Downward pulse direction
 

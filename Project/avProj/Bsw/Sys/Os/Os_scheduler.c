@@ -1,90 +1,159 @@
-/*
- * Os_scheduler.c
- *
- *  Created on: Apr 26, 2020
- *      Author: Sudeep Chandrasekaran
- */
-#include <Os_scheduler.h>
-#include <stdint.h>
-#include <stdbool.h>
+/**
+  * @file	Os_scheduler.c
+  * @author	cosmin.marcu
+  * @date	Nov 22, 2022
+  * @brief	OS scheduler source file
+  */
+#include "Os_scheduler.h"
 
 #define OS_NUM_TASKS  				5u
 #define OS_TASK_STACKSIZE       	200u
 #define OS_BASETIMER_COUNT_MAX		9999u
-#define OS_DEBUG					0u
+#define OS_TASK_XPSR_TBIT_U32		0x01000000
+#define OS_VAR						static volatile
+#define OS_TASK_FUNC				static volatile
+#define OS_DWT						0u
 
-#if OS_DEBUG
- #define OS_VAR
-#else
- #define OS_VAR	static
+#define OS_TASK_INIT_ID_U8			0u
+#define OS_TASK_10MS_ID_U8			1u
+#define OS_TASK_50MS_ID_U8			2u
+#define OS_TASK_100MS_ID_U8			3u
+#define OS_TASK_500MS_ID_U8			4u
+
+#if OS_DWT
+  #define KIN1_DWT_CONTROL             (*((volatile uint32_t*)0xE0001000))
+    /*!< DWT Control register */
+  #define KIN1_DWT_CYCCNTENA_BIT       (1UL<<0)
+    /*!< CYCCNTENA bit in DWT_CONTROL register */
+  #define KIN1_DWT_CYCCNT              (*((volatile uint32_t*)0xE0001004))
+    /*!< DWT Cycle Counter register */
+  #define KIN1_DEMCR                   (*((volatile uint32_t*)0xE000EDFC))
+    /*!< DEMCR: Debug Exception and Monitor Control Register */
+  #define KIN1_TRCENA_BIT              (1UL<<24)
+    /*!< Trace enable bit in DEMCR register */
+
+#define KIN1_InitCycleCounter() \
+  KIN1_DEMCR |= KIN1_TRCENA_BIT
+  /*!< TRCENA: Enable trace and debug block DEMCR (Debug Exception and Monitor Control Register */
+
+#define KIN1_ResetCycleCounter() \
+  KIN1_DWT_CYCCNT = 0
+  /*!< Reset cycle counter */
+
+#define KIN1_EnableCycleCounter() \
+  KIN1_DWT_CONTROL |= KIN1_DWT_CYCCNTENA_BIT
+  /*!< Enable cycle counter */
+
+#define KIN1_DisableCycleCounter() \
+  KIN1_DWT_CONTROL &= ~KIN1_DWT_CYCCNTENA_BIT
+  /*!< Disable cycle counter */
+
+#define KIN1_GetCycleCounter() \
+  KIN1_DWT_CYCCNT
+  /*!< Read cycle counter register */
+
+#define KIN1_Start() \
+	KIN1_InitCycleCounter(); \
+	KIN1_ResetCycleCounter(); \
+	KIN1_EnableCycleCounter();
+
+#define KIN1_Stop(x) \
+	x = (float32)KIN1_GetCycleCounter() / 72000.0f; \
+	KIN1_DisableCycleCounter();
+
 #endif
 
-/// Task control block, implemented as a linked list to point to the
-/// TCB of the next task.
-struct tcb{
-  int32_t    *stackPt;
-  struct tcb *nextPt;
+#if OS_DWT
+	#define OS_TASK_CALL(x, y) \
+	KIN1_Start() \
+	x; \
+	KIN1_Stop(y)
+#else
+	#define OS_TASK_CALL(x, y) x;
+#endif
+
+/**
+  * @brief  Task Control Block Structure
+  */
+struct Os_TaskControlBlock_s
+{
+  uint32    *stackPt_pu32;
+  struct Os_TaskControlBlock_s *nextPt_ps;
 };
 
-/// Define tcb_t datatype
-typedef struct tcb tcb_t;
-/// Define an array to store TCB's for the tasks.
-tcb_t tcbs[OS_NUM_TASKS];
-/// Points to the TCB of the currently active task
-tcb_t *pCurntTcb;
+/**
+  * @brief  Task Control Block data type
+  */
+typedef struct Os_TaskControlBlock_s Os_TaskControlBlock_st;
 
-/* Os states structure */
-typedef enum Os_Scheduler_State_e {
-	OS_STATE_RESET 		= 0u,
-	OS_STATE_INIT		= 1u,
-	OS_STATE_NVMREAD	= 2u,
-	OS_STATE_RUNNING	= 3u,
-	OS_STATE_SHUTDOWN	= 4u,
-	OS_STATE_ERROR		= 5u
-} Os_Scheduler_State_t;
+/**
+  * @brief  Task Control Blocks array
+  */
+Os_TaskControlBlock_st g_Os_TaskBlock_as[OS_NUM_TASKS];
 
-/// Define stack for each task. Node that the processor expects the stacks
-/// to be ended on word boundaries.
-int32_t TCB_STACK[OS_NUM_TASKS][OS_TASK_STACKSIZE];
+/**
+  * @brief  Pointer to current Task Control Block
+  */
+Os_TaskControlBlock_st *g_Os_CurrentTaskBlock_ps;
 
-OS_VAR volatile uint32_t g_Os_BaseTimerISR_count_u32 = 0u;
-OS_VAR volatile uint32_t g_Os_5msTimerISR_count_u32 = 0u;
-OS_VAR volatile uint32_t g_Os_10msTimerISR_count_u32 = 0u;
-OS_VAR volatile uint32_t g_Os_50msTimerISR_count_u32 = 0u;
-OS_VAR volatile uint32_t g_Os_100msTimerISR_count_u32 = 0u;
-OS_VAR volatile uint32_t g_Os_500msTimerISR_count_u32 = 0u;
-
-OS_VAR volatile uint32_t Os_Task5ms_0_cnt = 0;
-OS_VAR volatile uint32_t g_Os_Task5ms_count_u32 = 0;
-OS_VAR volatile uint32_t Os_Task10ms_0_cnt = 0;
-OS_VAR volatile uint32_t g_Os_Task10ms_count_u32 = 0;
-OS_VAR volatile uint32_t Os_Task50ms_0_cnt = 0;
-OS_VAR volatile uint32_t g_Os_Task50ms_count_u32 = 0;
-OS_VAR volatile uint32_t Os_Task100ms_0_cnt = 0;
-OS_VAR volatile uint32_t g_Os_Task100ms_count_u32 = 0;
-OS_VAR volatile uint32_t Os_Task500ms_0_cnt = 0;
-OS_VAR volatile uint32_t g_Os_Task500ms_count_u32 = 0;
-
-OS_VAR volatile Os_Scheduler_State_t g_OS_State_e = OS_STATE_RESET;
-
-static void Os_TaskMaster_WaitForContextSwitch(void);
-static volatile void Os_Task_Master_0(void);
-static volatile void Task10ms_0(void);
-static volatile void Task50ms_0(void);
-static volatile void Task100ms_0(void);
-static volatile void Task500ms_0(void);
-
-
-static void Os_TaskMaster_WaitForContextSwitch(void)
+/**
+  * @brief  OS state data type
+  */
+typedef enum Os_Scheduler_State_e
 {
-	while(g_Os_Task5ms_count_u32 == g_Os_5msTimerISR_count_u32)
-	{
+	OS_STATE_RESET_E 		= 0u,
+	OS_STATE_INIT_E			= 1u,
+	OS_STATE_NVMREAD_E		= 2u,
+	OS_STATE_RUNNING_E		= 3u,
+	OS_STATE_SHUTDOWN_E		= 4u,
+	OS_STATE_ERROR_E		= 5u
+} Os_Scheduler_State_et;
 
-	}
-	Os_Task5ms_0_cnt++;
-	g_Os_Task5ms_count_u32 = g_Os_5msTimerISR_count_u32;
-}
+/**
+  * @brief  Tasks stacks definition array
+  */
+uint32 g_Os_TaskStack_aau32[OS_NUM_TASKS][OS_TASK_STACKSIZE];
 
+OS_VAR uint32 g_Os_BaseTimerISR_count_u32 = 0u;
+OS_VAR uint32 g_Os_5msTimerISR_count_u32 = 0u;
+OS_VAR uint32 g_Os_10msTimerISR_count_u32 = 0u;
+OS_VAR uint32 g_Os_50msTimerISR_count_u32 = 0u;
+OS_VAR uint32 g_Os_100msTimerISR_count_u32 = 0u;
+OS_VAR uint32 g_Os_500msTimerISR_count_u32 = 0u;
+
+OS_VAR uint32 Os_Task5ms_0_cnt = 0;
+OS_VAR uint32 g_Os_Task5ms_count_u32 = 0;
+OS_VAR uint32 Os_Task10ms_0_cnt = 0;
+OS_VAR uint32 g_Os_Task10ms_count_u32 = 0;
+OS_VAR uint32 Os_Task50ms_0_cnt = 0;
+OS_VAR uint32 g_Os_Task50ms_count_u32 = 0;
+OS_VAR uint32 Os_Task100ms_0_cnt = 0;
+OS_VAR uint32 g_Os_Task100ms_count_u32 = 0;
+OS_VAR uint32 Os_Task500ms_0_cnt = 0;
+OS_VAR uint32 g_Os_Task500ms_count_u32 = 0;
+
+OS_VAR Os_Scheduler_State_et g_OS_State_e = OS_STATE_RESET_E;
+
+/* OS tasks duration measurement variables [ms]
+ * Precondition: OS_DWR must be 1
+ */
+OS_VAR float32 g_Os_dwt_Master_f32 = 0.0f;
+OS_VAR float32 g_Os_dwt_10ms_f32 = 0.0f;
+OS_VAR float32 g_Os_dwt_50ms_f32 = 0.0f;
+OS_VAR float32 g_Os_dwt_100ms_f32 = 0.0f;
+OS_VAR float32 g_Os_dwt_500ms_f32 = 0.0f;
+
+OS_TASK_FUNC void Os_Scheduler_TaskMaster_0(void);
+OS_TASK_FUNC void Os_Scheduler_Task10ms_0(void);
+OS_TASK_FUNC void Os_Scheduler_Task50ms_0(void);
+OS_TASK_FUNC void Os_Scheduler_Task100ms_0(void);
+OS_TASK_FUNC void Os_Scheduler_Task500ms_0(void);
+
+
+/**
+  * @brief  SysTick IRQ Handler
+  * @return None
+  */
 void SysTick_Handler(void)
 {
 	/* Increment general counter */
@@ -141,9 +210,16 @@ void SysTick_Handler(void)
 	}
 
 	/* Call PendSV_Handler for context switch */
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	if(OS_STATE_RUNNING_E == g_OS_State_e)
+	{
+		SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	}
 }
 
+/**
+  * @brief  PendSV IRQ handler
+  * @return None
+  */
 __attribute__((naked)) void PendSV_Handler(void)
 {
 	/// STEP 1 - SAVE THE CURRENT TASK CONTEXT
@@ -162,7 +238,7 @@ __attribute__((naked)) void PendSV_Handler(void)
     __asm("MOV     R7, R11");
     __asm("PUSH    {R4-R7}");
     /// Load R0 with the address of pCurntTcb
-    __asm("LDR     R0, =pCurntTcb");
+    __asm("LDR     R0, =g_Os_CurrentTaskBlock_ps");
     /// Load R1 with the content of pCurntTcb(i.e post this, R1 will contain the address of current TCB).
     __asm("LDR     R1, [R0]");
     /// Move the SP value to R4
@@ -195,69 +271,54 @@ __attribute__((naked)) void PendSV_Handler(void)
 
 }
 
+/**
+  * @brief  OS Scheduler initialization function
+  * @return None
+  */
 void Os_Scheduler_Init()
 {
-	/// Enter critical section
-	/// Disable interrupts
+	/* Enter critical section: Disable interrupts */
 	__asm("CPSID   I");
-	/// Make the TCB linked list circular
-	tcbs[0].nextPt = &tcbs[1];
-	tcbs[1].nextPt = &tcbs[2];
-	tcbs[2].nextPt = &tcbs[3];
-	tcbs[3].nextPt = &tcbs[4];
-	tcbs[4].nextPt = &tcbs[0];
-
-	/// Setup stack for task0
-
-	/// Setup the stack such that it is holding one task context.
-	/// Remember it is a descending stack and a context consists of 16 registers.
-	tcbs[0].stackPt = &TCB_STACK[0][OS_TASK_STACKSIZE-16];
-	/// Set the 'T' bit in stacked xPSR to '1' to notify processor
-	/// on exception return about the thumb state. V6-m and V7-m cores
-	/// can only support thumb state hence this should be always set
-	/// to '1'.
-	TCB_STACK[0][OS_TASK_STACKSIZE-1] = 0x01000000;
-	/// Set the stacked PC to point to the task
-	TCB_STACK[0][OS_TASK_STACKSIZE-2] = (int32_t)(Os_Task_Master_0);
-
-
-	/// Setup stack for task1
-
-	/// Setup the stack such that it is holding one task context.
-	/// Remember it is a descending stack and a context consists of 16 registers.
-    tcbs[1].stackPt = &TCB_STACK[1][OS_TASK_STACKSIZE-16];
-    /// Set the 'T' bit in stacked xPSR to '1' to notify processor
-    /// on exception return about the thumb state. V6-m and V7-m cores
-    /// can only support thumb state hence this should be always set
-    /// to '1'.
-    TCB_STACK[1][OS_TASK_STACKSIZE-1] = 0x01000000;
-    /// Set the stacked PC to point to the task
-    TCB_STACK[1][OS_TASK_STACKSIZE-2] = (int32_t)(Task10ms_0);
-
-
-    tcbs[2].stackPt = &TCB_STACK[2][OS_TASK_STACKSIZE-16];
-    TCB_STACK[2][OS_TASK_STACKSIZE-1] = 0x01000000;
-    TCB_STACK[2][OS_TASK_STACKSIZE-2] = (int32_t)(Task50ms_0);
-
-    tcbs[3].stackPt = &TCB_STACK[3][OS_TASK_STACKSIZE-16];
-    TCB_STACK[3][OS_TASK_STACKSIZE-1] = 0x01000000;
-    TCB_STACK[3][OS_TASK_STACKSIZE-2] = (int32_t)(Task100ms_0);
-
-    tcbs[4].stackPt = &TCB_STACK[4][OS_TASK_STACKSIZE-16];
-    TCB_STACK[4][OS_TASK_STACKSIZE-1] = 0x01000000;
-    TCB_STACK[4][OS_TASK_STACKSIZE-2] = (int32_t)(Task500ms_0);
-
-    /// Make current tcb pointer point to task0
-    pCurntTcb = &tcbs[0];
-    /// Enable interrupts
+	/* Make the Task Control Block linked list circular */
+	g_Os_TaskBlock_as[OS_TASK_INIT_ID_U8].nextPt_ps = &g_Os_TaskBlock_as[OS_TASK_10MS_ID_U8];
+	g_Os_TaskBlock_as[OS_TASK_10MS_ID_U8].nextPt_ps = &g_Os_TaskBlock_as[OS_TASK_50MS_ID_U8];
+	g_Os_TaskBlock_as[OS_TASK_50MS_ID_U8].nextPt_ps = &g_Os_TaskBlock_as[OS_TASK_100MS_ID_U8];
+	g_Os_TaskBlock_as[OS_TASK_100MS_ID_U8].nextPt_ps = &g_Os_TaskBlock_as[OS_TASK_500MS_ID_U8];
+	g_Os_TaskBlock_as[OS_TASK_500MS_ID_U8].nextPt_ps = &g_Os_TaskBlock_as[OS_TASK_INIT_ID_U8];
+	/* Setup stack for initialization (master) task */
+	g_Os_TaskBlock_as[OS_TASK_INIT_ID_U8].stackPt_pu32 = &g_Os_TaskStack_aau32[OS_TASK_INIT_ID_U8][OS_TASK_STACKSIZE-16];
+	g_Os_TaskStack_aau32[OS_TASK_INIT_ID_U8][OS_TASK_STACKSIZE-1] = OS_TASK_XPSR_TBIT_U32;
+	g_Os_TaskStack_aau32[OS_TASK_INIT_ID_U8][OS_TASK_STACKSIZE-2] = (uint32)(Os_Scheduler_TaskMaster_0);
+	/* Setup stack for 10ms task */
+    g_Os_TaskBlock_as[OS_TASK_10MS_ID_U8].stackPt_pu32 = &g_Os_TaskStack_aau32[OS_TASK_10MS_ID_U8][OS_TASK_STACKSIZE-16];
+    g_Os_TaskStack_aau32[OS_TASK_10MS_ID_U8][OS_TASK_STACKSIZE-1] = OS_TASK_XPSR_TBIT_U32;
+    g_Os_TaskStack_aau32[OS_TASK_10MS_ID_U8][OS_TASK_STACKSIZE-2] = (uint32)(Os_Scheduler_Task10ms_0);
+	/* Setup stack for 50ms task */
+    g_Os_TaskBlock_as[OS_TASK_50MS_ID_U8].stackPt_pu32 = &g_Os_TaskStack_aau32[OS_TASK_50MS_ID_U8][OS_TASK_STACKSIZE-16];
+    g_Os_TaskStack_aau32[OS_TASK_50MS_ID_U8][OS_TASK_STACKSIZE-1] = OS_TASK_XPSR_TBIT_U32;
+    g_Os_TaskStack_aau32[OS_TASK_50MS_ID_U8][OS_TASK_STACKSIZE-2] = (uint32)(Os_Scheduler_Task50ms_0);
+	/* Setup stack for 100ms task */
+    g_Os_TaskBlock_as[OS_TASK_100MS_ID_U8].stackPt_pu32 = &g_Os_TaskStack_aau32[OS_TASK_100MS_ID_U8][OS_TASK_STACKSIZE-16];
+    g_Os_TaskStack_aau32[OS_TASK_100MS_ID_U8][OS_TASK_STACKSIZE-1] = OS_TASK_XPSR_TBIT_U32;
+    g_Os_TaskStack_aau32[OS_TASK_100MS_ID_U8][OS_TASK_STACKSIZE-2] = (uint32)(Os_Scheduler_Task100ms_0);
+	/* Setup stack for 500ms task */
+    g_Os_TaskBlock_as[OS_TASK_500MS_ID_U8].stackPt_pu32 = &g_Os_TaskStack_aau32[OS_TASK_500MS_ID_U8][OS_TASK_STACKSIZE-16];
+    g_Os_TaskStack_aau32[OS_TASK_500MS_ID_U8][OS_TASK_STACKSIZE-1] = OS_TASK_XPSR_TBIT_U32;
+    g_Os_TaskStack_aau32[OS_TASK_500MS_ID_U8][OS_TASK_STACKSIZE-2] = (uint32)(Os_Scheduler_Task500ms_0);
+    /* Set the current task control block to point to init task */
+    g_Os_CurrentTaskBlock_ps = &g_Os_TaskBlock_as[OS_TASK_INIT_ID_U8];
+    /* Leave critical section: Enable interrupts */
     __asm("CPSIE   I ");
 }
 
-
+/**
+  * @brief  OS Scheduler start function
+  * @return None
+  */
 __attribute__((naked)) void Os_Scheduler_Start(void)
 {
     /// R0 contains the address of currentPt
-    __asm("LDR     R0, =pCurntTcb");
+    __asm("LDR     R0, =g_Os_CurrentTaskBlock_ps");
     /// R2 contains the address in currentPt(value of currentPt)
     __asm("LDR     R2, [R0]");
     /// Load the SP reg with the stacked SP value
@@ -291,39 +352,44 @@ __attribute__((naked)) void Os_Scheduler_Start(void)
   * @brief  Initialization task
   * @return None
   */
-static volatile void Os_Task_Master_0(void)
+OS_TASK_FUNC void Os_Scheduler_TaskMaster_0(void)
 {
     while(1)
     {
     	/* Wait for context switch of master task */
-    	Os_TaskMaster_WaitForContextSwitch();
+    	while(g_Os_Task5ms_count_u32 == g_Os_5msTimerISR_count_u32)
+    	{
+    	}
+    	Os_Task5ms_0_cnt++;
+    	g_Os_Task5ms_count_u32 = g_Os_5msTimerISR_count_u32;
 
     	/* Check Os state */
     	switch (g_OS_State_e)
     	{
-    		case OS_STATE_RESET:
+    		case OS_STATE_RESET_E:
     		{
-    			g_OS_State_e = OS_STATE_INIT;
+    			g_OS_State_e = OS_STATE_INIT_E;
     		} break;
-    		case OS_STATE_INIT:
+    		case OS_STATE_INIT_E:
     		{
-    			Os_Task_Master();
-    			g_OS_State_e = OS_STATE_NVMREAD;
+    			OS_TASK_CALL(Os_Task_Master(), g_Os_dwt_Master_f32);
+    			g_OS_State_e = OS_STATE_NVMREAD_E;
     		} break;
-    		case OS_STATE_NVMREAD:
+    		case OS_STATE_NVMREAD_E:
     		{
     			/* Todo: preform readall here */
-    			g_OS_State_e = OS_STATE_RUNNING;
-    		} break;
-    		case OS_STATE_RUNNING:
+    			//g_OS_State_e = OS_STATE_RUNNING_E;
+    		}
+    		case OS_STATE_RUNNING_E:
     		{
     			/* TODO: add task activate/suspend here */
+    			g_OS_State_e = OS_STATE_RUNNING_E;
     		} break;
-    		case OS_STATE_SHUTDOWN:
+    		case OS_STATE_SHUTDOWN_E:
     		{
     			/* TODO: add shutdown procedure here */
     		} break;
-    		case OS_STATE_ERROR:
+    		case OS_STATE_ERROR_E:
     		{
     			/* NvM write all, write error */
     		} break;
@@ -339,11 +405,11 @@ static volatile void Os_Task_Master_0(void)
   * @brief  Periodic 10ms task
   * @return None
   */
-static volatile void Task10ms_0(void)
+OS_TASK_FUNC void Os_Scheduler_Task10ms_0(void)
 {
     while(1)
     {
-    	if(OS_STATE_RUNNING == g_OS_State_e)
+    	if(OS_STATE_RUNNING_E == g_OS_State_e)
     	{
 			while(g_Os_Task10ms_count_u32 == g_Os_10msTimerISR_count_u32)
 			{
@@ -352,7 +418,7 @@ static volatile void Task10ms_0(void)
 			Os_Task10ms_0_cnt++;
 			g_Os_Task10ms_count_u32 = g_Os_10msTimerISR_count_u32;
 
-			Os_Task_10ms();
+			OS_TASK_CALL(Os_Task_10ms(), g_Os_dwt_10ms_f32);
     	}
     	else
     	{
@@ -365,11 +431,11 @@ static volatile void Task10ms_0(void)
   * @brief  Periodic 50ms task
   * @return None
   */
-static volatile void Task50ms_0(void)
+OS_TASK_FUNC void Os_Scheduler_Task50ms_0(void)
 {
     while(1)
     {
-    	if(OS_STATE_RUNNING == g_OS_State_e)
+    	if(OS_STATE_RUNNING_E == g_OS_State_e)
     	{
 			while(g_Os_Task50ms_count_u32 == g_Os_50msTimerISR_count_u32)
 			{
@@ -377,8 +443,7 @@ static volatile void Task50ms_0(void)
 			}
 			Os_Task50ms_0_cnt++;
 			g_Os_Task50ms_count_u32 = g_Os_50msTimerISR_count_u32;
-
-			Os_Task_50ms();
+			OS_TASK_CALL(Os_Task_50ms(), g_Os_dwt_50ms_f32);
     	}
     	else
     	{
@@ -391,11 +456,11 @@ static volatile void Task50ms_0(void)
   * @brief  Periodic 100ms task
   * @return None
   */
-static volatile void Task100ms_0(void)
+OS_TASK_FUNC void Os_Scheduler_Task100ms_0(void)
 {
     while(1)
     {
-    	if(OS_STATE_RUNNING == g_OS_State_e)
+    	if(OS_STATE_RUNNING_E == g_OS_State_e)
     	{
 			while(g_Os_Task100ms_count_u32 == g_Os_100msTimerISR_count_u32)
 			{
@@ -404,7 +469,7 @@ static volatile void Task100ms_0(void)
 			Os_Task100ms_0_cnt++;
 			g_Os_Task100ms_count_u32 = g_Os_100msTimerISR_count_u32;
 
-			Os_Task_100ms();
+			OS_TASK_CALL(Os_Task_100ms(), g_Os_dwt_100ms_f32);
     	}
     	else
     	{
@@ -417,11 +482,11 @@ static volatile void Task100ms_0(void)
   * @brief  Periodic 500ms task
   * @return None
   */
-static volatile void Task500ms_0(void)
+OS_TASK_FUNC void Os_Scheduler_Task500ms_0(void)
 {
     while(1)
     {
-    	if(OS_STATE_RUNNING == g_OS_State_e)
+    	if(OS_STATE_RUNNING_E == g_OS_State_e)
     	{
 			while(g_Os_Task500ms_count_u32 == g_Os_500msTimerISR_count_u32)
 			{
@@ -430,7 +495,7 @@ static volatile void Task500ms_0(void)
 			Os_Task500ms_0_cnt++;
 			g_Os_Task500ms_count_u32 = g_Os_500msTimerISR_count_u32;
 
-			Os_Task_500ms();
+			OS_TASK_CALL(Os_Task_500ms(), g_Os_dwt_500ms_f32);
     	}
     	else
     	{

@@ -97,13 +97,13 @@ void Rte_Task_10ms(void)
 	Engine_MainFunction();
 	Brakes_MainFunction();
 	Steering_MainFunction();
-	/* MainFunction of ASW module used for testing purposes. TODO: remove after tests */
-	LED_MainFunction();
+
 }
 
 void Rte_Task_50ms(void)
 {
-
+	/* MainFunction of ASW module used for testing purposes. TODO: remove after tests */
+	LED_MainFunction();
 }
 
 void Rte_Task_100ms(void)
@@ -116,6 +116,7 @@ void Rte_Task_100ms(void)
 
 void Rte_Task_500ms(void)
 {
+
 	/* UART test section. TODO: remove */
 	sprintf(databuf, "%4d X", count);
 	databuf[strlen(databuf)] = 0;
