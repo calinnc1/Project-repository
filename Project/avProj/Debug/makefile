@@ -28,6 +28,7 @@ RM := rm -rf
 -include Bsw/MCal/Dma/subdir.mk
 -include Bsw/MCal/Dio/subdir.mk
 -include Bsw/MCal/Adc/subdir.mk
+-include Bsw/Cdd/Cdd_Ultrasonic/subdir.mk
 -include Bsw/Cdd/Cdd_Servo/subdir.mk
 -include Asw/Steering/subdir.mk
 -include Asw/Lights/RearLights/subdir.mk

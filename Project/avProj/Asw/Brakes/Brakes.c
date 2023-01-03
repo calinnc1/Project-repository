@@ -16,6 +16,7 @@
 /* VARIABLES: */
 static boolean g_Brakes_InitDone_b = FALSE;							///< Module initialization flag
 static uint16 g_Brakes_AN0_Voltage_u16 = 0u;						///< ADC AN0 analog voltage
+static float32 g_Brakes_Ultrasonic_Distance_f32 = 0.0f;				///< Distance measured by the ultrasonic sensor
 
 /* CONSTANTS: */
 
@@ -45,7 +46,9 @@ void Brakes_MainFunction(void)
 	if(TRUE == g_Brakes_InitDone_b)
 	{
 		/* Read AN0 analog voltage (mV) */
-		Rte_Read_AN0_Voltage_u16(&g_Brakes_AN0_Voltage_u16);
+		Rte_Read_ADC_AN0_Voltage_u16(&g_Brakes_AN0_Voltage_u16);
+		/* Read distance from ultrasonic sensor */
+		Rte_Read_Ultrasonic_Distance_f32(&g_Brakes_Ultrasonic_Distance_f32);
 	}
 }
 /* END OF FILE */

@@ -1,4 +1,6 @@
-Rte/Rte.o: ../Rte/Rte.c ../Rte/Rte.h \
+Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.o: \
+ ../Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.c \
+ ../Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_rcc.h \
@@ -34,28 +36,11 @@ Rte/Rte.o: ../Rte/Rte.c ../Rte/Rte.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h \
- C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h \
- C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h ../Rte/Rte_Os.h \
- ../Rte/Rte_LED.h ../Rte/Rte_Bsw_Int.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/EcuM/EcuM.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h \
- C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Mem/NvM/NvM.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h \
- C:/Work/Embedded/SVN/avProj/Asw/Access/Access.h \
- C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h \
- C:/Work/Embedded/SVN/avProj/Asw/Brakes/Brakes.h \
- C:/Work/Embedded/SVN/avProj/Asw/Steering/Steering.h \
- C:/Work/Embedded/SVN/avProj/Asw/Lights/Blinker/Blinker.h \
- C:/Work/Embedded/SVN/avProj/Asw/Lights/FrontLights/FrontLights.h \
- C:/Work/Embedded/SVN/avProj/Asw/Lights/InteriorLights/InteriorLights.h \
- C:/Work/Embedded/SVN/avProj/Asw/Lights/RearLights/RearLights.h \
- C:/Work/Embedded/SVN/avProj/Asw/LED/LED.h
-../Rte/Rte.h:
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
+ C:/Work/Embedded/SVN/avProj/Rte/Rte_Cdd_Ultrasonic.h \
+ C:/Work/Embedded/SVN/avProj/Rte/Rte.h \
+ C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h
+../Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_rcc.h:
@@ -91,26 +76,7 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
-C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h:
 C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
-../Rte/Rte_Os.h:
-../Rte/Rte_LED.h:
-../Rte/Rte_Bsw_Int.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/EcuM/EcuM.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h:
-C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Mem/NvM/NvM.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h:
-C:/Work/Embedded/SVN/avProj/Asw/Access/Access.h:
-C:/Work/Embedded/SVN/avProj/Asw/Engine/Engine.h:
-C:/Work/Embedded/SVN/avProj/Asw/Brakes/Brakes.h:
-C:/Work/Embedded/SVN/avProj/Asw/Steering/Steering.h:
-C:/Work/Embedded/SVN/avProj/Asw/Lights/Blinker/Blinker.h:
-C:/Work/Embedded/SVN/avProj/Asw/Lights/FrontLights/FrontLights.h:
-C:/Work/Embedded/SVN/avProj/Asw/Lights/InteriorLights/InteriorLights.h:
-C:/Work/Embedded/SVN/avProj/Asw/Lights/RearLights/RearLights.h:
-C:/Work/Embedded/SVN/avProj/Asw/LED/LED.h:
+C:/Work/Embedded/SVN/avProj/Rte/Rte_Cdd_Ultrasonic.h:
+C:/Work/Embedded/SVN/avProj/Rte/Rte.h:
+C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h:

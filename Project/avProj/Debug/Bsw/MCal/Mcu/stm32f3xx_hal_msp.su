@@ -5,8 +5,8 @@
 ../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:238:6:HAL_I2C_MspDeInit	16	static
 ../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:275:6:HAL_SPI_MspInit	48	static
 ../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:315:6:HAL_SPI_MspDeInit	16	static
-../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:347:6:HAL_TIM_Base_MspInit	24	static
-../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:372:6:HAL_TIM_Base_MspDeInit	16	static
-../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:398:6:HAL_UART_MspInit	56	static
-../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:464:6:HAL_UART_MspDeInit	16	static
-../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:513:13:Msp_Error_Handler	4	static,ignoring_inline_asm
+../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:347:6:HAL_TIM_Base_MspInit	48	static
+../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:385:6:HAL_TIM_Base_MspDeInit	16	static
+../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:416:6:HAL_UART_MspInit	56	static
+../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:482:6:HAL_UART_MspDeInit	16	static
+../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c:531:13:Msp_Error_Handler	4	static,ignoring_inline_asm

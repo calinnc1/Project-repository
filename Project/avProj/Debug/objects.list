@@ -8,6 +8,7 @@
 "./Asw/Lights/RearLights/RearLights.o"
 "./Asw/Steering/Steering.o"
 "./Bsw/Cdd/Cdd_Servo/Cdd_Servo.o"
+"./Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.o"
 "./Bsw/MCal/Adc/stm32f3xx_hal_adc.o"
 "./Bsw/MCal/Adc/stm32f3xx_hal_adc_ex.o"
 "./Bsw/MCal/Dio/stm32f3xx_hal_gpio.o"

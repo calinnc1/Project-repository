@@ -18,6 +18,7 @@
 #include "NvM.h"
 #include "Ea.h"
 #include "Cdd_Servo.h"
+#include "Cdd_Ultrasonic.h"
 
 #include "Access.h"
 #include "Engine.h"
@@ -34,6 +35,7 @@ static volatile uint8 Int_ButtonState = 0;
 static volatile uint16 Rte_ADC_AN0_Voltage = 0u;
 extern UART_HandleTypeDef huart2;
 extern ADC_HandleTypeDef hadc1;
+extern const Cdd_Ultrasonic_CfgType_t c_Cdd_Ultrasonic_CfgType_s;
 char databuf[16];
 uint16 count = 0;
 uint8 crlf[1] = { 0x0A };
@@ -70,6 +72,7 @@ void Rte_Task_Master(void)
 	Rte_Init();
 	/* Cdd init */
 	Cdd_Servo_Init();
+	Cdd_Ultrasonic_Init();
 	/* Asw init */
 	Access_Init();
 	Engine_Init();
@@ -92,6 +95,7 @@ void Rte_Task_10ms(void)
 	NvM_MainFunction();
 	/* CDD */
 	Cdd_Servo_MainFunction();
+	Cdd_Ultrasonic_MainFunction();
 	/* ASW */
 	Access_MainFunction();
 	Engine_MainFunction();
@@ -126,6 +130,24 @@ void Rte_Task_500ms(void)
 	count++;
 }
 
+/* CDD interfaces: Ultrasonic */
+/* Cdd_Ultrasonic: Trigger measurement */
+void Rte_Call_Cdd_Ultrasonic_TriggerMeasurement(void)
+{
+	HAL_GPIO_WritePin(c_Cdd_Ultrasonic_CfgType_s.TRIG_GPIO, c_Cdd_Ultrasonic_CfgType_s.TRIG_PIN, (GPIO_PinState)GPIO_PIN_SET);
+	__asm("NOP");
+	__asm("NOP");
+	__asm("NOP");
+	__asm("NOP");
+	__asm("NOP");
+	HAL_GPIO_WritePin(c_Cdd_Ultrasonic_CfgType_s.TRIG_GPIO, c_Cdd_Ultrasonic_CfgType_s.TRIG_PIN, (GPIO_PinState)GPIO_PIN_RESET);
+}
+
+/* Cdd_Ultrasonic: Read distance */
+void Rte_Read_Cdd_Ultrasonic_Distance_f32(float32 *distance)
+{
+	*distance = Cdd_Ultrasonic_ReadDistance();
+}
 
 /* Toggle PA5 Pin state */
 void Rte_Switch_PA5_Pin_State()

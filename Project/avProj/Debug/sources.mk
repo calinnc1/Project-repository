@@ -31,6 +31,7 @@ Asw/Lights/InteriorLights \
 Asw/Lights/RearLights \
 Asw/Steering \
 Bsw/Cdd/Cdd_Servo \
+Bsw/Cdd/Cdd_Ultrasonic \
 Bsw/MCal/Adc \
 Bsw/MCal/Dio \
 Bsw/MCal/Dma \

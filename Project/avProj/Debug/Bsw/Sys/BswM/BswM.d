@@ -41,7 +41,8 @@ Bsw/Sys/BswM/BswM.o: ../Bsw/Sys/BswM/BswM.c ../Bsw/Sys/BswM/BswM.h \
  C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h
+ C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h \
+ C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h
 ../Bsw/Sys/BswM/BswM.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
@@ -86,3 +87,4 @@ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h:
+C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h:
