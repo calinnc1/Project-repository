@@ -33,7 +33,8 @@ Bsw/MCal/Gpt/Gpt.o: ../Bsw/MCal/Gpt/Gpt.c ../Bsw/MCal/Gpt/Gpt.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h \
- C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h
+ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h \
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h
 ../Bsw/MCal/Gpt/Gpt.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
@@ -70,3 +71,4 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/stm32f3xx_hal_tim_ex.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
+C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:

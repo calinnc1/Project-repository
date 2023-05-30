@@ -87,8 +87,8 @@ all: main-build
 main-build: avProj.elf secondary-outputs
 
 # Tool invocations
-avProj.elf avProj.map: $(OBJS) $(USER_OBJS) C:\Work\Embedded\avProj\Config\STM32F303RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "avProj.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Work\Embedded\avProj\Config\STM32F303RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="avProj.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+avProj.elf avProj.map: $(OBJS) $(USER_OBJS) C:\Work\Embedded\SVN\avProj\Config\STM32F303RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "avProj.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Work\Embedded\SVN\avProj\Config\STM32F303RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="avProj.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

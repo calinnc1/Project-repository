@@ -13,14 +13,14 @@
 
 typedef struct
 {
-	GPIO_TypeDef * 	SERVO_GPIO;
-	uint16	       	SERVO_PIN;
-	TIM_TypeDef*	TIM_Instance;
-	uint32*		    TIM_CCRx;
-	uint32       	PWM_TIM_CH;
-	uint32       	TIM_CLK;
-	float32         MinPulse;
-	float32        	MaxPulse;
+	GPIO_TypeDef * 		SERVO_GPIO;
+	uint16	       		SERVO_PIN;
+	TIM_TypeDef*		TIM_Instance;
+	volatile uint32*	TIM_CCRx;
+	uint32       		PWM_TIM_CH;
+	uint32       		TIM_CLK;
+	float32         	MinPulse;
+	float32        		MaxPulse;
 } Cdd_Servo_CfgType;
 
 extern void Cdd_Servo_Init(void);

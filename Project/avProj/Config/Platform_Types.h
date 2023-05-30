@@ -20,8 +20,15 @@
 
 #define NVM_REQ_PENDING 1
 #define NVM_REQ_E_OK    0
-#define NULL_PTR (void *)0
+#ifndef NULL
+	#define NULL 0
+#endif
 
+#ifndef NULL_PTR
+#define NULL_PTR (void *)0
+#endif
+
+#define NVM_BLOCK_SIZE	32u
 
 /**
 * @brief The standard AUTOSAR type boolean shall be implemented on basis of an eight bits long unsigned integer.

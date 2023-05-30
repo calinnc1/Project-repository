@@ -37,7 +37,8 @@ Bsw/MCal/Mcu/stm32f3xx_hal_msp.o: ../Bsw/MCal/Mcu/stm32f3xx_hal_msp.c \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h \
  C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h \
- C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h
+ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/EcuM/EcuM.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Mcu/stm32f3xx_hal_conf.h:
@@ -77,3 +78,4 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
 C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
+C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:

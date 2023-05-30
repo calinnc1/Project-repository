@@ -9,17 +9,36 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Rte/subdir.mk
 -include Config/subdir.mk
+-include Bsw/Sys/Tm/subdir.mk
+-include Bsw/Sys/Os/subdir.mk
 -include Bsw/Sys/EcuM/subdir.mk
+-include Bsw/Sys/BswM/subdir.mk
+-include Bsw/Mem/NvM/subdir.mk
+-include Bsw/Mem/Ea/subdir.mk
 -include Bsw/MCal/Uart/subdir.mk
 -include Bsw/MCal/Spi/subdir.mk
 -include Bsw/MCal/Pwr/subdir.mk
 -include Bsw/MCal/Mcu/subdir.mk
+-include Bsw/MCal/Int/subdir.mk
 -include Bsw/MCal/I2c/subdir.mk
+-include Bsw/MCal/Gpt/subdir.mk
 -include Bsw/MCal/Fls/subdir.mk
 -include Bsw/MCal/Dma/subdir.mk
 -include Bsw/MCal/Dio/subdir.mk
 -include Bsw/MCal/Adc/subdir.mk
+-include Bsw/Cdd/Cdd_Ultrasonic/subdir.mk
+-include Bsw/Cdd/Cdd_Servo/subdir.mk
+-include Asw/Steering/subdir.mk
+-include Asw/Lights/RearLights/subdir.mk
+-include Asw/Lights/InteriorLights/subdir.mk
+-include Asw/Lights/FrontLights/subdir.mk
+-include Asw/Lights/Blinker/subdir.mk
+-include Asw/LED/subdir.mk
+-include Asw/Engine/subdir.mk
+-include Asw/Brakes/subdir.mk
+-include Asw/Access/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

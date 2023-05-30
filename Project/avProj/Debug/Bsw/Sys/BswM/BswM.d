@@ -36,9 +36,9 @@ Bsw/Sys/BswM/BswM.o: ../Bsw/Sys/BswM/BswM.c ../Bsw/Sys/BswM/BswM.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h \
  C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte.h \
- C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h \
  C:/Work/Embedded/SVN/avProj/Rte/Rte.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h \
@@ -81,9 +81,9 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
 C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
+C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte.h:
-C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte_Bsw_Int.h:
 C:/Work/Embedded/SVN/avProj/Rte/Rte.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h:

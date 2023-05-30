@@ -1,4 +1,4 @@
-../Bsw/Mem/NvM/NvM.c:30:6:NvM_Init	4	static
-../Bsw/Mem/NvM/NvM.c:41:6:NvM_MainFunction	4	static
-../Bsw/Mem/NvM/NvM.c:56:6:NvM_WriteBlock	16	static
-../Bsw/Mem/NvM/NvM.c:68:6:NvM_ReadBlock	16	static
+../Bsw/Mem/NvM/NvM.c:42:6:NvM_Init	4	static
+../Bsw/Mem/NvM/NvM.c:53:6:NvM_MainFunction	4	static
+../Bsw/Mem/NvM/NvM.c:93:6:NvM_WriteBlock	16	static
+../Bsw/Mem/NvM/NvM.c:105:6:NvM_ReadBlock	16	static

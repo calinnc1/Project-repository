@@ -33,3 +33,7 @@ TASK(500ms)()
 	Rte_Os_Task_500ms();
 }
 
+TASK(Shutdown)()
+{
+	Rte_Os_Task_Shutdown();
+}

@@ -3,3 +3,4 @@
 ../Bsw/Sys/Os/Os_task.c:21:1:Os_Task_50ms	8	static
 ../Bsw/Sys/Os/Os_task.c:26:1:Os_Task_100ms	8	static
 ../Bsw/Sys/Os/Os_task.c:31:1:Os_Task_500ms	8	static
+../Bsw/Sys/Os/Os_task.c:36:1:Os_Task_Shutdown	8	static

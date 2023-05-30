@@ -11,5 +11,6 @@
 
 extern void Brakes_Init(void);
 extern void Brakes_MainFunction(void);
+extern void Brakes_Shutdown(void);
 
 #endif /* ASW_BRAKES_BRAKES_H_ */

@@ -21,15 +21,34 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Asw/Access \
+Asw/Brakes \
+Asw/Engine \
+Asw/LED \
+Asw/Lights/Blinker \
+Asw/Lights/FrontLights \
+Asw/Lights/InteriorLights \
+Asw/Lights/RearLights \
+Asw/Steering \
+Bsw/Cdd/Cdd_Servo \
+Bsw/Cdd/Cdd_Ultrasonic \
 Bsw/MCal/Adc \
 Bsw/MCal/Dio \
 Bsw/MCal/Dma \
 Bsw/MCal/Fls \
+Bsw/MCal/Gpt \
 Bsw/MCal/I2c \
+Bsw/MCal/Int \
 Bsw/MCal/Mcu \
 Bsw/MCal/Pwr \
 Bsw/MCal/Spi \
 Bsw/MCal/Uart \
+Bsw/Mem/Ea \
+Bsw/Mem/NvM \
+Bsw/Sys/BswM \
 Bsw/Sys/EcuM \
+Bsw/Sys/Os \
+Bsw/Sys/Tm \
 Config \
+Rte \
 

@@ -15,5 +15,6 @@
 #define Rte_Os_Task_50ms			Rte_Task_50ms
 #define Rte_Os_Task_100ms			Rte_Task_100ms
 #define Rte_Os_Task_500ms			Rte_Task_500ms
+#define Rte_Os_Task_Shutdown		Rte_Task_Shutdown
 
 #endif /* RTE_RTE_OS_H_ */

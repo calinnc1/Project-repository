@@ -10,5 +10,6 @@
 
 extern void LED_Init(void);
 extern void LED_MainFunction(void);
+extern void LED_Shutdown(void);
 
 #endif /* ASW_LED_LED_H_ */

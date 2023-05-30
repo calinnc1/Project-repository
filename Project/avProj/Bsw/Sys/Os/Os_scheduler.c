@@ -138,6 +138,7 @@ OS_VAR Os_Scheduler_State_et g_OS_State_e = OS_STATE_RESET_E;
  * Precondition: OS_DWR must be 1
  */
 OS_VAR float32 g_Os_dwt_Master_f32 = 0.0f;
+OS_VAR float32 g_Os_dwt_Shutdown_f32 = 0.0f;
 OS_VAR float32 g_Os_dwt_10ms_f32 = 0.0f;
 OS_VAR float32 g_Os_dwt_50ms_f32 = 0.0f;
 OS_VAR float32 g_Os_dwt_100ms_f32 = 0.0f;
@@ -387,7 +388,10 @@ OS_TASK_FUNC void Os_Scheduler_TaskMaster_0(void)
     		} break;
     		case OS_STATE_SHUTDOWN_E:
     		{
-    			/* TODO: add shutdown procedure here */
+    			/* TODO: Addc condition to get here */
+    			OS_TASK_CALL(Os_Task_Shutdown(), g_Os_dwt_Shutdown_f32);
+    			/* TODO: move to reset state */
+    			g_OS_State_e = OS_STATE_NVMREAD_E;
     		} break;
     		case OS_STATE_ERROR_E:
     		{

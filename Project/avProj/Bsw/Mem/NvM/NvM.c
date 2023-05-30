@@ -12,10 +12,22 @@
 /* DEFINES: */
 
 /* TYPES: */
+typedef enum {
+	NVM_STATE_INIT 			= 0u,
+	NVM_STATE_READY 		= 1u,
+	NVM_STATE_READY_READ 	= 2u,
+	NVM_STATE_READ 			= 3u,
+	NVM_STATE_READALL 		= 4u,
+	NVM_STATE_READY_WRITE 	= 5u,
+	NVM_STATE_WRITE 		= 6u,
+	NVM_STATE_WRITEALL 		= 7u,
+	NVM_STATE_SHUTDOWN 		= 8u,
+	NVM_STATE_ERROR 		= 9u
+}NvM_State_t;
 
 /* VARIABLES: */
 static boolean g_NvM_InitDone_b = FALSE;							///< Module initialization flag
-
+static NvM_State_t g_NvM_State_e = NVM_STATE_INIT;					///< NvM state
 /* CONSTANTS: */
 
 /* FUNCTIONS PROTOTYPES: */
@@ -29,7 +41,7 @@ static boolean g_NvM_InitDone_b = FALSE;							///< Module initialization flag
   */
 void NvM_Init(void)
 {
-
+	g_NvM_State_e = NVM_STATE_INIT;
 	/* Set initialization flag to done */
 	g_NvM_InitDone_b = TRUE;
 }
@@ -41,9 +53,34 @@ void NvM_Init(void)
 void NvM_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == g_NvM_InitDone_b)
+	if(FALSE != g_NvM_InitDone_b)
 	{
+		switch(g_NvM_State_e)
+		{
+			case NVM_STATE_INIT:
+			{
+				g_NvM_State_e = NVM_STATE_READALL;
+			}break;
+			case NVM_STATE_READY:
+			{
 
+			}break;
+			case NVM_STATE_READY_READ:
+			case NVM_STATE_READ:
+			case NVM_STATE_READALL:
+			{
+				g_NvM_State_e = NVM_STATE_READY;
+			}break;
+			case NVM_STATE_READY_WRITE:
+			case NVM_STATE_WRITE:
+			case NVM_STATE_WRITEALL:
+			case NVM_STATE_SHUTDOWN:
+			case NVM_STATE_ERROR:
+			default:
+			{
+
+			}break;
+		}
 	}
 }
 

@@ -37,6 +37,7 @@ Bsw/Sys/EcuM/EcuM.o: ../Bsw/Sys/EcuM/EcuM.c ../Bsw/Sys/EcuM/EcuM.h \
  C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h \
  C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h \
+ C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_task.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h \
  C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h
@@ -79,6 +80,7 @@ C:/Work/Embedded/SVN/avProj/Bsw/MCal/Uart/stm32f3xx_hal_uart_ex.h:
 C:/Work/Embedded/SVN/avProj/Config/avProj_Config.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os.h:
 C:/Work/Embedded/SVN/avProj/Bsw/MCal/Gpt/Gpt.h:
+C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Os/Os_task.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/BswM/BswM.h:
 C:/Work/Embedded/SVN/avProj/Bsw/Sys/Tm/Tm.h:

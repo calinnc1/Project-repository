@@ -23,7 +23,7 @@ static boolean g_LED_InitDone_b = FALSE;								///< Module initialization flag
 static boolean g_LED_ButtonState_b = FALSE;								///< Blue button state
 static uint16 g_LED_Pulse_u16 = 0u;										///< PWM Pulse width
 static uint8 g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP_U8;		///< PWM Pulse direction
-static uint8 g_LED_NvMBlock_a[32] = {0u};								///< LED NvM block
+static uint8 g_LED_NvMBlock_a[NVM_BLOCK_SIZE] = {0u};					///< LED NvM block
 
 /* CONSTANTS: */
 
@@ -64,7 +64,7 @@ static void LED_UpdatePulseWidth(void)
 		if(g_LED_Pulse_u16 <= LED_FADE_MAX_PULSE_U16)
 		{
 			/* Increment the pulse width */
-			g_LED_Pulse_u16 = g_LED_Pulse_u16+LED_FADE_PULSE_STEP_U16;
+			g_LED_Pulse_u16 = g_LED_Pulse_u16 + LED_FADE_PULSE_STEP_U16;
 		}
 	}
 	else
@@ -72,7 +72,7 @@ static void LED_UpdatePulseWidth(void)
 		if(g_LED_Pulse_u16 >= LED_FADE_PULSE_STEP_U16)
 		{
 			/* Decrement the pulse width */
-			g_LED_Pulse_u16 = g_LED_Pulse_u16-LED_FADE_PULSE_STEP_U16;
+			g_LED_Pulse_u16 = g_LED_Pulse_u16 - LED_FADE_PULSE_STEP_U16;
 		}
 	}
 	/* Update pulse direction */
@@ -86,8 +86,11 @@ static void LED_UpdatePulseWidth(void)
   */
 void LED_Init(void)
 {
+	g_LED_ButtonState_b = FALSE;
+	g_LED_Pulse_u16 = 0u;
+	g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP_U8;
 	/* Set servo initial position */
-	Rte_Write_Servo_RawPulseWidth_u16(0u);
+	Rte_Write_Servo_RawPulseWidth_u16(g_LED_Pulse_u16);
 	/* Read LED NvM block */
 	Rte_Read_NvM_LED_Block(g_LED_NvMBlock_a);
 	/* Set initialization flag to done */
@@ -101,23 +104,36 @@ void LED_Init(void)
 void LED_MainFunction(void)
 {
 	/* Check if initialization is done */
-	if(TRUE == g_LED_InitDone_b)
+	if(FALSE != g_LED_InitDone_b)
 	{
 		/* Read the blue button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);
 		/* Check if the button is released */
-		if(TRUE == (boolean)g_LED_ButtonState_b)
+		if(FALSE != g_LED_ButtonState_b)
 		{
 			/* Update PWM pulse width */
 			LED_UpdatePulseWidth();
-			/* Call the servo interface with the new pulse width */
+			/* Call the Servo interface with the new pulse width */
 			Rte_Write_Servo_RawPulseWidth_u16(g_LED_Pulse_u16);
 		}
 		else
 		{
+			g_LED_NvMBlock_a[0] = 1u;
+			Rte_Write_NvM_LED_Block(g_LED_NvMBlock_a);
 			/* Stop fading */
 		}
 	}
 }
 
+/**
+  * @brief  Shutdown the LED module
+  * @return None
+  */
+void LED_Shutdown(void)
+{
+	/* Write LED NvM block */
+	Rte_Write_NvM_LED_Block(g_LED_NvMBlock_a);
+	/* Reset initialization flag */
+	g_LED_InitDone_b = FALSE;
+}
 /* END OF FILE */
