@@ -1,0 +1,15 @@
+BswM.c:38:6:BswM_Init	1
+BswM.c:59:6:BswM_MainFunction	1
+BswM.c:66:6:HAL_ADC_ConvCpltCallback	1
+BswM.c:75:6:HAL_I2C_MemTxCpltCallback	1
+BswM.c:80:6:HAL_I2C_MemRxCpltCallback	1
+BswM.c:85:6:HAL_I2C_ErrorCallback	2
+BswM.c:101:13:SystemClock_Config	4
+BswM.c:150:13:MX_DMA_Init	1
+BswM.c:172:13:MX_ADC1_Init	4
+BswM.c:239:13:MX_I2C1_Init	4
+BswM.c:285:13:MX_SPI3_Init	2
+BswM.c:325:13:MX_USART1_UART_Init	2
+BswM.c:360:13:MX_USART2_UART_Init	2
+BswM.c:395:13:MX_GPIO_Init	1
+BswM.c:452:13:Error_Handler	1

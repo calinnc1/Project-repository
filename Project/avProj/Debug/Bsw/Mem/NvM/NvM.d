@@ -1,6 +1,6 @@
 Bsw/Mem/NvM/NvM.o: ../Bsw/Mem/NvM/NvM.c ../Bsw/Mem/NvM/NvM.h \
- C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h \
- C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h
+ C:/CristianTirziu/Internship/Project-repository/Project/avProj/Config/Platform_Types.h \
+ C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Mem/Ea/Ea.h
 ../Bsw/Mem/NvM/NvM.h:
-C:/Work/Embedded/SVN/avProj/Config/Platform_Types.h:
-C:/Work/Embedded/SVN/avProj/Bsw/Mem/Ea/Ea.h:
+C:/CristianTirziu/Internship/Project-repository/Project/avProj/Config/Platform_Types.h:
+C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Mem/Ea/Ea.h:

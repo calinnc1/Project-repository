@@ -1,5 +1,6 @@
-../Asw/Brakes/Brakes.c:37:13:Brakes_OnAutobrakesEnabled	8	static
-../Asw/Brakes/Brakes.c:65:13:Brakes_OnAutobrakesDisabled	8	static
-../Asw/Brakes/Brakes.c:93:6:Brakes_Init	8	static
-../Asw/Brakes/Brakes.c:111:6:Brakes_MainFunction	8	static
-../Asw/Brakes/Brakes.c:138:6:Brakes_Shutdown	8	static
+../Asw/Brakes/Brakes.c:43:13:Brakes_OnAutobrakesEnabled	8	static
+../Asw/Brakes/Brakes.c:71:13:Brakes_OnAutobrakesDisabled	8	static
+../Asw/Brakes/Brakes.c:95:14:Brakes_OnDistance	16	static
+../Asw/Brakes/Brakes.c:119:6:Brakes_Init	8	static
+../Asw/Brakes/Brakes.c:138:6:Brakes_MainFunction	8	static
+../Asw/Brakes/Brakes.c:168:6:Brakes_Shutdown	8	static

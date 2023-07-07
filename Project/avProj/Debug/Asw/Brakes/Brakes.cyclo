@@ -1,0 +1,6 @@
+Brakes.c:43:13:Brakes_OnAutobrakesEnabled	4
+Brakes.c:71:13:Brakes_OnAutobrakesDisabled	4
+Brakes.c:95:14:Brakes_OnDistance	5
+Brakes.c:119:6:Brakes_Init	1
+Brakes.c:138:6:Brakes_MainFunction	3
+Brakes.c:168:6:Brakes_Shutdown	1

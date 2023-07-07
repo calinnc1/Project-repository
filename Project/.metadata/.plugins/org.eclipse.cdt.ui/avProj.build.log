@@ -1,0 +1,10 @@
+14:56:27 **** Incremental Build of configuration Debug for project avProj ****
+make all 
+arm-none-eabi-size   avProj.elf 
+   text	   data	    bss	    dec	    hex	filename
+  49000	    128	   7032	  56160	   db60	avProj.elf
+Finished building: default.size.stdout
+ 
+
+14:56:28 Build Finished. 0 errors, 0 warnings. (took 852ms)
+
