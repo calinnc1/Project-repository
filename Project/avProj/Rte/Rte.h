@@ -45,4 +45,7 @@ extern void Rte_Write_AN0_Voltage_u16(uint16 voltage);
 extern void Rte_Read_AN0_Voltage_u16(uint16 *voltage);
 extern void Rte_Write_DIO_Autobrakes_State_b(boolean state);
 
+extern void Rte_Read_g_CollisionWarning_Status(uint8 *status);
+extern void Rte_Write_g_CollisionWarning_Status(uint8 status);
+
 #endif /* RTE_RTE_H_ */

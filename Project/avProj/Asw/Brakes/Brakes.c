@@ -11,8 +11,10 @@
 
 /* DEFINES: */
 #define	BRAKES_CRITICAL_DISTANCE_CM_F32				(float32)30.0f		///< Autobrakes enable critical distance [cm]
+#define	BRAKES_WARNING_DISTANCE_CM_F32				(float32)60.0f		///< Autobrakes enable warning distance [cm]
 #define	BRAKES_AUTOBRAKES_DISABLE_DISTANCE_CM_F32	(float32)40.0f		///< Autobrakes disable distance [cm]
 #define	BRAKES_AUTOBRAKES_STATE_CNT_U8				(uint8)10u			///< Autobraked enable/disable debounce counter
+//adaug pentru warning
 
 /* TYPES: */
 
@@ -24,11 +26,15 @@ static boolean g_Brakes_Autobrakes_Status_b = FALSE;					///< Autobrakes status
 static uint8 g_Brakes_Autobrakes_Disable_Cnt_u8 = 0u;					///< Autobrakes disable counter
 static uint8 g_Brakes_Autobrakes_Enable_Cnt_u8 = 0u;					///< Autobrakes enable counter
 static uint8 g_Brakes_NvMBlock_a[NVM_BLOCK_SIZE] = {0u};				///< Brakes NvM block
+static uint8 g_Brakes_CollisionWarning_Status_u8 = 0;                  ///< Status breaks
+
+
 /* CONSTANTS: */
 
 /* FUNCTIONS PROTOTYPES: */
 static void Brakes_OnAutobrakesEnabled(void);
 static void Brakes_OnAutobrakesDisabled(void);
+static uint8 Brakes_OnDistance(float32);
 /* STATIC FUNCTIONS: */
 /**
   * @brief	Triggers the actions for Autobrakes enabled state
@@ -85,6 +91,26 @@ static void Brakes_OnAutobrakesDisabled(void)
 		g_Brakes_Autobrakes_Disable_Cnt_u8 = 0u;
 	}
 }
+
+static uint8 Brakes_OnDistance(float32 distance)
+{
+	if(distance < 31)
+	{
+		return 2;
+	}
+	else if((31 <= distance) && (distance < 61))
+	{
+		return 1;
+	}
+	else if(61 <= distance)
+	{
+		return 0;
+	}
+	else
+	{
+		return 3;
+	}
+}
 /* PUBLIC FUNCTIONS: */
 /**
   * @brief	Brakes module initialization function
@@ -98,6 +124,7 @@ void Brakes_Init(void)
 	g_Brakes_Autobrakes_Status_b = FALSE;
 	g_Brakes_Autobrakes_Disable_Cnt_u8 = 0u;
 	g_Brakes_Autobrakes_Enable_Cnt_u8 = 0u;
+	//initilalizare cu 0 a noi var
 	/* Read Brakes NvM block */
 	Rte_Read_NvM_Brakes_Block(g_Brakes_NvMBlock_a);
 	/* Set initialization flag to done */
@@ -128,6 +155,9 @@ void Brakes_MainFunction(void)
 			/* Autobrakes disabled actions */
 			Brakes_OnAutobrakesDisabled();
 		}
+		/* rte write */
+		g_Brakes_CollisionWarning_Status_u8 = Brakes_OnDistance(g_Brakes_Ultrasonic_Distance_cm_f32);
+		Rte_Write_Brakes_Collission_Status(g_Brakes_CollisionWarning_Status_u8);
 	}
 }
 

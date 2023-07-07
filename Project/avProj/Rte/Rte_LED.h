@@ -15,4 +15,6 @@
 #define Rte_Read_NvM_LED_Block(data)				Rte_Read_NvM_Block(RTE_NVM_RAM_BLOCK_ID_LED_E, data)
 #define Rte_Write_NvM_LED_Block(data)				Rte_Write_NvM_Block(RTE_NVM_RAM_BLOCK_ID_LED_E, data)
 
+#define Rte_Read_LED_Collision_Status               Rte_Read_g_CollisionWarning_Status
+
 #endif /* RTE_RTE_LED_H_ */

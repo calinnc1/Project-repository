@@ -16,4 +16,6 @@
 #define Rte_Read_NvM_Brakes_Block(data)							Rte_Read_NvM_Block(RTE_NVM_RAM_BLOCK_ID_BRAKES_E, data)
 #define Rte_Write_NvM_Brakes_Block(data)						Rte_Write_NvM_Block(RTE_NVM_RAM_BLOCK_ID_BRAKES_E, data)
 
+#define Rte_Write_Brakes_Collission_Status                      Rte_Write_g_CollisionWarning_Status
+
 #endif /* RTE_RTE_BRAKES_H_ */
