@@ -25,6 +25,8 @@ static uint16 g_LED_Pulse_u16 = 0u;										///< PWM Pulse width
 static uint8 g_LED_Pulse_Direction_u8 = LED_PULSE_DIRECTION_UP_U8;		///< PWM Pulse direction
 static uint8 g_LED_NvMBlock_a[NVM_BLOCK_SIZE] = {0u};					///< LED NvM block
 
+static uint8 g_LED_CollisionWarning_Status = 0;                         ///< LED Status
+
 /* CONSTANTS: */
 
 /* FUNCTIONS PROTOTYPES: */
@@ -106,6 +108,26 @@ void LED_MainFunction(void)
 	/* Check if initialization is done */
 	if(FALSE != g_LED_InitDone_b)
 	{
+
+		//rte read
+		Rte_Read_LED_Collision_Status(&g_LED_CollisionWarning_Status);
+		switch(g_LED_CollisionWarning_Status)
+		{
+			case 0:
+			{
+
+			}break;
+			case 1:
+			{
+
+			}break;
+			case 2:
+			{
+
+			}break;
+			default:
+				break;
+		}
 		/* Read the blue button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);
 		/* Check if the button is released */
@@ -122,6 +144,7 @@ void LED_MainFunction(void)
 			Rte_Write_NvM_LED_Block(g_LED_NvMBlock_a);
 			/* Stop fading */
 		}
+
 	}
 }
 
