@@ -48,4 +48,8 @@ extern void Rte_Write_DIO_Autobrakes_State_b(boolean state);
 extern void Rte_Read_g_CollisionWarning_Status(uint8 *status);
 extern void Rte_Write_g_CollisionWarning_Status(uint8 status);
 
+extern void Rte_Read_DIO_Autobrakes_State_b(boolean *state);
+void Rte_Write_PC_2(boolean state);
+void Rte_Write_PC_3(boolean state);
+
 #endif /* RTE_RTE_H_ */

@@ -12,7 +12,7 @@
 /* DEFINES: */
 #define	BRAKES_CRITICAL_DISTANCE_CM_F32				(float32)30.0f		///< Autobrakes enable critical distance [cm]
 #define	BRAKES_WARNING_DISTANCE_CM_F32				(float32)60.0f		///< Autobrakes enable warning distance [cm]
-#define	BRAKES_AUTOBRAKES_DISABLE_DISTANCE_CM_F32	(float32)40.0f		///< Autobrakes disable distance [cm]
+#define	BRAKES_AUTOBRAKES_DISABLE_DISTANCE_CM_F32	(float32)70.0f		///< Autobrakes disable distance [cm]
 #define	BRAKES_AUTOBRAKES_STATE_CNT_U8				(uint8)10u			///< Autobraked enable/disable debounce counter
 //adaug pentru warning
 

@@ -108,7 +108,6 @@ void LED_MainFunction(void)
 	/* Check if initialization is done */
 	if(FALSE != g_LED_InitDone_b)
 	{
-
 		//rte read
 		Rte_Read_LED_Collision_Status(&g_LED_CollisionWarning_Status);
 		switch(g_LED_CollisionWarning_Status)

@@ -40,6 +40,7 @@ char databuf[16];
 uint16 count = 0;
 uint8 crlf[1] = { 0x0A };
 static uint8 g_Rte_CollisionWarning_Status_u8 = 0;
+static boolean g_Rte_Autobrakes_Status_b;
 
 /* NvM Blocks */
 uint8	Rte_NvM_RAM_Block[RTE_NVM_RAM_BLOCK_ID_MAX_E][NVM_BLOCK_SIZE];
@@ -179,19 +180,49 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 	Int_ButtonState = state;
 }
 
-extern void Rte_Read_g_CollisionWarning_Status(uint8 *status)
+void Rte_Read_g_CollisionWarning_Status(uint8 *status)
 {
 	*status = g_Rte_CollisionWarning_Status_u8;
 }
 
-extern void Rte_Write_g_CollisionWarning_Status(uint8 status)
+void Rte_Write_g_CollisionWarning_Status(uint8 status)
 {
 	g_Rte_CollisionWarning_Status_u8 = status;
+}
+
+void Rte_Read_DIO_Autobrakes_State_b(boolean *state)
+{
+	*state = g_Rte_Autobrakes_Status_b;
+}
+
+void Rte_Write_PC_2(boolean state)
+{
+	if(FALSE == state)
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
+	}
+}
+
+void Rte_Write_PC_3(boolean state)
+{
+	if(FALSE == state)
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_SET);
+	}
 }
 
 /* Write PC6 pin state */
 void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 {
+	g_Rte_Autobrakes_Status_b = state;
 	if(TRUE == state)
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
