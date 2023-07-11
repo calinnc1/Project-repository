@@ -63,7 +63,7 @@ void Blinker_MainFunction(void)
 		}
 		else if(TRUE == g_Bliker_Autobrakes_Status && TRUE == g_Bliker_Autobrakes_Previous_Status)
 		{
-			if(g_Blinker_Counter_u16 < 50)
+			if(g_Blinker_Counter_u16 <= 50)
 			{
 				g_Blinker_Counter_u16++;
 				if(0 == g_Blinker_Counter_u16 % 5)

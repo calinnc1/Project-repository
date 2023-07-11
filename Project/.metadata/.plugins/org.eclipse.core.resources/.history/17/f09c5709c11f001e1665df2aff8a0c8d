@@ -19,8 +19,8 @@ static boolean g_Bliker_Autobrakes_Status = FALSE;                      ///< Bli
 static boolean g_Bliker_Autobrakes_Previous_Status = FALSE;             ///< Blinker Previous State
 
 static uint16 g_Blinker_Counter_u16 = 0;                                ///< Counter for Blinkers
-static boolean g_Left_Blinker_Status_b = FALSE;                         ///< Left Blinker Status
-static boolean g_Right_Blinker_Status_b = FALSE;                        ///< Right Blinker Status
+static boolean Left_Blinker_Status = FALSE;                             ///< Left Blinker Status
+static boolean Right_Blinker_Status = FALSE;                            ///< Right Blinker Status
 
 /* CONSTANTS: */
 
@@ -35,10 +35,10 @@ static boolean g_Right_Blinker_Status_b = FALSE;                        ///< Rig
   */
 void Blinker_Init(void)
 {
-	g_Left_Blinker_Status_b = FALSE;
-	g_Right_Blinker_Status_b = FALSE;
-	Rte_Write_Left_Blinker_Autobrakes_Status(g_Left_Blinker_Status_b);
-	Rte_Write_Right_Blinker_Autobrakes_Status(g_Right_Blinker_Status_b);
+	Left_Blinker_Status = FALSE;
+	Right_Blinker_Status = FALSE;
+	Rte_Write_Left_Blinker_Autobrakes_Status(Left_Blinker_Status);
+	Rte_Write_Right_Blinker_Autobrakes_Status(Right_Blinker_Status);
 	/* Set initialization flag to done */
 	g_Blinker_InitDone_b = TRUE;
 }
@@ -57,38 +57,35 @@ void Blinker_MainFunction(void)
 
 		if(TRUE == g_Bliker_Autobrakes_Status && FALSE == g_Bliker_Autobrakes_Previous_Status)
 		{
-			g_Left_Blinker_Status_b = TRUE;
-			g_Right_Blinker_Status_b = TRUE;
+			Left_Blinker_Status = TRUE;
+			Right_Blinker_Status = TRUE;
 			g_Bliker_Autobrakes_Previous_Status = TRUE;
 		}
 		else if(TRUE == g_Bliker_Autobrakes_Status && TRUE == g_Bliker_Autobrakes_Previous_Status)
 		{
-			if(g_Blinker_Counter_u16 < 50)
+			if(g_Blinker_Counter_u16 <= 50)
 			{
 				g_Blinker_Counter_u16++;
 				if(0 == g_Blinker_Counter_u16 % 5)
 				{
-					g_Left_Blinker_Status_b = !g_Left_Blinker_Status_b;
-					g_Right_Blinker_Status_b = !g_Right_Blinker_Status_b;
+					Left_Blinker_Status = !Left_Blinker_Status;
+					Right_Blinker_Status = !Right_Blinker_Status;
 				}
 
 			}
 			else
 			{
-				g_Left_Blinker_Status_b = FALSE;
-				g_Right_Blinker_Status_b = FALSE;
+				Left_Blinker_Status = FALSE;
+				Right_Blinker_Status = FALSE;
 			}
 		}
 		else
 		{
 			g_Bliker_Autobrakes_Previous_Status = FALSE;
 			g_Blinker_Counter_u16 = 0;
-			g_Left_Blinker_Status_b = FALSE;
-			g_Right_Blinker_Status_b = FALSE;
 		}
-
-		Rte_Write_Left_Blinker_Autobrakes_Status(g_Left_Blinker_Status_b);
-		Rte_Write_Right_Blinker_Autobrakes_Status(g_Right_Blinker_Status_b);
+		Rte_Write_Left_Blinker_Autobrakes_Status(Left_Blinker_Status);
+		Rte_Write_Right_Blinker_Autobrakes_Status(Right_Blinker_Status);
 	}
 }
 /* END OF FILE */

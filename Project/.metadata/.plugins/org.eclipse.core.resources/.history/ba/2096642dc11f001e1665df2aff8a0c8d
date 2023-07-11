@@ -198,7 +198,7 @@ void Rte_Read_DIO_Autobrakes_State_b(boolean *state)
 /* Write PC2 pin state */
 void Rte_Write_PC_2(boolean state)
 {
-	if(FALSE == state)
+	if(TRUE == state)
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
 	}
@@ -211,7 +211,7 @@ void Rte_Write_PC_2(boolean state)
 /* Write PC3 pin state */
 void Rte_Write_PC_3(boolean state)
 {
-	if(FALSE == state)
+	if(TRUE == state)
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);
 	}
