@@ -1,4 +1,4 @@
-NvM.c:42:6:NvM_Init	1
-NvM.c:53:6:NvM_MainFunction	6
-NvM.c:93:6:NvM_WriteBlock	1
-NvM.c:105:6:NvM_ReadBlock	1
+../Bsw/Mem/NvM/NvM.c:42:6:NvM_Init	1
+../Bsw/Mem/NvM/NvM.c:53:6:NvM_MainFunction	6
+../Bsw/Mem/NvM/NvM.c:93:6:NvM_WriteBlock	1
+../Bsw/Mem/NvM/NvM.c:105:6:NvM_ReadBlock	1

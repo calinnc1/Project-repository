@@ -10,5 +10,9 @@
 
 #include "Rte.h"
 
+#define Rte_Read_Remote_Channel0    Rte_Read_Remote_D0
+#define Rte_Read_Remote_Channel1    Rte_Read_Remote_D1
+#define Rte_Read_Remote_Channel2    Rte_Read_Remote_D2
+#define Rte_Read_Remote_Channel3    Rte_Read_Remote_D3
 
 #endif /* RTE_RTE_ENGINE_H_ */

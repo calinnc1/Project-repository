@@ -33,6 +33,7 @@
 
 static volatile uint8 Int_ButtonState = 0;
 static volatile uint16 Rte_ADC_AN0_Voltage = 0u;
+static volatile uint16 Rte_ADC_AN2_Voltage = 0u;
 extern UART_HandleTypeDef huart2;
 extern ADC_HandleTypeDef hadc1;
 extern const Cdd_Ultrasonic_CfgType_t c_Cdd_Ultrasonic_CfgType_s;
@@ -267,4 +268,79 @@ void Rte_Read_AN0_Voltage_u16(uint16 *voltage)
 	*voltage = Rte_ADC_AN0_Voltage;
 	/* Enable interrupts */
 	Rte_Call_LeaveProtectedSection();
+}
+
+void Rte_Write_AN2_Voltage_u16(uint16 voltage)
+{
+	Rte_ADC_AN2_Voltage = voltage;
+}
+
+void Rte_Read_AN2_Voltage_u16(uint16 *voltage)
+{
+	/* Disable interrupts */
+	Rte_Call_EnterProtectedSection();
+	/* Read ADC value */
+	*voltage = Rte_ADC_AN2_Voltage;
+	/* Enable interrupts */
+	Rte_Call_LeaveProtectedSection();
+}
+
+
+void Rte_Read_Remote_D0(uint8 *status)
+{
+	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
+}
+
+void Rte_Read_Remote_D1(uint8 *status)
+{
+	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+}
+
+void Rte_Read_Remote_D2(uint8 *status)
+{
+	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+}
+
+void Rte_Read_Remote_D3(uint8 *status)
+{
+	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6);
+}
+
+/* Write Green pin state */
+void Rte_Write_PB_13(boolean state)
+{
+	if(TRUE == state)
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_GREEN, GPIO_PIN_SET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_GREEN, GPIO_PIN_RESET);
+	}
+}
+
+/* Write Yellow pin state */
+void Rte_Write_PB_14(boolean state)
+{
+	if(TRUE == state)
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_YELLOW, GPIO_PIN_SET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_YELLOW, GPIO_PIN_RESET);
+	}
+}
+
+/* Write Red pin state */
+void Rte_Write_PB_15(boolean state)
+{
+	if(TRUE == state)
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_RED, GPIO_PIN_SET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_RED, GPIO_PIN_RESET);
+	}
 }

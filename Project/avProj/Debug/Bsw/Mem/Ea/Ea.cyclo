@@ -1,3 +1,3 @@
-Ea.c:36:6:Ea_Init	1
-Ea.c:49:6:Ea_Read	2
-Ea.c:63:6:Ea_Write	2
+../Bsw/Mem/Ea/Ea.c:36:6:Ea_Init	1
+../Bsw/Mem/Ea/Ea.c:49:6:Ea_Read	2
+../Bsw/Mem/Ea/Ea.c:63:6:Ea_Write	2

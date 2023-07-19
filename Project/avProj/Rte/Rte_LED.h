@@ -17,4 +17,8 @@
 
 #define Rte_Read_LED_Collision_Status               Rte_Read_g_CollisionWarning_Status
 
+#define Rte_Write_Green_LED_Status                  Rte_Write_PB_13
+#define Rte_Write_Yellow_LED_Status                 Rte_Write_PB_14
+#define Rte_Write_Red_LED_Status                    Rte_Write_PB_15
+
 #endif /* RTE_RTE_LED_H_ */

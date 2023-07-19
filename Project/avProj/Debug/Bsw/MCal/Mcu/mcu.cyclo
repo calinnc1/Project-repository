@@ -1,2 +1,2 @@
-mcu.c:179:6:SystemInit	1
-mcu.c:228:6:SystemCoreClockUpdate	6
+../Bsw/MCal/Mcu/mcu.c:179:6:SystemInit	1
+../Bsw/MCal/Mcu/mcu.c:228:6:SystemCoreClockUpdate	6

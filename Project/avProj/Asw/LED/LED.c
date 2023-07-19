@@ -108,33 +108,34 @@ void LED_MainFunction(void)
 	/* Check if initialization is done */
 	if(FALSE != g_LED_InitDone_b)
 	{
-		//rte read
+		/* Rte read the global variable */
 		Rte_Read_LED_Collision_Status(&g_LED_CollisionWarning_Status);
 		switch(g_LED_CollisionWarning_Status)
 		{
 			case 0:
 			{
-				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+				Rte_Write_Green_LED_Status(TRUE);                                  /* Green LED  */
+				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
 			}break;
 			case 1:
 			{
-				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+				Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
+				Rte_Write_Yellow_LED_Status(TRUE);                                 /* Yellow LED */
+				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
 			}break;
 			case 2:
 			{
-				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
+				Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
+				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Red_LED_Status(TRUE);                                    /* Red LED    */
 			}break;
 			default:
-				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
-				break;
+			{
+				Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
+				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+			}break;
 		}
 		/* Read the blue button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);

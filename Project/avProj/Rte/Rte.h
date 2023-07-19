@@ -41,8 +41,13 @@ extern void Rte_Read_PC13_Pin_State(uint8 *state);
 extern void Rte_Cdd_Servo_RawMove(uint16 pulse);
 extern void Rte_Read_NvM_Block(uint16 blockID, uint8 *data);
 extern void Rte_Write_NvM_Block(uint16 blockID, uint8 *data);
+
 extern void Rte_Write_AN0_Voltage_u16(uint16 voltage);
 extern void Rte_Read_AN0_Voltage_u16(uint16 *voltage);
+
+extern void Rte_Write_AN2_Voltage_u16(uint16 voltage);
+extern void Rte_Read_AN2_Voltage_u16(uint16 *voltage);
+
 extern void Rte_Write_DIO_Autobrakes_State_b(boolean state);
 
 extern void Rte_Read_g_CollisionWarning_Status(uint8 *status);
@@ -51,5 +56,14 @@ extern void Rte_Write_g_CollisionWarning_Status(uint8 status);
 extern void Rte_Read_DIO_Autobrakes_State_b(boolean *state);
 void Rte_Write_PC_2(boolean state);
 void Rte_Write_PC_3(boolean state);
+
+void Rte_Read_Remote_D0(uint8 *status);
+void Rte_Read_Remote_D1(uint8 *status);
+void Rte_Read_Remote_D2(uint8 *status);
+void Rte_Read_Remote_D3(uint8 *status);
+
+void Rte_Write_PB_13(boolean state);
+void Rte_Write_PB_14(boolean state);
+void Rte_Write_PB_15(boolean state);
 
 #endif /* RTE_RTE_H_ */
