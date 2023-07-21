@@ -13,4 +13,4 @@
 ../Bsw/Sys/BswM/BswM.c:416:13:MX_USART1_UART_Init	2
 ../Bsw/Sys/BswM/BswM.c:451:13:MX_USART2_UART_Init	2
 ../Bsw/Sys/BswM/BswM.c:486:13:MX_GPIO_Init	1
-../Bsw/Sys/BswM/BswM.c:542:13:Error_Handler	1
+../Bsw/Sys/BswM/BswM.c:551:13:Error_Handler	1

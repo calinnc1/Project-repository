@@ -48,6 +48,8 @@ extern void Rte_Read_AN0_Voltage_u16(uint16 *voltage);
 extern void Rte_Write_AN2_Voltage_u16(uint16 voltage);
 extern void Rte_Read_AN2_Voltage_u16(uint16 *voltage);
 
+extern void Rte_Read_PC6_Pin_State(uint8 *state);
+
 extern void Rte_Write_DIO_Autobrakes_State_b(boolean state);
 
 extern void Rte_Read_g_CollisionWarning_Status(uint8 *status);

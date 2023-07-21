@@ -34,6 +34,7 @@
 static volatile uint8 Int_ButtonState = 0;
 static volatile uint16 Rte_ADC_AN0_Voltage = 0u;
 static volatile uint16 Rte_ADC_AN2_Voltage = 0u;
+static volatile uint8 Rte_ADC_Switch = 0u;
 extern UART_HandleTypeDef huart2;
 extern ADC_HandleTypeDef hadc1;
 extern const Cdd_Ultrasonic_CfgType_t c_Cdd_Ultrasonic_CfgType_s;
@@ -181,6 +182,11 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 	Int_ButtonState = state;
 }
 
+void Rte_Read_PC6_Pin_State(uint8 *state)
+{
+	*state = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
+}
+
 void Rte_Read_g_CollisionWarning_Status(uint8 *status)
 {
 	*status = g_Rte_CollisionWarning_Status_u8;
@@ -226,6 +232,7 @@ void Rte_Write_PC_3(boolean state)
 void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 {
 	g_Rte_Autobrakes_Status_b = state;
+	/*
 	if(TRUE == state)
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
@@ -233,7 +240,7 @@ void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 	else
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
-	}
+	}*/
 }
 
 void Rte_Cdd_Servo_RawMove(uint16 pulse)
@@ -285,10 +292,9 @@ void Rte_Read_AN2_Voltage_u16(uint16 *voltage)
 	Rte_Call_LeaveProtectedSection();
 }
 
-
 void Rte_Read_Remote_D0(uint8 *status)
 {
-	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
+	*status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7);
 }
 
 void Rte_Read_Remote_D1(uint8 *status)
@@ -298,12 +304,12 @@ void Rte_Read_Remote_D1(uint8 *status)
 
 void Rte_Read_Remote_D2(uint8 *status)
 {
-	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+	*status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9);
 }
 
 void Rte_Read_Remote_D3(uint8 *status)
 {
-	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6);
+	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
 }
 
 /* Write Green pin state */

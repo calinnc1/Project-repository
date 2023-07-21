@@ -17,6 +17,7 @@
 #define Rte_Write_NvM_Brakes_Block(data)						Rte_Write_NvM_Block(RTE_NVM_RAM_BLOCK_ID_BRAKES_E, data)
 
 #define Rte_Write_Brakes_Collission_Status                      Rte_Write_g_CollisionWarning_Status
-#define Rte_Read_ADC_AN2_Voltage_u16(voltage)					Rte_Read_AN2_Voltage_u16(voltage)
+#define Rte_Read_ADC_AN2_Voltage_u16         					Rte_Read_AN2_Voltage_u16
+#define Rte_Switch_Joystick                                     Rte_Read_PC6_Pin_State
 
 #endif /* RTE_RTE_BRAKES_H_ */
