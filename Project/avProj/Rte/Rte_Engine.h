@@ -15,4 +15,9 @@
 #define Rte_Read_Remote_Channel2    Rte_Read_Remote_D2
 #define Rte_Read_Remote_Channel3    Rte_Read_Remote_D3
 
+#define Rte_Start_DCMotor           Rte_Call_DCMotor_Start
+#define Rte_Speed_DCMotor           Rte_Call_DCMotor_Set_Speed
+#define Rte_Direction_DCMotor       Rte_Call_DCMotor_Set_Dir
+#define Rte_Stop_DCMotor            Rte_Call_DCMotor_Stop
+
 #endif /* RTE_RTE_ENGINE_H_ */

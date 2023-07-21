@@ -7,6 +7,7 @@
 "./Asw/Lights/InteriorLights/InteriorLights.o"
 "./Asw/Lights/RearLights/RearLights.o"
 "./Asw/Steering/Steering.o"
+"./Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.o"
 "./Bsw/Cdd/Cdd_Servo/Cdd_Servo.o"
 "./Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.o"
 "./Bsw/MCal/Adc/stm32f3xx_hal_adc.o"

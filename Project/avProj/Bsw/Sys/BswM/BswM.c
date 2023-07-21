@@ -10,6 +10,7 @@
 #include "Rte_Bsw_Int.h"
 #include "Cdd_Servo.h"
 #include "Cdd_Ultrasonic.h"
+#include "Cdd_DCMotor.h"
 
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
@@ -60,6 +61,7 @@ void BswM_Init(void)
 	/* Init Cdd drivers */
 	Cdd_Servo_Driver_Init();
 	Cdd_Ultrasonic_Driver_Init();
+	Cdd_DCMotor_Driver_Init();
 	/* Init system services */
 	Tm_Init();
 

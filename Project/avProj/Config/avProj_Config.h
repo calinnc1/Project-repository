@@ -18,4 +18,11 @@
 #define LED_AUTOBRAKES_YELLOW GPIO_PIN_14
 #define LED_AUTOBRAKES_RED GPIO_PIN_15
 
+/* DC motors Config */
+#define DC_MOTOR_DIR_CW    0
+#define DC_MOTOR_DIR_CCW   1
+
+#define DC_MOTOR_ID_0    0
+#define DC_MOTOR_ID_1    1
+
 #endif /* CONFIG_AVPROJ_CONFIG_H_ */

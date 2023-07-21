@@ -1,10 +1,10 @@
-09:09:29 **** Incremental Build of configuration Debug for project avProj ****
+14:45:26 **** Incremental Build of configuration Debug for project avProj ****
 make all 
 arm-none-eabi-size   avProj.elf 
    text	   data	    bss	    dec	    hex	filename
-  50696	    112	   7520	  58328	   e3d8	avProj.elf
+  52976	    112	   7536	  60624	   ecd0	avProj.elf
 Finished building: default.size.stdout
  
 
-09:09:30 Build Finished. 0 errors, 0 warnings. (took 824ms)
+14:45:27 Build Finished. 0 errors, 0 warnings. (took 897ms)
 

@@ -19,6 +19,7 @@
 #include "Ea.h"
 #include "Cdd_Servo.h"
 #include "Cdd_Ultrasonic.h"
+#include "Cdd_DCMotor.h"
 
 #include "Access.h"
 #include "Engine.h"
@@ -80,6 +81,7 @@ void Rte_Task_Master(void)
 	/* Cdd init */
 	Cdd_Servo_Init();
 	Cdd_Ultrasonic_Init();
+	Cdd_DCMotor_Init();
 	/* Asw init */
 	Access_Init();
 	Engine_Init();
@@ -115,6 +117,7 @@ void Rte_Task_50ms(void)
 {
 	/* MainFunction of ASW module used for testing purposes. TODO: remove after tests */
 	LED_MainFunction();
+	Cdd_DCMotor_MainFunction();
 }
 
 void Rte_Task_100ms(void)
@@ -240,7 +243,8 @@ void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 	else
 	{
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
-	}*/
+	}
+	*/
 }
 
 void Rte_Cdd_Servo_RawMove(uint16 pulse)
@@ -349,4 +353,24 @@ void Rte_Write_PB_15(boolean state)
 	{
 		HAL_GPIO_WritePin(GPIOB, LED_AUTOBRAKES_RED, GPIO_PIN_RESET);
 	}
+}
+
+void Rte_Call_DCMotor_Start(uint8 au8_MOTOR_Instance, uint8 au8_DIR, uint8 au8_SPEED)
+{
+	DC_MOTOR_Start(au8_MOTOR_Instance, au8_DIR, au8_SPEED);
+}
+
+void Rte_Call_DCMotor_Set_Speed(uint8 au8_MOTOR_Instance, uint8 au8_SPEED)
+{
+	DC_MOTOR_Set_Speed(au8_MOTOR_Instance, au8_SPEED);
+}
+
+void Rte_Call_DCMotor_Set_Dir(uint8 au8_MOTOR_Instance, uint8 au8_DIR)
+{
+	DC_MOTOR_Set_Dir(au8_MOTOR_Instance, au8_DIR);
+}
+
+void Rte_Call_DCMotor_Stop(uint8 au8_MOTOR_Instance)
+{
+	DC_MOTOR_Stop(au8_MOTOR_Instance);
 }

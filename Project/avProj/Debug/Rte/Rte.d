@@ -46,6 +46,7 @@ Rte/Rte.o: ../Rte/Rte.c ../Rte/Rte.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Mem/Ea/Ea.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h \
+ C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Access/Access.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Engine/Engine.h \
  C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Brakes/Brakes.h \
@@ -105,6 +106,7 @@ C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Mem/NvM/NvM.h
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Mem/Ea/Ea.h:
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_Servo/Cdd_Servo.h:
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_Ultrasonic/Cdd_Ultrasonic.h:
+C:/CristianTirziu/Internship/Project-repository/Project/avProj/Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.h:
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Access/Access.h:
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Engine/Engine.h:
 C:/CristianTirziu/Internship/Project-repository/Project/avProj/Asw/Brakes/Brakes.h:

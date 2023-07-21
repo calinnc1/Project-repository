@@ -1,0 +1,10 @@
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:76:15:Cdd_DCMotor_ConvertSpeedToARR	24	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:96:6:Cdd_DCMotor_Driver_Init	8	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:106:6:Cdd_DCMotor_Init	8	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:115:6:DC_MOTOR_Init	208	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:204:6:DC_MOTOR_Start	24	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:238:6:DC_MOTOR_Set_Speed	24	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:260:6:DC_MOTOR_Set_Dir	16	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:279:6:DC_MOTOR_Stop	16	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:304:8:DC_MOTOR_Get_MaxFreq	24	static
+../Bsw/Cdd/Cdd_DCMotor/Cdd_DCMotor.c:323:6:Cdd_DCMotor_MainFunction	4	static

@@ -68,4 +68,10 @@ void Rte_Write_PB_13(boolean state);
 void Rte_Write_PB_14(boolean state);
 void Rte_Write_PB_15(boolean state);
 
+/* Cdd_DCMotor */
+extern void Rte_Call_DCMotor_Start(uint8 au8_MOTOR_Instance, uint8 au8_DIR, uint8 au8_SPEED);
+extern void Rte_Call_DCMotor_Set_Speed(uint8 au8_MOTOR_Instance, uint8 au8_SPEED);
+extern void Rte_Call_DCMotor_Set_Dir(uint8 au8_MOTOR_Instance, uint8 au8_DIR);
+extern void Rte_Call_DCMotor_Stop(uint8 au8_MOTOR_Instance);
+
 #endif /* RTE_RTE_H_ */
