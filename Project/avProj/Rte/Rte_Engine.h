@@ -20,4 +20,6 @@
 #define Rte_Direction_DCMotor       Rte_Call_DCMotor_Set_Dir
 #define Rte_Stop_DCMotor            Rte_Call_DCMotor_Stop
 
+#define Rte_Engine_Switch_Joystick         Rte_Read_PC6_Pin_State
+
 #endif /* RTE_RTE_ENGINE_H_ */
