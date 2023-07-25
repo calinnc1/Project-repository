@@ -1,7 +1,9 @@
-../Asw/Engine/Engine.c:49:6:move_Forward	9
-../Asw/Engine/Engine.c:83:6:move_Right	7
-../Asw/Engine/Engine.c:109:6:move_Left	7
-../Asw/Engine/Engine.c:135:6:move_Backward	9
-../Asw/Engine/Engine.c:169:6:set_Speed_And_Direction	13
-../Asw/Engine/Engine.c:257:6:Engine_Init	1
-../Asw/Engine/Engine.c:268:6:Engine_MainFunction	7
+../Asw/Engine/Engine.c:66:6:move_Forward_Remote	9
+../Asw/Engine/Engine.c:100:6:move_Right_Remote	7
+../Asw/Engine/Engine.c:126:6:move_Left_Remote	7
+../Asw/Engine/Engine.c:152:6:move_Backward_Remote	9
+../Asw/Engine/Engine.c:185:6:mV_To_DutyCycle	1
+../Asw/Engine/Engine.c:191:6:move_From_Joystick	7
+../Asw/Engine/Engine.c:235:6:set_Speed_And_Direction	13
+../Asw/Engine/Engine.c:323:6:Engine_Init	1
+../Asw/Engine/Engine.c:334:6:Engine_MainFunction	9

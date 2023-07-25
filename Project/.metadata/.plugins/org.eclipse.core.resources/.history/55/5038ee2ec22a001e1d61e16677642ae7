@@ -24,6 +24,4 @@
 #define Rte_Read_ADC_1_Joystick_Voltage_u16       Rte_Read_AN2_Voltage_u16
 #define Rte_Engine_Switch_Joystick                Rte_Read_PC6_Pin_State
 
-#define Rte_Read_Ultrasonic				          Rte_Read_Cdd_Ultrasonic_Distance_f32
-
 #endif /* RTE_RTE_ENGINE_H_ */

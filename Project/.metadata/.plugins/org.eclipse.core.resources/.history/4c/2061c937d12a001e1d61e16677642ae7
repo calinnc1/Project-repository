@@ -194,35 +194,19 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
 	{
 		*speed_0 = 100 - (*vertical_Axis_Duty * 2);
 		*speed_1 = *speed_0;
-		if(*horizontal_Axis_Duty < TRESHOLD_RIGHT)
-		{
-			*speed_0 = 0;
-		}
-		else if(*horizontal_Axis_Duty > TRESHOLD_LEFT)
-		{
-			*speed_1 = 0;
-		}
-		else
-		{
-
-		}
 	}
 	else if(*vertical_Axis_Duty > TRESHOLD_BACKWARD)
 	{
 		*speed_0 = -(*vertical_Axis_Duty - 50) * 2;
 		*speed_1 = *speed_0;
-		if(*horizontal_Axis_Duty < TRESHOLD_RIGHT)
-		{
-			*speed_0 = 0;
-		}
-		else if(*horizontal_Axis_Duty > TRESHOLD_LEFT)
-		{
-			*speed_1 = 0;
-		}
-		else
-		{
-
-		}
+	}
+	else if(*horizontal_Axis_Duty < TRESHOLD_RIGHT)
+	{
+		*speed_0 = 0;
+	}
+	else if(*horizontal_Axis_Duty > TRESHOLD_LEFT)
+	{
+		*speed_1 = 0;
 	}
 	else
 	{
