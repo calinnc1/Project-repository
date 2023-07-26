@@ -13,48 +13,49 @@
 #define INCREMENT_SPEED  (uint8)10u                                  ///< The number by which the speed is increased
 #define DECREMENT_SPEED  (uint8)10u                                  ///< The number by which the speed is decreased
 
-#define TRESHOLD_FORWARD (uint8)45u
-#define TRESHOLD_BACKWARD (uint8)60u
-#define TRESHOLD_RIGHT (uint8)45u
-#define TRESHOLD_LEFT (uint8)65u
+#define TRESHOLD_FORWARD (uint8)45u                                  ///< The number indicating the threshold for the front direction, given by the joystick
+#define TRESHOLD_BACKWARD (uint8)60u                                 ///< The number indicating the threshold for the back direction, given by the joystick
+#define TRESHOLD_RIGHT (uint8)45u                                    ///< The number indicating the threshold for the right direction, given by the joystick
+#define TRESHOLD_LEFT (uint8)65u                                     ///< The number indicating the threshold for the left direction, given by the joystick
 
-#define	Engine_CRITICAL_DISTANCE_CM_F32	(float32)30.0f		         ///< Autobrakes enable critical distance [cm]
+#define	ENGINE_CRITICAL_DISTANCE_CM_F32	(float32)30.0f		         ///< Autobrakes enable critical distance [cm]
 
 /* TYPES: */
 
 /* VARIABLES: */
 static boolean g_Engine_InitDone_b = FALSE;							 ///< Module initialization flag
 
-static uint8 g_Engine_SW_u8 = 0u;
-static uint16 g_Engine_Joystick_0_Voltage_mV_u16 = 0u;
-static uint16 g_Engine_Joystick_1_Voltage_mV_u16 = 0u;
-uint8 g_Switch_CNT_u8 = 0u;
-static uint8 g_Engine_Joystick_0_Duty_Cycle_u8 = 0u;
-static uint8 g_Engine_Joystick_1_Duty_Cycle_u8 = 0u;
+static uint8 g_Engine_SW_u8 = 0u;                                    ///< The value of the switch from the joystick
+uint8 g_Engine_SW_Previous_State_u8 = 0u;                            ///< The previous value of the switch from the joystick
+
+static uint16 g_Engine_Joystick_0_Voltage_mV_u16 = 0u;               ///< Value in volts of the horizontal axis from the joystick
+static uint16 g_Engine_Joystick_1_Voltage_mV_u16 = 0u;               ///< Value in volts of the vertical axis from the joystick
+uint8 g_Switch_CNT_u8 = 0u;                                          ///< Counter value allowing switching between remote control and joystick
+static uint8 g_Engine_Joystick_0_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the horizontal axis from the joystick
+static uint8 g_Engine_Joystick_1_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the vertical axis from the joystick
 
 static float32 g_Engine_Ultrasonic_Distance_cm_f32 = 0.0f;		     ///< Distance measured by the ultrasonic sensor [cm]
 static uint16 g_Engine_Ultrasonic_Distance_cm_u16 = 0;				 ///< Distance measured by the ultrasonic sensor [cm] integer value
 
-uint8 g_Engine_SW_Previous_State_u8 = 0u;
-uint8 g_Remote_Control_Status_D0_u8 = 0;
-uint8 g_Remote_Control_Status_D1_u8 = 0;
-uint8 g_Remote_Control_Status_D2_u8 = 0;
-uint8 g_Remote_Control_Status_D3_u8 = 0;
+uint8 g_Remote_Control_Status_D0_u8 = 0;                             ///< Pin value D0 from RF module
+uint8 g_Remote_Control_Status_D1_u8 = 0;                             ///< Pin value D1 from RF module
+uint8 g_Remote_Control_Status_D2_u8 = 0;                             ///< Pin value D2 from RF module
+uint8 g_Remote_Control_Status_D3_u8 = 0;                             ///< Pin value D3 from RF module
 
-uint8 g_Remote_Control_Previous_Status_D0_u8 = 0;
-uint8 g_Remote_Control_Previous_Status_D1_u8 = 0;
-uint8 g_Remote_Control_Previous_Status_D2_u8 = 0;
-uint8 g_Remote_Control_Previous_Status_D3_u8 = 0;
+uint8 g_Remote_Control_Previous_Status_D0_u8 = 0;                    ///< Previous pin value D0 from RF module
+uint8 g_Remote_Control_Previous_Status_D1_u8 = 0;                    ///< Previous pin value D1 from RF module
+uint8 g_Remote_Control_Previous_Status_D2_u8 = 0;                    ///< Previous pin value D2 from RF module
+uint8 g_Remote_Control_Previous_Status_D3_u8 = 0;                    ///< Previous pin value D3 from RF module
 
-uint8 g_Speed_0_u8 = 0;
-uint8 g_Speed_1_u8 = 0;
+uint8 g_Speed_0_u8 = 0;                                              ///< Unsigned Engine Speed Value 0
+uint8 g_Speed_1_u8 = 0;                                              ///< Unsigned Engine Speed Value 1
 
-sint8 g_Speed_0_s8 = 0;
-sint8 g_Speed_1_s8 = 0;
+sint8 g_Speed_0_s8 = 0;                                              ///< Signed Engine Speed Value 0
+sint8 g_Speed_1_s8 = 0;                                              ///< Signed Engine Speed Value 1
 
-sint8 g_Speed_Before_s8 = 0;
+sint8 g_Speed_Before_s8 = 0;                                         ///< Saved value of speed
 
-uint8 g_Direction_u8 = 0;
+uint8 g_Direction_u8 = 0;                                            ///< Direction value
 
 /* CONSTANTS: */
 
@@ -182,12 +183,13 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
 	}
 }
 
+/* Conversion from mV to duty cycle */
 void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 {
 	*duty_Cylce_Value = *mV_Value * 0.030303;
 }
 
-/* Move -> joystick */
+/* Move commanded by joystick */
 void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
 {
 	if(*vertical_Axis_Duty < TRESHOLD_FORWARD)
@@ -336,7 +338,7 @@ void Engine_MainFunction(void)
 	/* Check if initialization is done */
 	if(TRUE == g_Engine_InitDone_b)
 	{
-		/* Read adc */
+		/* Read RT module */
 		Rte_Read_Remote_Channel0(&g_Remote_Control_Status_D0_u8);
 		Rte_Read_Remote_Channel1(&g_Remote_Control_Status_D1_u8);
 		Rte_Read_Remote_Channel2(&g_Remote_Control_Status_D2_u8);
@@ -351,10 +353,16 @@ void Engine_MainFunction(void)
 
 		/* Read Ultrasonic distance */
 		Rte_Read_Ultrasonic(&g_Engine_Ultrasonic_Distance_cm_f32);
+		/* Convert ultrasonic distance value to uint16 */
 		g_Engine_Ultrasonic_Distance_cm_u16 = (uint16) g_Engine_Ultrasonic_Distance_cm_f32;
 
+		/* The selection that shows whether the instructions are given from the remote control or from the joystick */
 		if(g_Engine_SW_u8 == 0 && g_Engine_SW_Previous_State_u8 == 1)
 		{
+			if(g_Switch_CNT_u8 == 2)
+			{
+				g_Switch_CNT_u8 = 0;
+			}
 			g_Switch_CNT_u8++;
 			g_Engine_SW_Previous_State_u8 = 0;
 		}
@@ -367,7 +375,7 @@ void Engine_MainFunction(void)
 
 		}
 
-		if(g_Engine_Ultrasonic_Distance_cm_u16 < Engine_CRITICAL_DISTANCE_CM_F32 && g_Direction_u8)
+		if(g_Engine_Ultrasonic_Distance_cm_u16 < ENGINE_CRITICAL_DISTANCE_CM_F32 && !g_Direction_u8)
 		{
 			g_Speed_0_s8 = 0;
 			g_Speed_1_s8 = 0;
@@ -376,6 +384,8 @@ void Engine_MainFunction(void)
 		{
 			if( g_Switch_CNT_u8 % 2 == 0)
 			{
+				/* Turn off the LED that shows that the joystick is giving the command and indicates that the instructions are given by the remote control now */
+
 				/* Moves from remote control */
 				move_Forward_Remote(&g_Remote_Control_Status_D2_u8, &g_Remote_Control_Previous_Status_D2_u8, &g_Speed_0_s8, &g_Speed_1_s8, INCREMENT_SPEED);
 				move_Right_Remote(&g_Remote_Control_Status_D0_u8, &g_Remote_Control_Previous_Status_D0_u8, &g_Speed_0_s8, &g_Speed_1_s8, &g_Speed_Before_s8);
@@ -384,6 +394,8 @@ void Engine_MainFunction(void)
 			}
 			else
 			{
+				/* Lights up a LED that indicates that the joystick is giving the command now */
+
 				/* Moves from joystick */
 				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Speed_0_s8, &g_Speed_1_s8);
 			}

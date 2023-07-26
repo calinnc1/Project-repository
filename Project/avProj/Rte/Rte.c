@@ -132,12 +132,7 @@ void Rte_Task_500ms(void)
 {
 
 	/* UART test section. TODO: remove */
-	sprintf(databuf, "%4d X", count);
-	databuf[strlen(databuf)] = 0;
-	HAL_UART_Transmit(&huart2, (uint8 *)databuf, strlen(databuf), 1000);
-	HAL_UART_Transmit(&huart2, crlf, 1, 1000);
 
-	count++;
 }
 
 void Rte_Task_Shutdown(void)
@@ -185,6 +180,7 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 	Int_ButtonState = state;
 }
 
+/* Read PC6 pin state - joystick switch */
 void Rte_Read_PC6_Pin_State(uint8 *state)
 {
 	*state = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);

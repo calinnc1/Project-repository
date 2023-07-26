@@ -30,9 +30,9 @@ static uint8 g_Brakes_Autobrakes_Disable_Cnt_u8 = 0u;					///< Autobrakes disabl
 static uint8 g_Brakes_Autobrakes_Enable_Cnt_u8 = 0u;					///< Autobrakes enable counter
 static uint8 g_Brakes_NvMBlock_a[NVM_BLOCK_SIZE] = {0u};				///< Brakes NvM block
 static uint8 g_Brakes_CollisionWarning_Status_u8 = 0;                   ///< Status breaks
-static uint8 g_Informative_Dist_Status_Cnt_u8 = 0u;
-static uint8 g_Warning_Dist_Status_Cnt_u8 = 0u;
-static uint8 g_Critical_Dist_Status_Cnt_u8 = 0u;
+static uint8 g_Informative_Dist_Status_Cnt_u8 = 0u;                     ///< The distance that informs an object in proximity
+static uint8 g_Warning_Dist_Status_Cnt_u8 = 0u;                         ///< The distance that warns that there is an object in the vicinity
+static uint8 g_Critical_Dist_Status_Cnt_u8 = 0u;                        ///< The critical distance, which signals that there is an object in the immediate vicinity
 
 /* CONSTANTS: */
 
