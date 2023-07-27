@@ -25,6 +25,5 @@
 #define Rte_Engine_Switch_Joystick                Rte_Read_PC6_Pin_State
 
 #define Rte_Read_Ultrasonic				          Rte_Read_Cdd_Ultrasonic_Distance_f32
-#define Rte_Write_Green_LED_Status                Rte_Write_PB_13
 
 #endif /* RTE_RTE_ENGINE_H_ */

@@ -26,36 +26,36 @@
 static boolean g_Engine_InitDone_b = FALSE;							 ///< Module initialization flag
 
 static uint8 g_Engine_SW_u8 = 0u;                                    ///< The value of the switch from the joystick
-static uint8 g_Engine_SW_Previous_State_u8 = 0u;                     ///< The previous value of the switch from the joystick
+static uint8 g_Engine_SW_Previous_State_u8 = 0u;                            ///< The previous value of the switch from the joystick
 
 static uint16 g_Engine_Joystick_0_Voltage_mV_u16 = 0u;               ///< Value in volts of the horizontal axis from the joystick
 static uint16 g_Engine_Joystick_1_Voltage_mV_u16 = 0u;               ///< Value in volts of the vertical axis from the joystick
-static uint8 g_Switch_CNT_u8 = 0u;                                   ///< Counter value allowing switching between remote control and joystick
+static uint8 g_Switch_CNT_u8 = 0u;                                          ///< Counter value allowing switching between remote control and joystick
 static uint8 g_Engine_Joystick_0_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the horizontal axis from the joystick
 static uint8 g_Engine_Joystick_1_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the vertical axis from the joystick
 
 static float32 g_Engine_Ultrasonic_Distance_cm_f32 = 0.0f;		     ///< Distance measured by the ultrasonic sensor [cm]
 static uint16 g_Engine_Ultrasonic_Distance_cm_u16 = 0;				 ///< Distance measured by the ultrasonic sensor [cm] integer value
 
-static uint8 g_Remote_Control_Status_D0_u8 = 0;                      ///< Pin value D0 from RF module
-static uint8 g_Remote_Control_Status_D1_u8 = 0;                      ///< Pin value D1 from RF module
-static uint8 g_Remote_Control_Status_D2_u8 = 0;                      ///< Pin value D2 from RF module
-static uint8 g_Remote_Control_Status_D3_u8 = 0;                      ///< Pin value D3 from RF module
+uint8 g_Remote_Control_Status_D0_u8 = 0;                             ///< Pin value D0 from RF module
+uint8 g_Remote_Control_Status_D1_u8 = 0;                             ///< Pin value D1 from RF module
+uint8 g_Remote_Control_Status_D2_u8 = 0;                             ///< Pin value D2 from RF module
+uint8 g_Remote_Control_Status_D3_u8 = 0;                             ///< Pin value D3 from RF module
 
-static uint8 g_Remote_Control_Previous_Status_D0_u8 = 0;             ///< Previous pin value D0 from RF module
-static uint8 g_Remote_Control_Previous_Status_D1_u8 = 0;             ///< Previous pin value D1 from RF module
-static uint8 g_Remote_Control_Previous_Status_D2_u8 = 0;             ///< Previous pin value D2 from RF module
-static uint8 g_Remote_Control_Previous_Status_D3_u8 = 0;             ///< Previous pin value D3 from RF module
+uint8 g_Remote_Control_Previous_Status_D0_u8 = 0;                    ///< Previous pin value D0 from RF module
+uint8 g_Remote_Control_Previous_Status_D1_u8 = 0;                    ///< Previous pin value D1 from RF module
+uint8 g_Remote_Control_Previous_Status_D2_u8 = 0;                    ///< Previous pin value D2 from RF module
+uint8 g_Remote_Control_Previous_Status_D3_u8 = 0;                    ///< Previous pin value D3 from RF module
 
-static uint8 g_Speed_0_u8 = 0;                                       ///< Unsigned Engine Speed Value 0
-static uint8 g_Speed_1_u8 = 0;                                       ///< Unsigned Engine Speed Value 1
+uint8 g_Speed_0_u8 = 0;                                              ///< Unsigned Engine Speed Value 0
+uint8 g_Speed_1_u8 = 0;                                              ///< Unsigned Engine Speed Value 1
 
-static sint8 g_Speed_0_s8 = 0;                                       ///< Signed Engine Speed Value 0
-static sint8 g_Speed_1_s8 = 0;                                       ///< Signed Engine Speed Value 1
+sint8 g_Speed_0_s8 = 0;                                              ///< Signed Engine Speed Value 0
+sint8 g_Speed_1_s8 = 0;                                              ///< Signed Engine Speed Value 1
 
-static sint8 g_Speed_Before_s8 = 0;                                  ///< Saved value of speed
+sint8 g_Speed_Before_s8 = 0;                                         ///< Saved value of speed
 
-static uint8 g_Direction_u8 = 0;                                     ///< Direction value
+uint8 g_Direction_u8 = 0;                                            ///< Direction value
 
 /* CONSTANTS: */
 
@@ -385,7 +385,7 @@ void Engine_MainFunction(void)
 			if( g_Switch_CNT_u8 % 2 == 0)
 			{
 				/* Turn off the LED that shows that the joystick is giving the command and indicates that the instructions are given by the remote control now */
-				Rte_Write_Green_LED_Status(FALSE);
+
 				/* Moves from remote control */
 				move_Forward_Remote(&g_Remote_Control_Status_D2_u8, &g_Remote_Control_Previous_Status_D2_u8, &g_Speed_0_s8, &g_Speed_1_s8, INCREMENT_SPEED);
 				move_Right_Remote(&g_Remote_Control_Status_D0_u8, &g_Remote_Control_Previous_Status_D0_u8, &g_Speed_0_s8, &g_Speed_1_s8, &g_Speed_Before_s8);
@@ -395,7 +395,7 @@ void Engine_MainFunction(void)
 			else
 			{
 				/* Lights up a LED that indicates that the joystick is giving the command now */
-				Rte_Write_Green_LED_Status(TRUE);
+
 				/* Moves from joystick */
 				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Speed_0_s8, &g_Speed_1_s8);
 			}

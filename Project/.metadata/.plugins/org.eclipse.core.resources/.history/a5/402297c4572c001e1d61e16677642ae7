@@ -385,7 +385,7 @@ void Engine_MainFunction(void)
 			if( g_Switch_CNT_u8 % 2 == 0)
 			{
 				/* Turn off the LED that shows that the joystick is giving the command and indicates that the instructions are given by the remote control now */
-				Rte_Write_Green_LED_Status(FALSE);
+
 				/* Moves from remote control */
 				move_Forward_Remote(&g_Remote_Control_Status_D2_u8, &g_Remote_Control_Previous_Status_D2_u8, &g_Speed_0_s8, &g_Speed_1_s8, INCREMENT_SPEED);
 				move_Right_Remote(&g_Remote_Control_Status_D0_u8, &g_Remote_Control_Previous_Status_D0_u8, &g_Speed_0_s8, &g_Speed_1_s8, &g_Speed_Before_s8);
@@ -395,7 +395,7 @@ void Engine_MainFunction(void)
 			else
 			{
 				/* Lights up a LED that indicates that the joystick is giving the command now */
-				Rte_Write_Green_LED_Status(TRUE);
+
 				/* Moves from joystick */
 				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Speed_0_s8, &g_Speed_1_s8);
 			}

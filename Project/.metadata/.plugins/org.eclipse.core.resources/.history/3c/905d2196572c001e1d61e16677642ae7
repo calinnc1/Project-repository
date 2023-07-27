@@ -114,25 +114,25 @@ void LED_MainFunction(void)
 		{
 			case 0:
 			{
-				// Rte_Write_Green_LED_Status(TRUE);                               /* Green LED  */
+				// Rte_Write_Green_LED_Status(TRUE);                                  /* Green LED  */
 				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
 				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
 			}break;
 			case 1:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
+				// Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
 				Rte_Write_Yellow_LED_Status(TRUE);                                 /* Yellow LED */
 				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
 			}break;
 			case 2:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
+				// Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
 				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
 				Rte_Write_Red_LED_Status(TRUE);                                    /* Red LED    */
 			}break;
 			default:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
+				// Rte_Write_Green_LED_Status(FALSE);                                 /* Green LED  */
 				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
 				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
 			}break;

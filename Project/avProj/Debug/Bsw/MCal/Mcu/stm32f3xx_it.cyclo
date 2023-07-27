@@ -12,5 +12,6 @@
 ../Bsw/MCal/Mcu/stm32f3xx_it.c:266:6:TIM3_IRQHandler	1
 ../Bsw/MCal/Mcu/stm32f3xx_it.c:280:6:I2C1_EV_IRQHandler	1
 ../Bsw/MCal/Mcu/stm32f3xx_it.c:294:6:USART1_IRQHandler	1
-../Bsw/MCal/Mcu/stm32f3xx_it.c:308:6:EXTI15_10_IRQHandler	1
-../Bsw/MCal/Mcu/stm32f3xx_it.c:322:6:SPI3_IRQHandler	1
+../Bsw/MCal/Mcu/stm32f3xx_it.c:308:6:USART2_IRQHandler	1
+../Bsw/MCal/Mcu/stm32f3xx_it.c:322:6:EXTI15_10_IRQHandler	1
+../Bsw/MCal/Mcu/stm32f3xx_it.c:336:6:SPI3_IRQHandler	1
