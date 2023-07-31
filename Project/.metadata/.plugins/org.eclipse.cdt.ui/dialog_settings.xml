@@ -10,7 +10,7 @@
 	</section>
 	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration.internal">
 		<item key="size.width" value="472"/>
-		<item key="size.height" value="180"/>
+		<item key="size.height" value="181"/>
 	</section>
 	<section name="org.eclipse.cdt.internal.ui.text.QuickOutline">
 		<item key="org.eclipse.cdt.internal.ui.text.COutlineInformationControlDIALOG_WIDTH" value="350"/>
@@ -26,5 +26,25 @@
 		<item key="DIALOG_WIDTH" value="799"/>
 		<item key="DIALOG_HEIGHT" value="438"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="OptionalMessageDialog.hide.">
+		<item key="askReindex.detail" value="0"/>
+	</section>
+	<section name="org.eclipse.cdt.internal.ui.typehierarchy.OpenTypeInHierarchyActionSettings">
+		<item key="show_namespaces" value="false"/>
+		<item key="show_classes" value="true"/>
+		<item key="show_structs" value="true"/>
+		<item key="show_typedefs" value="true"/>
+		<item key="show_enums" value="true"/>
+		<item key="show_unions" value="true"/>
+		<item key="show_functions" value="false"/>
+		<item key="show_variables" value="false"/>
+		<item key="show_enumerators" value="false"/>
+		<item key="show_macros" value="false"/>
+		<item key="show_lowlevel" value="true"/>
+		<item key="x" value="-1176"/>
+		<item key="y" value="138"/>
+		<item key="width" value="432"/>
+		<item key="height" value="663"/>
 	</section>
 </section>

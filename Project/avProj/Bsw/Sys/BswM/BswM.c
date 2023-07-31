@@ -23,13 +23,13 @@ SPI_HandleTypeDef hspi3;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
-volatile uint16 adc1_val[1] = {0};
-uint32 adc1_len = (uint32)(sizeof(adc1_val)/sizeof(adc1_val[0]));
-volatile uint16 ADC_AN0_Voltage = 0u;
+volatile uint16 g_BswM_adc1_val[1] = {0};
+uint32 g_BswM_adc1_len = (uint32)(sizeof(g_BswM_adc1_val)/sizeof(g_BswM_adc1_val[0]));
+volatile uint16 g_BswM_ADC_AN0_Voltage = 0u;
 
-volatile uint16 adc2_val[1] = {0};
-uint32 adc2_len = (uint32)(sizeof(adc2_val)/sizeof(adc2_val[0]));
-volatile uint16 ADC_AN2_Voltage = 0u;
+volatile uint16 g_BswM_adc2_val[1] = {0};
+uint32 g_BswM_adc2_len = (uint32)(sizeof(g_BswM_adc2_val)/sizeof(g_BswM_adc2_val[0]));
+volatile uint16 g_BswM_ADC_AN2_Voltage = 0u;
 
 volatile uint32 I2cRxCnt = 0u;
 volatile uint32 I2cTxCnt = 0u;
@@ -70,8 +70,8 @@ void BswM_Init(void)
 void BswM_MainFunction(void)
 {
 	/* Start ADC AN1 conversion */
-	HAL_ADC_Start_DMA(&hadc1, (uint32 *)adc1_val, adc1_len);
-	HAL_ADC_Start_DMA(&hadc2, (uint32 *)adc2_val, adc2_len);
+	HAL_ADC_Start_DMA(&hadc1, (uint32 *)g_BswM_adc1_val, g_BswM_adc1_len);
+	HAL_ADC_Start_DMA(&hadc2, (uint32 *)g_BswM_adc2_val, g_BswM_adc2_len);
 
 }
 
@@ -80,13 +80,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	/* Convert ADC value to Voltage (mV) */
 	if(hadc == &hadc1)
 	{
-		ADC_AN0_Voltage = (uint16)((adc1_val[0]*3300u)/4095u);
-		Rte_Write_ADC_AN0_Voltage_u16(ADC_AN0_Voltage);
+		g_BswM_ADC_AN0_Voltage = (uint16)((g_BswM_adc1_val[0]*3300u)/4095u);
+		Rte_Write_ADC_AN0_Voltage_u16(g_BswM_ADC_AN0_Voltage);
 	}
 	else if(hadc == &hadc2)
 	{
-		ADC_AN2_Voltage = (uint16)((adc2_val[0]*3300u)/4095u);
-		Rte_Write_ADC_AN2_Voltage_u16(ADC_AN2_Voltage);
+		g_BswM_ADC_AN2_Voltage = (uint16)((g_BswM_adc2_val[0]*3300u)/4095u);
+		Rte_Write_ADC_AN2_Voltage_u16(g_BswM_ADC_AN2_Voltage);
 	}
 	else
 	{

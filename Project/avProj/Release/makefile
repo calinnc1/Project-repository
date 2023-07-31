@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (10.3-2021.10)
+# Toolchain: GNU Tools for STM32 (11.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -30,6 +30,7 @@ RM := rm -rf
 -include Bsw/MCal/Adc/subdir.mk
 -include Bsw/Cdd/Cdd_Ultrasonic/subdir.mk
 -include Bsw/Cdd/Cdd_Servo/subdir.mk
+-include Bsw/Cdd/Cdd_DCMotor/subdir.mk
 -include Asw/Steering/subdir.mk
 -include Asw/Lights/RearLights/subdir.mk
 -include Asw/Lights/InteriorLights/subdir.mk

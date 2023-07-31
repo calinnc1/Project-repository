@@ -39,9 +39,6 @@ static volatile uint8 Rte_ADC_Switch = 0u;
 extern UART_HandleTypeDef huart2;
 extern ADC_HandleTypeDef hadc1;
 extern const Cdd_Ultrasonic_CfgType_t c_Cdd_Ultrasonic_CfgType_s;
-char databuf[16];
-uint16 count = 0;
-uint8 crlf[1] = { 0x0A };
 static uint8 g_Rte_CollisionWarning_Status_u8 = 0;
 static boolean g_Rte_Autobrakes_Status_b;
 
@@ -157,40 +154,75 @@ void Rte_Call_Cdd_Ultrasonic_TriggerMeasurement(void)
 }
 
 /* Cdd_Ultrasonic: Read distance */
+/**
+ * @brief  Read ultrasonic distance
+ * @param  distance: float32
+ * @return None
+ */
 void Rte_Read_Cdd_Ultrasonic_Distance_f32(float32 *distance)
 {
 	*distance = Cdd_Ultrasonic_ReadDistance();
 }
 
 /* Toggle PA5 Pin state */
+/**
+ * @brief  Switch State of PA% pin
+ * @param  None
+ * @return None
+ */
 void Rte_Switch_PA5_Pin_State()
 {
 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 }
 
 /* Read PC13 pin state - button state */
+/**
+ * @brief  Read PC13 pin state
+ * @param  state: uint8*
+ * @return None
+ */
 void Rte_Read_PC13_Pin_State(uint8 *state)
 {
 	*state = Int_ButtonState;
 }
 
 /* Save PC13 Pin state (called from IRQ) - TODO: change this */
+/**
+ * @brief  Write PC13 pin state
+ * @param  state: uint8
+ * @return None
+ */
 void Rte_Write_PC13_Pin_State(uint8 state)
 {
 	Int_ButtonState = state;
 }
 
 /* Read PC6 pin state - joystick switch */
+/**
+ * @brief  Read PC6 pin state
+ * @param  state: uint8*
+ * @return None
+ */
 void Rte_Read_PC6_Pin_State(uint8 *state)
 {
 	*state = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
 }
 
+/**
+ * @brief  Read collision status
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Read_g_CollisionWarning_Status(uint8 *status)
 {
 	*status = g_Rte_CollisionWarning_Status_u8;
 }
 
+/**
+ * @brief  Write collision status
+ * @param  status: uint8
+ * @return None
+ */
 void Rte_Write_g_CollisionWarning_Status(uint8 status)
 {
 	g_Rte_CollisionWarning_Status_u8 = status;
@@ -202,6 +234,11 @@ void Rte_Read_DIO_Autobrakes_State_b(boolean *state)
 }
 
 /* Write PC2 pin state */
+/**
+ * @brief  Write PC2 pin state
+ * @param  state: boolean
+ * @return None
+ */
 void Rte_Write_PC_2(boolean state)
 {
 	if(FALSE == state)
@@ -214,7 +251,11 @@ void Rte_Write_PC_2(boolean state)
 	}
 }
 
-/* Write PC3 pin state */
+/**
+ * @brief  Write PC3 pin state
+ * @param  state: boolean
+ * @return None
+ */
 void Rte_Write_PC_3(boolean state)
 {
 	if(FALSE == state)
@@ -231,16 +272,6 @@ void Rte_Write_PC_3(boolean state)
 void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 {
 	g_Rte_Autobrakes_Status_b = state;
-	/*
-	if(TRUE == state)
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
-	}
-	else
-	{
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
-	}
-	*/
 }
 
 void Rte_Cdd_Servo_RawMove(uint16 pulse)
@@ -262,11 +293,21 @@ void Rte_Write_NvM_Block(uint16 blockID, uint8 *data)
 	NvM_WriteBlock(blockID, data);
 }
 
+/**
+ * @brief  Write analogic 0 pin
+ * @param  voltage: uint16
+ * @return None
+ */
 void Rte_Write_AN0_Voltage_u16(uint16 voltage)
 {
 	Rte_ADC_AN0_Voltage = voltage;
 }
 
+/**
+ * @brief  Read analogic 0 pin
+ * @param  voltage: uint16*
+ * @return None
+ */
 void Rte_Read_AN0_Voltage_u16(uint16 *voltage)
 {
 	/* Disable interrupts */
@@ -277,11 +318,21 @@ void Rte_Read_AN0_Voltage_u16(uint16 *voltage)
 	Rte_Call_LeaveProtectedSection();
 }
 
+/**
+ * @brief  Write analogic 2 pin
+ * @param  voltage: uint16
+ * @return None
+ */
 void Rte_Write_AN2_Voltage_u16(uint16 voltage)
 {
 	Rte_ADC_AN2_Voltage = voltage;
 }
 
+/**
+ * @brief  Read analogic 2 pin
+ * @param  voltage: uint16*
+ * @return None
+ */
 void Rte_Read_AN2_Voltage_u16(uint16 *voltage)
 {
 	/* Disable interrupts */
@@ -292,27 +343,53 @@ void Rte_Read_AN2_Voltage_u16(uint16 *voltage)
 	Rte_Call_LeaveProtectedSection();
 }
 
+
+/**
+ * @brief  Read DO pin form remote controller
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Read_Remote_D0(uint8 *status)
 {
 	*status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7);
 }
 
+/**
+ * @brief  Read D1 pin from remote controller
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Read_Remote_D1(uint8 *status)
 {
 	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
 }
 
+/**
+ * @brief  Read D2 pin from remote controller
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Read_Remote_D2(uint8 *status)
 {
 	*status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9);
 }
 
+/**
+ * @brief  Read D3 pin from remote controller
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Read_Remote_D3(uint8 *status)
 {
 	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
 }
 
 /* Write Green pin state */
+/**
+ * @brief  Write Green pin state, on pin PB13
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Write_PB_13(boolean state)
 {
 	if(TRUE == state)

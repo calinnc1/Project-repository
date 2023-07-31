@@ -10,7 +10,7 @@
 #include "Rte_Brakes.h"
 
 /* DEFINES: */
-#define	BRAKES_CRITICAL_DISTANCE_CM_F32				(float32)30.0f		///< Autobrakes enable critical distance [cm]
+#define	BRAKES_CRITICAL_DISTANCE_CM_F32				(float32)40.0f		///< Autobrakes enable critical distance [cm]
 #define	BRAKES_WARNING_DISTANCE_CM_F32				(float32)60.0f		///< Autobrakes enable warning distance [cm]
 #define	BRAKES_AUTOBRAKES_DISABLE_DISTANCE_CM_F32	(float32)70.0f		///< Autobrakes disable distance [cm]
 #define	BRAKES_AUTOBRAKES_STATE_CNT_U8				(uint8)10u			///< Autobraked enable/disable debounce counter
@@ -30,9 +30,9 @@ static uint8 g_Brakes_Autobrakes_Disable_Cnt_u8 = 0u;					///< Autobrakes disabl
 static uint8 g_Brakes_Autobrakes_Enable_Cnt_u8 = 0u;					///< Autobrakes enable counter
 static uint8 g_Brakes_NvMBlock_a[NVM_BLOCK_SIZE] = {0u};				///< Brakes NvM block
 static uint8 g_Brakes_CollisionWarning_Status_u8 = 0;                   ///< Status breaks
-static uint8 g_Informative_Dist_Status_Cnt_u8 = 0u;                     ///< The distance that informs an object in proximity
-static uint8 g_Warning_Dist_Status_Cnt_u8 = 0u;                         ///< The distance that warns that there is an object in the vicinity
-static uint8 g_Critical_Dist_Status_Cnt_u8 = 0u;                        ///< The critical distance, which signals that there is an object in the immediate vicinity
+static uint8 g_Brakes_Informative_Dist_Status_Cnt_u8 = 0u;              ///< The distance that informs an object in proximity
+static uint8 g_Brakes_Warning_Dist_Status_Cnt_u8 = 0u;                  ///< The distance that warns that there is an object in the vicinity
+static uint8 g_Brakes_Critical_Dist_Status_Cnt_u8 = 0u;                 ///< The critical distance, which signals that there is an object in the immediate vicinity
 
 /* CONSTANTS: */
 
@@ -99,37 +99,37 @@ static void Brakes_OnAutobrakesDisabled(void)
 
 static uint8 Brakes_OnDistance(float32 distance)
 {
-	if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Informative_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
+	if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Informative_Dist_Status_Cnt_u8++;
+		g_Brakes_Informative_Dist_Status_Cnt_u8++;
 		return 3;
 	}
-	else if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Informative_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
+	else if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Warning_Dist_Status_Cnt_u8 = 0u;
-		g_Critical_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Warning_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Critical_Dist_Status_Cnt_u8 = 0u;
 		return 2;
 	}
-	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Warning_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
+	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Warning_Dist_Status_Cnt_u8++;
+		g_Brakes_Warning_Dist_Status_Cnt_u8++;
 		return 3;
 	}
-	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Warning_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
+	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Informative_Dist_Status_Cnt_u8 = 0u;
-		g_Critical_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Informative_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Critical_Dist_Status_Cnt_u8 = 0u;
 		return 1;
 	}
-	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Critical_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
+	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Critical_Dist_Status_Cnt_u8++;
+		g_Brakes_Critical_Dist_Status_Cnt_u8++;
 		return 3;
 	}
-	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Critical_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
+	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
-		g_Informative_Dist_Status_Cnt_u8 = 0u;
-		g_Warning_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Informative_Dist_Status_Cnt_u8 = 0u;
+		g_Brakes_Warning_Dist_Status_Cnt_u8 = 0u;
 		return 0;
 	}
 	else

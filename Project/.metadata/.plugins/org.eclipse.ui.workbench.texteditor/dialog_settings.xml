@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="MX_GPIO"/>
+		<item key="selection" value="count"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="mx_gpio"/>
-			<item value="Rte_ADC_AN1_Voltage"/>
-			<item value="DMA2_Channel1_IRQHandler"/>
-			<item value="firstRun"/>
-			<item value="adc1_val"/>
-			<item value="adc_val"/>
-			<item value="main"/>
-			<item value="mainf"/>
-			<item value="mx_dma"/>
-			<item value="dma"/>
+			<item value="count"/>
+			<item value="led_pin"/>
+			<item value="le_pin"/>
+			<item value="pin_13"/>
+			<item value="led"/>
+			<item value="gpioa"/>
+			<item value="gpio_i"/>
+			<item value="pin_1"/>
 			<item value="handler"/>
-			<item value="dma1_"/>
-			<item value="adc_mspinit"/>
-			<item value="mspinit"/>
-			<item value="dma_channel"/>
+			<item value="uart"/>
+			<item value="500"/>
+			<item value="GPIO_PIN_2"/>
+			<item value="GPIO_PIN_1"/>
+			<item value="GPIO_PIN_14"/>
+			<item value="DC_MOTOR_ID_0"/>
 		</list>
 		<list key="replacehistory">
 		</list>

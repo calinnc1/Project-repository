@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (10.3-2021.10)
+# Toolchain: GNU Tools for STM32 (11.3.rel1)
 ################################################################################
 
 ELF_SRCS := 
@@ -9,6 +9,7 @@ S_SRCS :=
 C_SRCS := 
 S_UPPER_SRCS := 
 O_SRCS := 
+CYCLO_FILES := 
 SIZE_OUTPUT := 
 OBJDUMP_LIST := 
 SU_FILES := 
@@ -30,6 +31,7 @@ Asw/Lights/FrontLights \
 Asw/Lights/InteriorLights \
 Asw/Lights/RearLights \
 Asw/Steering \
+Bsw/Cdd/Cdd_DCMotor \
 Bsw/Cdd/Cdd_Servo \
 Bsw/Cdd/Cdd_Ultrasonic \
 Bsw/MCal/Adc \
