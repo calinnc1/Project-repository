@@ -1,0 +1,11 @@
+digraph "I2C1_EV_IRQHandler"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="I2C1_EV_IRQHandler",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="This function handles I2C1 event global interrupt / I2C1 wake-up interrupt through EXTI line 23."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="HAL_I2C_EV_IRQHandler",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group___i2_c___i_r_q___handler__and___callbacks.html#ga0cd3cc56c83b85a65e31c945c854d9d5",tooltip=" "];
+}

@@ -1,0 +1,11 @@
+digraph "USART2_IRQHandler"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="USART2_IRQHandler",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="This function handles USART2 global interrupt / USART2 wake-up interrupt through EXTI line 26."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="HAL_UART_IRQHandler",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group___u_a_r_t___exported___functions___group2.html#gaad01472c507ceee3c5f2274c775ff3bf",tooltip=" "];
+}

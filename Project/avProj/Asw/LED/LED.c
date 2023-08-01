@@ -112,32 +112,32 @@ void LED_MainFunction(void)
 		Rte_Read_LED_Collision_Status(&g_LED_CollisionWarning_Status);
 		switch(g_LED_CollisionWarning_Status)
 		{
+		    /* If g_LED_CollisionWarning_Status is 0, then we need to turn off LEDs*/
 			case 0:
 			{
-				// Rte_Write_Green_LED_Status(TRUE);                               /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Yellow_LED_Status(FALSE);
+				Rte_Write_Red_LED_Status(FALSE);
 			}break;
+			/* If g_LED_CollisionWarning_Status is 1, then we need to turn off Red LED and to light up Yellow LED*/
 			case 1:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(TRUE);                                 /* Yellow LED */
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Yellow_LED_Status(TRUE);
+				Rte_Write_Red_LED_Status(FALSE);
 			}break;
+			/* If g_LED_CollisionWarning_Status is 2, then we need to turn off Yellow LED and to light up Red LED*/
 			case 2:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
-				Rte_Write_Red_LED_Status(TRUE);                                    /* Red LED    */
+				Rte_Write_Yellow_LED_Status(FALSE);
+				Rte_Write_Red_LED_Status(TRUE);
 			}break;
+			 /* By default, we need to turn off LEDs*/
 			default:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Yellow_LED_Status(FALSE);
+				Rte_Write_Red_LED_Status(FALSE);
 			}break;
 		}
-		/* Read the blue button state */
+		/* Read the button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);
 		/* Check if the button is released */
 		if(FALSE != g_LED_ButtonState_b)

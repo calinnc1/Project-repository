@@ -1,0 +1,16 @@
+digraph "Project/avProj/Bsw/Mem/NvM"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_073a34dd20c76c01dc048c8133a914c5 {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="Mem", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_073a34dd20c76c01dc048c8133a914c5.html",tooltip=""]
+  dir_db2860e628a7d26a5e12ae14cbb5d183 [label="Ea", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_db2860e628a7d26a5e12ae14cbb5d183.html",tooltip=""];
+  dir_3d8a160d3e32eff4e88d8f48bd4c7750 [label="NvM", fillcolor="#edf0f7", color="grey25", style="filled,bold", URL="dir_3d8a160d3e32eff4e88d8f48bd4c7750.html",tooltip=""];
+  }
+  dir_6372c9833482547caa045621d154f9b9 [label="Config", fillcolor="#edf0f7", color="grey50", style="filled", URL="dir_6372c9833482547caa045621d154f9b9.html",tooltip=""];
+  dir_3d8a160d3e32eff4e88d8f48bd4c7750->dir_6372c9833482547caa045621d154f9b9 [headlabel="1", labeldistance=1.5 headhref="dir_000072_000024.html" color="steelblue1" fontcolor="steelblue1"];
+  dir_3d8a160d3e32eff4e88d8f48bd4c7750->dir_db2860e628a7d26a5e12ae14cbb5d183 [headlabel="1", labeldistance=1.5 headhref="dir_000072_000038.html" color="steelblue1" fontcolor="steelblue1"];
+}

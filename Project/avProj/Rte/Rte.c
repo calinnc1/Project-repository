@@ -153,9 +153,8 @@ void Rte_Call_Cdd_Ultrasonic_TriggerMeasurement(void)
 	HAL_GPIO_WritePin(c_Cdd_Ultrasonic_CfgType_s.TRIG_GPIO, c_Cdd_Ultrasonic_CfgType_s.TRIG_PIN, (GPIO_PinState)GPIO_PIN_RESET);
 }
 
-/* Cdd_Ultrasonic: Read distance */
 /**
- * @brief  Read ultrasonic distance
+ * @brief  Cdd_Ultrasonic: Read ultrasonic distance
  * @param  distance: float32
  * @return None
  */
@@ -164,9 +163,8 @@ void Rte_Read_Cdd_Ultrasonic_Distance_f32(float32 *distance)
 	*distance = Cdd_Ultrasonic_ReadDistance();
 }
 
-/* Toggle PA5 Pin state */
 /**
- * @brief  Switch State of PA% pin
+ * @brief  Toggle PA5 Pin state
  * @param  None
  * @return None
  */
@@ -175,9 +173,8 @@ void Rte_Switch_PA5_Pin_State()
 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 }
 
-/* Read PC13 pin state - button state */
 /**
- * @brief  Read PC13 pin state
+ * @brief  Read PC13 pin state- button state
  * @param  state: uint8*
  * @return None
  */
@@ -197,9 +194,8 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 	Int_ButtonState = state;
 }
 
-/* Read PC6 pin state - joystick switch */
 /**
- * @brief  Read PC6 pin state
+ * @brief  Read PC6 pin state- joystick switch
  * @param  state: uint8*
  * @return None
  */
@@ -233,7 +229,6 @@ void Rte_Read_DIO_Autobrakes_State_b(boolean *state)
 	*state = g_Rte_Autobrakes_Status_b;
 }
 
-/* Write PC2 pin state */
 /**
  * @brief  Write PC2 pin state
  * @param  state: boolean
@@ -268,7 +263,11 @@ void Rte_Write_PC_3(boolean state)
 	}
 }
 
-/* Write PC6 pin state */
+/**
+ * @brief  Write PC6 pin state
+ * @param  state: boolean
+ * @return None
+ */
 void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 {
 	g_Rte_Autobrakes_Status_b = state;
@@ -384,7 +383,6 @@ void Rte_Read_Remote_D3(uint8 *status)
 	*status = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
 }
 
-/* Write Green pin state */
 /**
  * @brief  Write Green pin state, on pin PB13
  * @param  status: uint8*
@@ -402,7 +400,11 @@ void Rte_Write_PB_13(boolean state)
 	}
 }
 
-/* Write Yellow pin state */
+/**
+ * @brief  Write Yellow pin state, on pin PB14
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Write_PB_14(boolean state)
 {
 	if(TRUE == state)
@@ -415,7 +417,11 @@ void Rte_Write_PB_14(boolean state)
 	}
 }
 
-/* Write Red pin state */
+/**
+ * @brief  Write Red pin state, on pin PB15
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Write_PB_15(boolean state)
 {
 	if(TRUE == state)

@@ -53,19 +53,23 @@ void Blinker_MainFunction(void)
 	/* Check if initialization is done */
 	if(TRUE == g_Blinker_InitDone_b)
 	{
+		/* Rte read the global variable */
 		Rte_Read_Blinker_Autobrakes_Status(&g_Bliker_Autobrakes_Status);
-
+		/* If current status is true and previous status is false, we light up blinkers*/
 		if(TRUE == g_Bliker_Autobrakes_Status && FALSE == g_Bliker_Autobrakes_Previous_Status)
 		{
 			g_Left_Blinker_Status_b = TRUE;
 			g_Right_Blinker_Status_b = TRUE;
 			g_Bliker_Autobrakes_Previous_Status = TRUE;
 		}
+		/* If current status is true and previous status is true */
 		else if(TRUE == g_Bliker_Autobrakes_Status && TRUE == g_Bliker_Autobrakes_Previous_Status)
 		{
+			/* If counter is less than 45, we increent the value */
 			if(g_Blinker_Counter_u16 < 45)
 			{
 				g_Blinker_Counter_u16++;
+				/* We toggle the values of the blinkers at each 5 conter values */
 				if(0 == g_Blinker_Counter_u16 % 5)
 				{
 					g_Left_Blinker_Status_b = !g_Left_Blinker_Status_b;
@@ -86,7 +90,7 @@ void Blinker_MainFunction(void)
 			g_Left_Blinker_Status_b = FALSE;
 			g_Right_Blinker_Status_b = FALSE;
 		}
-
+		/* Rte write the global variable */
 		Rte_Write_Left_Blinker_Autobrakes_Status(g_Left_Blinker_Status_b);
 		Rte_Write_Right_Blinker_Autobrakes_Status(g_Right_Blinker_Status_b);
 	}

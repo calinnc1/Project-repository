@@ -35,7 +35,7 @@ static uint8 g_Engine_SW_Previous_State_u8 = 0u;                     ///< The pr
 
 static uint16 g_Engine_Joystick_0_Voltage_mV_u16 = 0u;               ///< Value in volts of the horizontal axis from the joystick
 static uint16 g_Engine_Joystick_1_Voltage_mV_u16 = 0u;               ///< Value in volts of the vertical axis from the joystick
-static uint8 g_Engine_Switch_CNT_u8 = 0u;                                   ///< Counter value allowing switching between remote control and joystick
+static uint8 g_Engine_Switch_CNT_u8 = 0u;                            ///< Counter value allowing switching between remote control and joystick
 static uint8 g_Engine_Joystick_0_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the horizontal axis from the joystick
 static uint8 g_Engine_Joystick_1_Duty_Cycle_u8 = 0u;                 ///< Duty Cycle value of the vertical axis from the joystick
 
@@ -68,18 +68,26 @@ static uint8 g_Engine_Direction_u8 = 0;                              ///< Direct
 
 /* STATIC FUNCTIONS: */
 
-/* Move forward remote control */
+/**
+ * @brief  Move forward remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
+ * @return None
+ */
 void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 increment)
 {
+	/* If current status is 1 and previous status is 0, it means a rising edge, where we make the changes */
 	if(*current_Status == 1 && *previous_Status == 0)
 	{
+		/* If both speeds are less than 100 */
 		if(*speed_0 < 100 && *speed_1 < 100)
 		{
+			/* If both speeds are 0, we sum 3 times the increment */
 			if(*speed_0 == 0 && *speed_1 == 0)
 			{
 				*speed_0 = *speed_0 + 3*increment;
 				*speed_1 = *speed_0;
 			}
+			/* If both speeds are different than 0, we sum the increment once */
 			else
 			{
 				*speed_0 = *speed_0 + increment;
@@ -102,9 +110,14 @@ void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *s
 	}
 }
 
-/* Move right remote control */
+/**
+ * @brief  Move right remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
+ * @return None
+ */
 void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
+	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
 	{
 		*speed_Before_Turn = *speed_0;
@@ -116,6 +129,7 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
 		*speed_1 = *speed_Before_Turn;
 		*previous_Status = 0;
 	}
+	/* Here we rotate to the right as long we push the button */
 	else if(*current_Status == 1 && *previous_Status == 1)
 	{
 		*speed_1 = *speed_Before_Turn;
@@ -128,9 +142,14 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
 	}
 }
 
-/* Move left remote control */
+/**
+ * @brief  Move left remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
+ * @return None
+ */
 void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
+	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
 	{
 		*speed_Before_Turn = *speed_0;
@@ -142,6 +161,7 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
 		*speed_1 = *speed_Before_Turn;
 		*previous_Status = 0;
 	}
+	/* Here we rotate to the left as long we push the button */
 	else if(*current_Status == 1 && *previous_Status == 1)
 	{
 		*speed_0 = *speed_Before_Turn;
@@ -154,13 +174,20 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
 	}
 }
 
-/* Move backward remote control */
+/**
+ * @brief  Move backward remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
+ * @return None
+ */
 void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 decrement)
 {
+	/* If current status is 1 and previous status is 0, it means a rising edge, where we make the changes */
 	if(*current_Status == 1 && *previous_Status == 0)
 	{
+		/* If both speeds are greater than -90 */
 		if(*speed_0 >= -90 && *speed_1 >= -90)
 		{
+			/* If both speeds are 0, we decrease 3 times the decrement */
 			if(*speed_0 == 0 && *speed_1 == 0)
 			{
 				*speed_0 = *speed_0 - 3*decrement;
@@ -188,7 +215,11 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
 	}
 }
 
-/* Conversion from mV to duty cycle */
+/**
+ * @brief  Conversion from mV to duty cycle
+ * @param  mV_Value: uint16*, duty_Cylce_Value: uint8*
+ * @return None
+ */
 void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 {
 	/*
@@ -199,17 +230,24 @@ void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 	*duty_Cylce_Value = *mV_Value * 0.030303;
 }
 
-/* Move commanded by joystick */
+/**
+ * @brief  Move commanded by joystick
+ * @param  horizontal_Axis_Duty: uint8*, vertical_Axis_Duty: uint8*, speed_0: sint8*, speed_1: sint8*
+ * @return None
+ */
 void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
 {
+	/* If vertical axis has a lower value than the treshold, then it means we move forward */
 	if(*vertical_Axis_Duty < ENGINE_TRESHOLD_FORWARD)
 	{
 		*speed_0 = 100 - (*vertical_Axis_Duty * 2);
 		*speed_1 = *speed_0;
+		/* If horizontal axis has a lower value than the treshold, then it means we move right */
 		if(*horizontal_Axis_Duty < ENGINE_TRESHOLD_RIGHT)
 		{
 			*speed_1 = 0;
 		}
+		/* If horizontal axis has a greater value than the treshold, then it means we move left */
 		else if(*horizontal_Axis_Duty > ENGINE_TRESHOLD_LEFT)
 		{
 			*speed_0 = 0;
@@ -219,14 +257,17 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
 
 		}
 	}
+	/* If vertical axis has a greater value than the treshold, then it means we move backward */
 	else if(*vertical_Axis_Duty > ENGINE_TRESHOLD_BACKWARD)
 	{
 		*speed_0 = -(*vertical_Axis_Duty - 50) * 2;
 		*speed_1 = *speed_0;
+		/* If horizontal axis has a lower value than the treshold, then it means we move right */
 		if(*horizontal_Axis_Duty < ENGINE_TRESHOLD_RIGHT)
 		{
 			*speed_1 = 0;
 		}
+		/* If horizontal axis has a greater value than the treshold, then it means we move left */
 		else if(*horizontal_Axis_Duty > ENGINE_TRESHOLD_LEFT)
 		{
 			*speed_0 = 0;
@@ -243,23 +284,31 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
 	}
 }
 
-/* Set speed and direction */
+/**
+ * @brief  Set speed and direction
+ * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
+ * @return None
+ */
 void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
 {
+	/* If motor 0 has value 0*/
 	if(*speed_0_s8 == 0)
 	{
+		/* If motor 1 has value 0 too, the speed is set to 0, and the direction is set to backward*/
 		if(*speed_1_s8 == 0)
 		{
 			*direction = ENGINE_BACKWARD_DIR;
 			*speed_0_u8 = 0;
 			*speed_1_u8 = 0;
 		}
+		/* If motor 1 has value greater than 0, the motor 0 speed is set to 0, and the direction is set to forward*/
 		else if(*speed_1_s8 > 0)
 		{
 			*speed_0_u8 = 0;
 			*speed_1_u8 = *speed_1_s8;
 			*direction = ENGINE_FORWARD_DIR;
 		}
+		/* If motor 1 has value lower than 0, the motor 0 speed is set to 0, and the direction is set to backward */
 		else if(*speed_1_s8 < 0)
 		{
 			*speed_0_u8 = 0;
@@ -271,20 +320,28 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
 
 		}
 	}
+	/* If motor 0 has value greater than 0*/
 	else if(*speed_0_s8 > 0)
 	{
+		/* If motor 1 has value 0, the motor 1 speed is set to 0, and the direction is set to forward */
 		if(*speed_1_s8 == 0)
 		{
 			*speed_0_u8 = *speed_0_s8;
 			*speed_1_u8 = 0;
 			*direction = ENGINE_FORWARD_DIR;
 		}
+		/* If motor 1 has value greater than 0, the motors speed is set to the signed value of speed and the direction is set to forward */
 		else if(*speed_1_s8 > 0)
 		{
 			*speed_0_u8 = *speed_0_s8;
 			*speed_1_u8 = *speed_1_s8;
 			*direction = ENGINE_FORWARD_DIR;
 		}
+		/*
+		 * If motor 1 has value lower than 0,
+		 *  the motor 0 speed is set to the signed value of speed
+		 *  the motor 1 speed is set to the negative value of speed
+		 *  and the direction is set to forward */
 		else if(*speed_1_s8 < 0)
 		{
 			*speed_0_u8 = *speed_0_s8;
@@ -296,20 +353,35 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
 
 		}
 	}
+	/* If motor 0 has value lower than 0*/
 	else if(*speed_0_s8 < 0)
 	{
+		/* If motor 1 has value 0,
+		 * the motor 0 speed is set to the negative value of speed,
+		 * the motor 1 speed is set to 0,
+		 * and the direction is set to backward */
 		if(*speed_1_s8 == 0)
 		{
 			*speed_0_u8 = -*speed_0_s8;
 			*speed_1_u8 = 0;
 			*direction = ENGINE_BACKWARD_DIR;
 		}
+		/*
+		 * If motor 1 has value greater than 0,
+		 *  the motor 0 speed is set to the negative value of speed
+		 *  the motor 1 speed is set to the signed value of speed
+		 *  and the direction is set to forward */
 		else if(*speed_1_s8 > 0)
 		{
 			*speed_0_u8 = -*speed_0_s8;
 			*speed_1_u8 = *speed_1_s8;
 			*direction = ENGINE_FORWARD_DIR;
 		}
+		/*
+		 * If motor 1 has value lower than 0,
+		 *  the motor 0 speed is set to the negative value of speed
+		 *  the motor 1 speed is set to the negative value of speed
+		 *  and the direction is set to backwardward */
 		else if(*speed_1_s8 < 0)
 		{
 			*speed_0_u8 = -*speed_0_s8;
@@ -385,6 +457,7 @@ void Engine_MainFunction(void)
 
 		}
 
+		/* If distance is less than critical distance and direction is forward */
 		if((g_Engine_Ultrasonic_Distance_cm_u16 < ENGINE_CRITICAL_DISTANCE_CM_F32) && (g_Engine_Direction_u8 == ENGINE_FORWARD_DIR))
 		{
 			g_Engine_Speed_0_s8 = 0;
@@ -392,6 +465,7 @@ void Engine_MainFunction(void)
 		}
 		else
 		{
+			/* If switch counter is even, the remote is activated */
 			if( g_Engine_Switch_CNT_u8 % 2 == 0)
 			{
 				/* Turn off the LED that shows that the joystick is giving the command and indicates that the instructions are given by the remote control now */
@@ -402,6 +476,7 @@ void Engine_MainFunction(void)
 				move_Left_Remote(&g_Engine_Remote_Control_Status_D3_u8, &g_Engine_Remote_Control_Previous_Status_D3_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
 				move_Backward_Remote(&g_Engine_Remote_Control_Status_D1_u8, &g_Engine_Remote_Control_Previous_Status_D1_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_DECREMENT_SPEED);
 			}
+			/* If switch counter is odd, the joystick is activated */
 			else
 			{
 				/* Lights up a LED that indicates that the joystick is giving the command now */

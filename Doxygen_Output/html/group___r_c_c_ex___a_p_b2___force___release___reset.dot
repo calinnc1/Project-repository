@@ -1,0 +1,11 @@
+digraph "RCC Extended APB2 Force Release Reset"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir=LR;
+  Node1 [id="Node000001",label="RCC Extended APB2 Force\l Release Reset",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Force or release APB2 peripheral reset."];
+  Node2 [id="Node000002",label="RCC Extended Exported\l Macros",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group___r_c_c_ex___exported___macros.html",tooltip=" "];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

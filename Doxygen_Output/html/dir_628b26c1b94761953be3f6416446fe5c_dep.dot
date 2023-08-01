@@ -1,0 +1,26 @@
+digraph "Project/avProj/Debug/Bsw/MCal"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_4d065d367c039c51466bd28454d71bbc {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="Bsw", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_4d065d367c039c51466bd28454d71bbc.html",tooltip=""]
+  subgraph clusterdir_628b26c1b94761953be3f6416446fe5c {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_628b26c1b94761953be3f6416446fe5c.html",tooltip=""]
+    dir_628b26c1b94761953be3f6416446fe5c [shape=plaintext, label="MCal"];
+  dir_f55165129440883a676bc306fb57d2b5 [label="Adc", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_f55165129440883a676bc306fb57d2b5.html",tooltip=""];
+  dir_3a2284286422a0f739c7d6f5c7efec46 [label="Dio", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_3a2284286422a0f739c7d6f5c7efec46.html",tooltip=""];
+  dir_e4de459e0233bbeb5e32c59a435f5057 [label="Dma", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_e4de459e0233bbeb5e32c59a435f5057.html",tooltip=""];
+  dir_4a2be8c54c1f1305fa60d661088fbbbe [label="Fls", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_4a2be8c54c1f1305fa60d661088fbbbe.html",tooltip=""];
+  dir_6ddcb1b125fb528e0a41e75fc58dfe5b [label="Gpt", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_6ddcb1b125fb528e0a41e75fc58dfe5b.html",tooltip=""];
+  dir_0edf5176c89d08bc54f808471686a45b [label="I2c", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_0edf5176c89d08bc54f808471686a45b.html",tooltip=""];
+  dir_b78bfac8d9cf59e2d97950626e0a9c8b [label="Int", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_b78bfac8d9cf59e2d97950626e0a9c8b.html",tooltip=""];
+  dir_cad307d525e0cc324d258d2b1aa2b010 [label="Mcu", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_cad307d525e0cc324d258d2b1aa2b010.html",tooltip=""];
+  dir_6955d4b7bffaa8d4bafcf263ca1068b4 [label="Pwr", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_6955d4b7bffaa8d4bafcf263ca1068b4.html",tooltip=""];
+  dir_8cf007ded3ca3c34a9b01db3432b743b [label="Spi", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_8cf007ded3ca3c34a9b01db3432b743b.html",tooltip=""];
+  dir_e132d63e79afda34b1cc897466459faf [label="Uart", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_e132d63e79afda34b1cc897466459faf.html",tooltip=""];
+  }
+  }
+}

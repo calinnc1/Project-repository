@@ -97,35 +97,46 @@ static void Brakes_OnAutobrakesDisabled(void)
 	}
 }
 
+/**
+ * @brief  Function for returning inside which interval is the distance
+ * @param  distance: float32
+ * @return uint8
+ */
 static uint8 Brakes_OnDistance(float32 distance)
 {
+
 	if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Informative_Dist_Status_Cnt_u8++;
 		return 3;
 	}
+	/* If given distance is less than critical distance and the counter is greater or equal to BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Warning_Dist_Status_Cnt_u8 = 0u;
 		g_Brakes_Critical_Dist_Status_Cnt_u8 = 0u;
 		return 2;
 	}
+	/* If given distance is greater than critical distance and less than warning distance and the counter is less than the value of BRAKES_LED_STATE_CNT_U8, we increment the counter value */
 	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Warning_Dist_Status_Cnt_u8++;
 		return 3;
 	}
+	/* If given distance is greater than critical distance and less than warning distance and the counter is greater or equal than the value of BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Informative_Dist_Status_Cnt_u8 = 0u;
 		g_Brakes_Critical_Dist_Status_Cnt_u8 = 0u;
 		return 1;
 	}
+	/* If given distance is greater than warning distance and the counter is less than the value of BRAKES_LED_STATE_CNT_U8, we increment the counter value */
 	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Critical_Dist_Status_Cnt_u8++;
 		return 3;
 	}
+	/* If given distance is greater than warning distance and the counter is greater or equal than the value of BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
 	{
 		g_Brakes_Informative_Dist_Status_Cnt_u8 = 0u;

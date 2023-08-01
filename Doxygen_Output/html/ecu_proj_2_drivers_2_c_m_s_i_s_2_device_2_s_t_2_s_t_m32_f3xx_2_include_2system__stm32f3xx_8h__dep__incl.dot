@@ -1,0 +1,10 @@
+digraph "Project/ecuProj/Drivers/CMSIS/Device/ST/STM32F3xx/Include/system_stm32f3xx.h"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [id="Node000001",label="Project/ecuProj/Drivers\l/CMSIS/Device/ST/STM32F3xx\l/Include/system_stm32f3xx.h",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="CMSIS Cortex-M4 Device System Source File for STM32F3xx devices."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Project/ecuProj/Drivers\l/CMSIS/Device/ST/STM32F3xx\l/Include/stm32f303xe.h",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$ecu_proj_2_drivers_2_c_m_s_i_s_2_device_2_s_t_2_s_t_m32_f3xx_2_include_2stm32f303xe_8h.html",tooltip="CMSIS STM32F303xE Devices Peripheral Access Layer Header File."];
+}
