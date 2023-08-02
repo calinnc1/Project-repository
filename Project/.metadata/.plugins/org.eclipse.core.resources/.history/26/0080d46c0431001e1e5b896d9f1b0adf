@@ -98,7 +98,6 @@ static void Brakes_OnAutobrakesDisabled(void)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Function for returning inside which interval is the distance
  * @param  distance: float32
  * @return uint8

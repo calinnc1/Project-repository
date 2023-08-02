@@ -44,7 +44,6 @@ void Blinker_Init(void)
 }
 
 /**
-  * @author cristian.tirziu
   * @brief	Blinker module main function (runs in task)
   * @return	None
   */

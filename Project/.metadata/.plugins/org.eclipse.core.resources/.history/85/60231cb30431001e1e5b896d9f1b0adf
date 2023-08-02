@@ -195,7 +195,6 @@ void Rte_Write_PC13_Pin_State(uint8 state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Read PC6 pin state- joystick switch
  * @param  state: uint8*
  * @return None
@@ -206,7 +205,6 @@ void Rte_Read_PC6_Pin_State(uint8 *state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Read collision status
  * @param  status: uint8*
  * @return None
@@ -217,7 +215,6 @@ void Rte_Read_g_CollisionWarning_Status(uint8 *status)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write collision status
  * @param  status: uint8
  * @return None
@@ -233,7 +230,6 @@ void Rte_Read_DIO_Autobrakes_State_b(boolean *state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write PC2 pin state
  * @param  state: boolean
  * @return None
@@ -251,7 +247,6 @@ void Rte_Write_PC_2(boolean state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write PC3 pin state
  * @param  state: boolean
  * @return None
@@ -349,7 +344,6 @@ void Rte_Read_AN2_Voltage_u16(uint16 *voltage)
 
 
 /**
- * @author cristian.tirziu
  * @brief  Read DO pin form remote controller
  * @param  status: uint8*
  * @return None
@@ -360,7 +354,6 @@ void Rte_Read_Remote_D0(uint8 *status)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Read D1 pin from remote controller
  * @param  status: uint8*
  * @return None
@@ -371,7 +364,6 @@ void Rte_Read_Remote_D1(uint8 *status)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Read D2 pin from remote controller
  * @param  status: uint8*
  * @return None
@@ -382,7 +374,6 @@ void Rte_Read_Remote_D2(uint8 *status)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Read D3 pin from remote controller
  * @param  status: uint8*
  * @return None
@@ -393,7 +384,6 @@ void Rte_Read_Remote_D3(uint8 *status)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write Green pin state, on pin PB13
  * @param  status: uint8*
  * @return None
@@ -411,7 +401,6 @@ void Rte_Write_PB_13(boolean state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write Yellow pin state, on pin PB14
  * @param  status: uint8*
  * @return None
@@ -429,7 +418,6 @@ void Rte_Write_PB_14(boolean state)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Write Red pin state, on pin PB15
  * @param  status: uint8*
  * @return None

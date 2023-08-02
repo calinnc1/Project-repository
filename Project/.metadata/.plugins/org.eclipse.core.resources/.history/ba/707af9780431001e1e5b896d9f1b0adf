@@ -100,7 +100,6 @@ void LED_Init(void)
 }
 
 /**
-  * @author cristian.tirziu
   * @brief  LED Main function (runs in periodic task)
   * @return None
   */

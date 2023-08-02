@@ -69,7 +69,6 @@ static uint8 g_Engine_Direction_u8 = 0;                              ///< Direct
 /* STATIC FUNCTIONS: */
 
 /**
- * @author cristian.tirziu
  * @brief  Move forward remote control
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
  * @return None
@@ -112,7 +111,6 @@ void Engine_Move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, s
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Move right remote control
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
  * @return None
@@ -145,7 +143,6 @@ void Engine_Move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Move left remote control
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
  * @return None
@@ -178,7 +175,6 @@ void Engine_Move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sin
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Move backward remote control
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
  * @return None
@@ -220,7 +216,6 @@ void Engine_Move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, 
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Conversion from mV to duty cycle
  * @param  mV_Value: uint16*, duty_Cylce_Value: uint8*
  * @return None
@@ -236,7 +231,6 @@ void Engine_mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Move commanded by joystick
  * @param  horizontal_Axis_Duty: uint8*, vertical_Axis_Duty: uint8*, speed_0: sint8*, speed_1: sint8*
  * @return None
@@ -291,7 +285,6 @@ void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis
 }
 
 /**
- * @author cristian.tirziu
  * @brief  Set speed and direction
  * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
  * @return None
@@ -419,7 +412,6 @@ void Engine_Init(void)
 }
 
 /**
-  * @author cristian.tirziu
   * @brief	Engine module main function (runs in task)
   * @return	None
   */
