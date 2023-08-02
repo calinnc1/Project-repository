@@ -1,6 +1,6 @@
 ../Asw/Brakes/Brakes.c:48:13:Brakes_OnAutobrakesEnabled	4
 ../Asw/Brakes/Brakes.c:76:13:Brakes_OnAutobrakesDisabled	4
-../Asw/Brakes/Brakes.c:100:14:Brakes_OnDistance	15
-../Asw/Brakes/Brakes.c:145:6:Brakes_Init	1
-../Asw/Brakes/Brakes.c:166:6:Brakes_MainFunction	3
-../Asw/Brakes/Brakes.c:201:6:Brakes_Shutdown	1
+../Asw/Brakes/Brakes.c:105:14:Brakes_OnDistance	15
+../Asw/Brakes/Brakes.c:156:6:Brakes_Init	1
+../Asw/Brakes/Brakes.c:177:6:Brakes_MainFunction	3
+../Asw/Brakes/Brakes.c:212:6:Brakes_Shutdown	1

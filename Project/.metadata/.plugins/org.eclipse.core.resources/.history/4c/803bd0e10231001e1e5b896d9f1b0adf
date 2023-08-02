@@ -235,7 +235,7 @@ void Engine_mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
  * @param  horizontal_Axis_Duty: uint8*, vertical_Axis_Duty: uint8*, speed_0: sint8*, speed_1: sint8*
  * @return None
  */
-void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
+void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
 {
 	/* If vertical axis has a lower value than the treshold, then it means we move forward */
 	if(*vertical_Axis_Duty < ENGINE_TRESHOLD_FORWARD)
@@ -289,7 +289,7 @@ void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis
  * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
  * @return None
  */
-void Engine_Set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
+void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
 {
 	/* If motor 0 has value 0*/
 	if(*speed_0_s8 == 0)
@@ -482,13 +482,13 @@ void Engine_MainFunction(void)
 				/* Lights up a LED that indicates that the joystick is giving the command now */
 				Rte_Write_Green_LED_Status(TRUE);
 				/* Moves from joystick */
-				Engine_Move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
+				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
 			}
 		}
 
 
 		/* Set speed and direction */
-		Engine_Set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
+		set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
         /* Write on DC motor */
 		Rte_Speed_DCMotor(DC_MOTOR_ID_0, g_Engine_Speed_0_u8);
 		Rte_Speed_DCMotor(DC_MOTOR_ID_1, g_Engine_Speed_1_u8);

@@ -115,7 +115,7 @@ void Engine_Move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, s
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
  * @return None
  */
-void Engine_Move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
+void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
 	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
@@ -147,7 +147,7 @@ void Engine_Move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
  * @return None
  */
-void Engine_Move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
+void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
 	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
@@ -179,7 +179,7 @@ void Engine_Move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sin
  * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
  * @return None
  */
-void Engine_Move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 decrement)
+void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 decrement)
 {
 	/* If current status is 1 and previous status is 0, it means a rising edge, where we make the changes */
 	if(*current_Status == 1 && *previous_Status == 0)
@@ -220,7 +220,7 @@ void Engine_Move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, 
  * @param  mV_Value: uint16*, duty_Cylce_Value: uint8*
  * @return None
  */
-void Engine_mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
+void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 {
 	/*
 	 * value ...... 3300 mV
@@ -235,7 +235,7 @@ void Engine_mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
  * @param  horizontal_Axis_Duty: uint8*, vertical_Axis_Duty: uint8*, speed_0: sint8*, speed_1: sint8*
  * @return None
  */
-void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
+void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
 {
 	/* If vertical axis has a lower value than the treshold, then it means we move forward */
 	if(*vertical_Axis_Duty < ENGINE_TRESHOLD_FORWARD)
@@ -289,7 +289,7 @@ void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis
  * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
  * @return None
  */
-void Engine_Set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
+void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
 {
 	/* If motor 0 has value 0*/
 	if(*speed_0_s8 == 0)
@@ -430,8 +430,8 @@ void Engine_MainFunction(void)
 		Rte_Engine_Switch_Joystick(&g_Engine_SW_u8);
 		Rte_Read_ADC_0_Joystick_Voltage_u16(&g_Engine_Joystick_0_Voltage_mV_u16);
 		Rte_Read_ADC_1_Joystick_Voltage_u16(&g_Engine_Joystick_1_Voltage_mV_u16);
-		Engine_mV_To_DutyCycle(&g_Engine_Joystick_0_Voltage_mV_u16, &g_Engine_Joystick_0_Duty_Cycle_u8);
-		Engine_mV_To_DutyCycle(&g_Engine_Joystick_1_Voltage_mV_u16, &g_Engine_Joystick_1_Duty_Cycle_u8);
+		mV_To_DutyCycle(&g_Engine_Joystick_0_Voltage_mV_u16, &g_Engine_Joystick_0_Duty_Cycle_u8);
+		mV_To_DutyCycle(&g_Engine_Joystick_1_Voltage_mV_u16, &g_Engine_Joystick_1_Duty_Cycle_u8);
 
 		/* Read Ultrasonic distance */
 		Rte_Read_Ultrasonic(&g_Engine_Ultrasonic_Distance_cm_f32);
@@ -472,9 +472,9 @@ void Engine_MainFunction(void)
 				Rte_Write_Green_LED_Status(FALSE);
 				/* Moves from remote control */
 				Engine_Move_Forward_Remote(&g_Engine_Remote_Control_Status_D2_u8, &g_Engine_Remote_Control_Previous_Status_D2_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_INCREMENT_SPEED);
-				Engine_Move_Right_Remote(&g_Engine_Remote_Control_Status_D0_u8, &g_Engine_Remote_Control_Previous_Status_D0_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
-				Engine_Move_Left_Remote(&g_Engine_Remote_Control_Status_D3_u8, &g_Engine_Remote_Control_Previous_Status_D3_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
-				Engine_Move_Backward_Remote(&g_Engine_Remote_Control_Status_D1_u8, &g_Engine_Remote_Control_Previous_Status_D1_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_DECREMENT_SPEED);
+				move_Right_Remote(&g_Engine_Remote_Control_Status_D0_u8, &g_Engine_Remote_Control_Previous_Status_D0_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
+				move_Left_Remote(&g_Engine_Remote_Control_Status_D3_u8, &g_Engine_Remote_Control_Previous_Status_D3_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
+				move_Backward_Remote(&g_Engine_Remote_Control_Status_D1_u8, &g_Engine_Remote_Control_Previous_Status_D1_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_DECREMENT_SPEED);
 			}
 			/* If switch counter is odd, the joystick is activated */
 			else
@@ -482,13 +482,13 @@ void Engine_MainFunction(void)
 				/* Lights up a LED that indicates that the joystick is giving the command now */
 				Rte_Write_Green_LED_Status(TRUE);
 				/* Moves from joystick */
-				Engine_Move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
+				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
 			}
 		}
 
 
 		/* Set speed and direction */
-		Engine_Set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
+		set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
         /* Write on DC motor */
 		Rte_Speed_DCMotor(DC_MOTOR_ID_0, g_Engine_Speed_0_u8);
 		Rte_Speed_DCMotor(DC_MOTOR_ID_1, g_Engine_Speed_1_u8);

@@ -31,23 +31,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  13 .comment      00000043  00000000  00000000  0002003e  2**0
                   CONTENTS, READONLY
- 14 .debug_info   0001ce54  00000000  00000000  00020081  2**0
+ 14 .debug_info   0001ce50  00000000  00000000  00020081  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_abbrev 00004366  00000000  00000000  0003ced5  2**0
+ 15 .debug_abbrev 00004395  00000000  00000000  0003ced1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_aranges 00001ab0  00000000  00000000  00041240  2**3
+ 16 .debug_aranges 00001ab0  00000000  00000000  00041268  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_rnglists 00001483  00000000  00000000  00042cf0  2**0
+ 17 .debug_rnglists 00001483  00000000  00000000  00042d18  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_macro  000251cc  00000000  00000000  00044173  2**0
+ 18 .debug_macro  000251cc  00000000  00000000  0004419b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_line   0002d4e6  00000000  00000000  0006933f  2**0
+ 19 .debug_line   0002d4ea  00000000  00000000  00069367  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_str    000d91e0  00000000  00000000  00096825  2**0
+ 20 .debug_str    000d9211  00000000  00000000  00096851  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_frame  00006d4c  00000000  00000000  0016fa08  2**2
+ 21 .debug_frame  00006d4c  00000000  00000000  0016fa64  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 00000067  00000000  00000000  00176754  2**0
+ 22 .debug_line_str 00000067  00000000  00000000  001767b0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1472,13 +1472,17 @@ static void Brakes_OnAutobrakesDisabled(void)
  800109c:	2000003e 	.word	0x2000003e
 
 080010a0 <Brakes_OnDistance>:
-
+ * @brief  Function for returning inside which interval is the distance
+ * @param  distance: float32
+ * @return uint8
+ */
 static uint8 Brakes_OnDistance(float32 distance)
 {
  80010a0:	b580      	push	{r7, lr}
  80010a2:	b082      	sub	sp, #8
  80010a4:	af00      	add	r7, sp, #0
  80010a6:	6078      	str	r0, [r7, #4]
+
 	if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
  80010a8:	4942      	ldr	r1, [pc, #264]	; (80011b4 <Brakes_OnDistance+0x114>)
  80010aa:	6878      	ldr	r0, [r7, #4]
@@ -1502,6 +1506,7 @@ static uint8 Brakes_OnDistance(float32 distance)
  80010ca:	2303      	movs	r3, #3
  80010cc:	e06d      	b.n	80011aa <Brakes_OnDistance+0x10a>
 	}
+	/* If given distance is less than critical distance and the counter is greater or equal to BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if(distance <= BRAKES_CRITICAL_DISTANCE_CM_F32 && g_Brakes_Informative_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
  80010ce:	4939      	ldr	r1, [pc, #228]	; (80011b4 <Brakes_OnDistance+0x114>)
  80010d0:	6878      	ldr	r0, [r7, #4]
@@ -1526,6 +1531,7 @@ static uint8 Brakes_OnDistance(float32 distance)
  80010f0:	2302      	movs	r3, #2
  80010f2:	e05a      	b.n	80011aa <Brakes_OnDistance+0x10a>
 	}
+	/* If given distance is greater than critical distance and less than warning distance and the counter is less than the value of BRAKES_LED_STATE_CNT_U8, we increment the counter value */
 	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
  80010f4:	492f      	ldr	r1, [pc, #188]	; (80011b4 <Brakes_OnDistance+0x114>)
  80010f6:	6878      	ldr	r0, [r7, #4]
@@ -1555,6 +1561,7 @@ static uint8 Brakes_OnDistance(float32 distance)
  8001124:	2303      	movs	r3, #3
  8001126:	e040      	b.n	80011aa <Brakes_OnDistance+0x10a>
 	}
+	/* If given distance is greater than critical distance and less than warning distance and the counter is greater or equal than the value of BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if((BRAKES_CRITICAL_DISTANCE_CM_F32 < distance) && (distance <= BRAKES_WARNING_DISTANCE_CM_F32) && g_Brakes_Warning_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
  8001128:	4922      	ldr	r1, [pc, #136]	; (80011b4 <Brakes_OnDistance+0x114>)
  800112a:	6878      	ldr	r0, [r7, #4]
@@ -1585,6 +1592,7 @@ static uint8 Brakes_OnDistance(float32 distance)
  8001158:	2301      	movs	r3, #1
  800115a:	e026      	b.n	80011aa <Brakes_OnDistance+0x10a>
 	}
+	/* If given distance is greater than warning distance and the counter is less than the value of BRAKES_LED_STATE_CNT_U8, we increment the counter value */
 	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 < BRAKES_LED_STATE_CNT_U8)
  800115c:	4919      	ldr	r1, [pc, #100]	; (80011c4 <Brakes_OnDistance+0x124>)
  800115e:	6878      	ldr	r0, [r7, #4]
@@ -1608,6 +1616,7 @@ static uint8 Brakes_OnDistance(float32 distance)
  800117e:	2303      	movs	r3, #3
  8001180:	e013      	b.n	80011aa <Brakes_OnDistance+0x10a>
 	}
+	/* If given distance is greater than warning distance and the counter is greater or equal than the value of BRAKES_LED_STATE_CNT_U8, we reset the counters values */
 	else if(BRAKES_WARNING_DISTANCE_CM_F32 < distance && g_Brakes_Critical_Dist_Status_Cnt_u8 >= BRAKES_LED_STATE_CNT_U8)
  8001182:	4910      	ldr	r1, [pc, #64]	; (80011c4 <Brakes_OnDistance+0x124>)
  8001184:	6878      	ldr	r0, [r7, #4]
@@ -1828,12 +1837,12 @@ void Brakes_Shutdown(void)
  80012d8:	20000044 	.word	0x20000044
  80012dc:	20000031 	.word	0x20000031
 
-080012e0 <move_Forward_Remote>:
-
-/* STATIC FUNCTIONS: */
-
-/* Move forward remote control */
-void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 increment)
+080012e0 <Engine_Move_Forward_Remote>:
+ * @brief  Move forward remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
+ * @return None
+ */
+void Engine_Move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 increment)
 {
  80012e0:	b480      	push	{r7}
  80012e2:	b085      	sub	sp, #20
@@ -1842,35 +1851,38 @@ void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *s
  80012e8:	60b9      	str	r1, [r7, #8]
  80012ea:	607a      	str	r2, [r7, #4]
  80012ec:	603b      	str	r3, [r7, #0]
+	/* If current status is 1 and previous status is 0, it means a rising edge, where we make the changes */
 	if(*current_Status == 1 && *previous_Status == 0)
  80012ee:	68fb      	ldr	r3, [r7, #12]
  80012f0:	781b      	ldrb	r3, [r3, #0]
  80012f2:	2b01      	cmp	r3, #1
- 80012f4:	d13e      	bne.n	8001374 <move_Forward_Remote+0x94>
+ 80012f4:	d13e      	bne.n	8001374 <Engine_Move_Forward_Remote+0x94>
  80012f6:	68bb      	ldr	r3, [r7, #8]
  80012f8:	781b      	ldrb	r3, [r3, #0]
  80012fa:	2b00      	cmp	r3, #0
- 80012fc:	d13a      	bne.n	8001374 <move_Forward_Remote+0x94>
+ 80012fc:	d13a      	bne.n	8001374 <Engine_Move_Forward_Remote+0x94>
 	{
+		/* If both speeds are less than 100 */
 		if(*speed_0 < 100 && *speed_1 < 100)
  80012fe:	687b      	ldr	r3, [r7, #4]
  8001300:	f993 3000 	ldrsb.w	r3, [r3]
  8001304:	2b63      	cmp	r3, #99	; 0x63
- 8001306:	dc31      	bgt.n	800136c <move_Forward_Remote+0x8c>
+ 8001306:	dc31      	bgt.n	800136c <Engine_Move_Forward_Remote+0x8c>
  8001308:	683b      	ldr	r3, [r7, #0]
  800130a:	f993 3000 	ldrsb.w	r3, [r3]
  800130e:	2b63      	cmp	r3, #99	; 0x63
- 8001310:	dc2c      	bgt.n	800136c <move_Forward_Remote+0x8c>
+ 8001310:	dc2c      	bgt.n	800136c <Engine_Move_Forward_Remote+0x8c>
 		{
+			/* If both speeds are 0, we sum 3 times the increment */
 			if(*speed_0 == 0 && *speed_1 == 0)
  8001312:	687b      	ldr	r3, [r7, #4]
  8001314:	f993 3000 	ldrsb.w	r3, [r3]
  8001318:	2b00      	cmp	r3, #0
- 800131a:	d118      	bne.n	800134e <move_Forward_Remote+0x6e>
+ 800131a:	d118      	bne.n	800134e <Engine_Move_Forward_Remote+0x6e>
  800131c:	683b      	ldr	r3, [r7, #0]
  800131e:	f993 3000 	ldrsb.w	r3, [r3]
  8001322:	2b00      	cmp	r3, #0
- 8001324:	d113      	bne.n	800134e <move_Forward_Remote+0x6e>
+ 8001324:	d113      	bne.n	800134e <Engine_Move_Forward_Remote+0x6e>
 			{
 				*speed_0 = *speed_0 + 3*increment;
  8001326:	687b      	ldr	r3, [r7, #4]
@@ -1891,8 +1903,9 @@ void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *s
  8001344:	f993 2000 	ldrsb.w	r2, [r3]
  8001348:	683b      	ldr	r3, [r7, #0]
  800134a:	701a      	strb	r2, [r3, #0]
- 800134c:	e00e      	b.n	800136c <move_Forward_Remote+0x8c>
+ 800134c:	e00e      	b.n	800136c <Engine_Move_Forward_Remote+0x8c>
 			}
+			/* If both speeds are different than 0, we sum the increment once */
 			else
 			{
 				*speed_0 = *speed_0 + increment;
@@ -1925,16 +1938,16 @@ void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *s
 
 	}
 }
- 8001372:	e00a      	b.n	800138a <move_Forward_Remote+0xaa>
+ 8001372:	e00a      	b.n	800138a <Engine_Move_Forward_Remote+0xaa>
 	else if(*current_Status == 0 && *previous_Status == 1)
  8001374:	68fb      	ldr	r3, [r7, #12]
  8001376:	781b      	ldrb	r3, [r3, #0]
  8001378:	2b00      	cmp	r3, #0
- 800137a:	d106      	bne.n	800138a <move_Forward_Remote+0xaa>
+ 800137a:	d106      	bne.n	800138a <Engine_Move_Forward_Remote+0xaa>
  800137c:	68bb      	ldr	r3, [r7, #8]
  800137e:	781b      	ldrb	r3, [r3, #0]
  8001380:	2b01      	cmp	r3, #1
- 8001382:	d102      	bne.n	800138a <move_Forward_Remote+0xaa>
+ 8001382:	d102      	bne.n	800138a <Engine_Move_Forward_Remote+0xaa>
 		*previous_Status = 0;
  8001384:	68bb      	ldr	r3, [r7, #8]
  8001386:	2200      	movs	r2, #0
@@ -1946,10 +1959,12 @@ void move_Forward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *s
  8001390:	bc80      	pop	{r7}
  8001392:	4770      	bx	lr
 
-08001394 <move_Right_Remote>:
-
-/* Move right remote control */
-void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
+08001394 <Engine_Move_Left_Remote>:
+ * @brief  Move right remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
+ * @return None
+ */
+void Engine_Move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
  8001394:	b480      	push	{r7}
  8001396:	b085      	sub	sp, #20
@@ -1958,15 +1973,16 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
  800139c:	60b9      	str	r1, [r7, #8]
  800139e:	607a      	str	r2, [r7, #4]
  80013a0:	603b      	str	r3, [r7, #0]
+	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
  80013a2:	68fb      	ldr	r3, [r7, #12]
  80013a4:	781b      	ldrb	r3, [r3, #0]
  80013a6:	2b01      	cmp	r3, #1
- 80013a8:	d10c      	bne.n	80013c4 <move_Right_Remote+0x30>
+ 80013a8:	d10c      	bne.n	80013c4 <Engine_Move_Left_Remote+0x30>
  80013aa:	68bb      	ldr	r3, [r7, #8]
  80013ac:	781b      	ldrb	r3, [r3, #0]
  80013ae:	2b00      	cmp	r3, #0
- 80013b0:	d108      	bne.n	80013c4 <move_Right_Remote+0x30>
+ 80013b0:	d108      	bne.n	80013c4 <Engine_Move_Left_Remote+0x30>
 	{
 		*speed_Before_Turn = *speed_0;
  80013b2:	687b      	ldr	r3, [r7, #4]
@@ -1977,17 +1993,17 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
  80013bc:	68bb      	ldr	r3, [r7, #8]
  80013be:	2201      	movs	r2, #1
  80013c0:	701a      	strb	r2, [r3, #0]
- 80013c2:	e029      	b.n	8001418 <move_Right_Remote+0x84>
+ 80013c2:	e029      	b.n	8001418 <Engine_Move_Left_Remote+0x84>
 	}
 	else if(*current_Status == 0 && *previous_Status == 1)
  80013c4:	68fb      	ldr	r3, [r7, #12]
  80013c6:	781b      	ldrb	r3, [r3, #0]
  80013c8:	2b00      	cmp	r3, #0
- 80013ca:	d111      	bne.n	80013f0 <move_Right_Remote+0x5c>
+ 80013ca:	d111      	bne.n	80013f0 <Engine_Move_Left_Remote+0x5c>
  80013cc:	68bb      	ldr	r3, [r7, #8]
  80013ce:	781b      	ldrb	r3, [r3, #0]
  80013d0:	2b01      	cmp	r3, #1
- 80013d2:	d10d      	bne.n	80013f0 <move_Right_Remote+0x5c>
+ 80013d2:	d10d      	bne.n	80013f0 <Engine_Move_Left_Remote+0x5c>
 	{
 		*speed_0 = *speed_Before_Turn;
  80013d4:	69bb      	ldr	r3, [r7, #24]
@@ -2003,17 +2019,18 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
  80013e8:	68bb      	ldr	r3, [r7, #8]
  80013ea:	2200      	movs	r2, #0
  80013ec:	701a      	strb	r2, [r3, #0]
- 80013ee:	e013      	b.n	8001418 <move_Right_Remote+0x84>
+ 80013ee:	e013      	b.n	8001418 <Engine_Move_Left_Remote+0x84>
 	}
+	/* Here we rotate to the right as long we push the button */
 	else if(*current_Status == 1 && *previous_Status == 1)
  80013f0:	68fb      	ldr	r3, [r7, #12]
  80013f2:	781b      	ldrb	r3, [r3, #0]
  80013f4:	2b01      	cmp	r3, #1
- 80013f6:	d10f      	bne.n	8001418 <move_Right_Remote+0x84>
+ 80013f6:	d10f      	bne.n	8001418 <Engine_Move_Left_Remote+0x84>
  80013f8:	68bb      	ldr	r3, [r7, #8]
  80013fa:	781b      	ldrb	r3, [r3, #0]
  80013fc:	2b01      	cmp	r3, #1
- 80013fe:	d10b      	bne.n	8001418 <move_Right_Remote+0x84>
+ 80013fe:	d10b      	bne.n	8001418 <Engine_Move_Left_Remote+0x84>
 	{
 		*speed_1 = *speed_Before_Turn;
  8001400:	69bb      	ldr	r3, [r7, #24]
@@ -2034,17 +2051,19 @@ void move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spe
 
 	}
 }
- 8001416:	e7ff      	b.n	8001418 <move_Right_Remote+0x84>
+ 8001416:	e7ff      	b.n	8001418 <Engine_Move_Left_Remote+0x84>
  8001418:	bf00      	nop
  800141a:	3714      	adds	r7, #20
  800141c:	46bd      	mov	sp, r7
  800141e:	bc80      	pop	{r7}
  8001420:	4770      	bx	lr
 
-08001422 <move_Left_Remote>:
-
-/* Move left remote control */
-void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
+08001422 <Engine_Move_Right_Remote>:
+ * @brief  Move left remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, speed_Before_Turn: sint8*
+ * @return None
+ */
+void Engine_Move_Right_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, sint8 *speed_Before_Turn)
 {
  8001422:	b480      	push	{r7}
  8001424:	b085      	sub	sp, #20
@@ -2053,15 +2072,16 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
  800142a:	60b9      	str	r1, [r7, #8]
  800142c:	607a      	str	r2, [r7, #4]
  800142e:	603b      	str	r3, [r7, #0]
+	/* If current status is 1 and previous status is 0, it means a rising edge */
 	if(*current_Status == 1 && *previous_Status == 0)
  8001430:	68fb      	ldr	r3, [r7, #12]
  8001432:	781b      	ldrb	r3, [r3, #0]
  8001434:	2b01      	cmp	r3, #1
- 8001436:	d10c      	bne.n	8001452 <move_Left_Remote+0x30>
+ 8001436:	d10c      	bne.n	8001452 <Engine_Move_Right_Remote+0x30>
  8001438:	68bb      	ldr	r3, [r7, #8]
  800143a:	781b      	ldrb	r3, [r3, #0]
  800143c:	2b00      	cmp	r3, #0
- 800143e:	d108      	bne.n	8001452 <move_Left_Remote+0x30>
+ 800143e:	d108      	bne.n	8001452 <Engine_Move_Right_Remote+0x30>
 	{
 		*speed_Before_Turn = *speed_0;
  8001440:	687b      	ldr	r3, [r7, #4]
@@ -2072,17 +2092,17 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
  800144a:	68bb      	ldr	r3, [r7, #8]
  800144c:	2201      	movs	r2, #1
  800144e:	701a      	strb	r2, [r3, #0]
- 8001450:	e029      	b.n	80014a6 <move_Left_Remote+0x84>
+ 8001450:	e029      	b.n	80014a6 <Engine_Move_Right_Remote+0x84>
 	}
 	else if(*current_Status == 0 && *previous_Status == 1)
  8001452:	68fb      	ldr	r3, [r7, #12]
  8001454:	781b      	ldrb	r3, [r3, #0]
  8001456:	2b00      	cmp	r3, #0
- 8001458:	d111      	bne.n	800147e <move_Left_Remote+0x5c>
+ 8001458:	d111      	bne.n	800147e <Engine_Move_Right_Remote+0x5c>
  800145a:	68bb      	ldr	r3, [r7, #8]
  800145c:	781b      	ldrb	r3, [r3, #0]
  800145e:	2b01      	cmp	r3, #1
- 8001460:	d10d      	bne.n	800147e <move_Left_Remote+0x5c>
+ 8001460:	d10d      	bne.n	800147e <Engine_Move_Right_Remote+0x5c>
 	{
 		*speed_0 = *speed_Before_Turn;
  8001462:	69bb      	ldr	r3, [r7, #24]
@@ -2098,17 +2118,18 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
  8001476:	68bb      	ldr	r3, [r7, #8]
  8001478:	2200      	movs	r2, #0
  800147a:	701a      	strb	r2, [r3, #0]
- 800147c:	e013      	b.n	80014a6 <move_Left_Remote+0x84>
+ 800147c:	e013      	b.n	80014a6 <Engine_Move_Right_Remote+0x84>
 	}
+	/* Here we rotate to the left as long we push the button */
 	else if(*current_Status == 1 && *previous_Status == 1)
  800147e:	68fb      	ldr	r3, [r7, #12]
  8001480:	781b      	ldrb	r3, [r3, #0]
  8001482:	2b01      	cmp	r3, #1
- 8001484:	d10f      	bne.n	80014a6 <move_Left_Remote+0x84>
+ 8001484:	d10f      	bne.n	80014a6 <Engine_Move_Right_Remote+0x84>
  8001486:	68bb      	ldr	r3, [r7, #8]
  8001488:	781b      	ldrb	r3, [r3, #0]
  800148a:	2b01      	cmp	r3, #1
- 800148c:	d10b      	bne.n	80014a6 <move_Left_Remote+0x84>
+ 800148c:	d10b      	bne.n	80014a6 <Engine_Move_Right_Remote+0x84>
 	{
 		*speed_0 = *speed_Before_Turn;
  800148e:	69bb      	ldr	r3, [r7, #24]
@@ -2129,17 +2150,19 @@ void move_Left_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *spee
 
 	}
 }
- 80014a4:	e7ff      	b.n	80014a6 <move_Left_Remote+0x84>
+ 80014a4:	e7ff      	b.n	80014a6 <Engine_Move_Right_Remote+0x84>
  80014a6:	bf00      	nop
  80014a8:	3714      	adds	r7, #20
  80014aa:	46bd      	mov	sp, r7
  80014ac:	bc80      	pop	{r7}
  80014ae:	4770      	bx	lr
 
-080014b0 <move_Backward_Remote>:
-
-/* Move backward remote control */
-void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 decrement)
+080014b0 <Engine_Move_Backward_Remote>:
+ * @brief  Move backward remote control
+ * @param  current_Status: uint8*, current_Status: uint8*, speed_0 sint8*, speed_1 sint8*, increment: uint8
+ * @return None
+ */
+void Engine_Move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *speed_0, sint8 *speed_1, uint8 decrement)
 {
  80014b0:	b480      	push	{r7}
  80014b2:	b085      	sub	sp, #20
@@ -2148,35 +2171,38 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
  80014b8:	60b9      	str	r1, [r7, #8]
  80014ba:	607a      	str	r2, [r7, #4]
  80014bc:	603b      	str	r3, [r7, #0]
+	/* If current status is 1 and previous status is 0, it means a rising edge, where we make the changes */
 	if(*current_Status == 1 && *previous_Status == 0)
  80014be:	68fb      	ldr	r3, [r7, #12]
  80014c0:	781b      	ldrb	r3, [r3, #0]
  80014c2:	2b01      	cmp	r3, #1
- 80014c4:	d140      	bne.n	8001548 <move_Backward_Remote+0x98>
+ 80014c4:	d140      	bne.n	8001548 <Engine_Move_Backward_Remote+0x98>
  80014c6:	68bb      	ldr	r3, [r7, #8]
  80014c8:	781b      	ldrb	r3, [r3, #0]
  80014ca:	2b00      	cmp	r3, #0
- 80014cc:	d13c      	bne.n	8001548 <move_Backward_Remote+0x98>
+ 80014cc:	d13c      	bne.n	8001548 <Engine_Move_Backward_Remote+0x98>
 	{
+		/* If both speeds are greater than -90 */
 		if(*speed_0 >= -90 && *speed_1 >= -90)
  80014ce:	687b      	ldr	r3, [r7, #4]
  80014d0:	f993 3000 	ldrsb.w	r3, [r3]
  80014d4:	f113 0f5a 	cmn.w	r3, #90	; 0x5a
- 80014d8:	db32      	blt.n	8001540 <move_Backward_Remote+0x90>
+ 80014d8:	db32      	blt.n	8001540 <Engine_Move_Backward_Remote+0x90>
  80014da:	683b      	ldr	r3, [r7, #0]
  80014dc:	f993 3000 	ldrsb.w	r3, [r3]
  80014e0:	f113 0f5a 	cmn.w	r3, #90	; 0x5a
- 80014e4:	db2c      	blt.n	8001540 <move_Backward_Remote+0x90>
+ 80014e4:	db2c      	blt.n	8001540 <Engine_Move_Backward_Remote+0x90>
 		{
+			/* If both speeds are 0, we decrease 3 times the decrement */
 			if(*speed_0 == 0 && *speed_1 == 0)
  80014e6:	687b      	ldr	r3, [r7, #4]
  80014e8:	f993 3000 	ldrsb.w	r3, [r3]
  80014ec:	2b00      	cmp	r3, #0
- 80014ee:	d118      	bne.n	8001522 <move_Backward_Remote+0x72>
+ 80014ee:	d118      	bne.n	8001522 <Engine_Move_Backward_Remote+0x72>
  80014f0:	683b      	ldr	r3, [r7, #0]
  80014f2:	f993 3000 	ldrsb.w	r3, [r3]
  80014f6:	2b00      	cmp	r3, #0
- 80014f8:	d113      	bne.n	8001522 <move_Backward_Remote+0x72>
+ 80014f8:	d113      	bne.n	8001522 <Engine_Move_Backward_Remote+0x72>
 			{
 				*speed_0 = *speed_0 - 3*decrement;
  80014fa:	687b      	ldr	r3, [r7, #4]
@@ -2197,7 +2223,7 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
  8001518:	f993 2000 	ldrsb.w	r2, [r3]
  800151c:	683b      	ldr	r3, [r7, #0]
  800151e:	701a      	strb	r2, [r3, #0]
- 8001520:	e00e      	b.n	8001540 <move_Backward_Remote+0x90>
+ 8001520:	e00e      	b.n	8001540 <Engine_Move_Backward_Remote+0x90>
 			}
 			else
 			{
@@ -2231,16 +2257,16 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
 
 	}
 }
- 8001546:	e00a      	b.n	800155e <move_Backward_Remote+0xae>
+ 8001546:	e00a      	b.n	800155e <Engine_Move_Backward_Remote+0xae>
 	else if(*current_Status == 0 && *previous_Status == 1)
  8001548:	68fb      	ldr	r3, [r7, #12]
  800154a:	781b      	ldrb	r3, [r3, #0]
  800154c:	2b00      	cmp	r3, #0
- 800154e:	d106      	bne.n	800155e <move_Backward_Remote+0xae>
+ 800154e:	d106      	bne.n	800155e <Engine_Move_Backward_Remote+0xae>
  8001550:	68bb      	ldr	r3, [r7, #8]
  8001552:	781b      	ldrb	r3, [r3, #0]
  8001554:	2b01      	cmp	r3, #1
- 8001556:	d102      	bne.n	800155e <move_Backward_Remote+0xae>
+ 8001556:	d102      	bne.n	800155e <Engine_Move_Backward_Remote+0xae>
 		*previous_Status = 0;
  8001558:	68bb      	ldr	r3, [r7, #8]
  800155a:	2200      	movs	r2, #0
@@ -2252,10 +2278,12 @@ void move_Backward_Remote(uint8 *current_Status, uint8 *previous_Status, sint8 *
  8001564:	bc80      	pop	{r7}
  8001566:	4770      	bx	lr
 
-08001568 <mV_To_DutyCycle>:
-
-/* Conversion from mV to duty cycle */
-void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
+08001568 <Engine_mV_To_DutyCycle>:
+ * @brief  Conversion from mV to duty cycle
+ * @param  mV_Value: uint16*, duty_Cylce_Value: uint8*
+ * @return None
+ */
+void Engine_mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
 {
  8001568:	b580      	push	{r7, lr}
  800156a:	b082      	sub	sp, #8
@@ -2272,7 +2300,7 @@ void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
  8001574:	881b      	ldrh	r3, [r3, #0]
  8001576:	4618      	mov	r0, r3
  8001578:	f7fe ff80 	bl	800047c <__aeabi_i2d>
- 800157c:	a30a      	add	r3, pc, #40	; (adr r3, 80015a8 <mV_To_DutyCycle+0x40>)
+ 800157c:	a30a      	add	r3, pc, #40	; (adr r3, 80015a8 <Engine_mV_To_DutyCycle+0x40>)
  800157e:	e9d3 2300 	ldrd	r2, r3, [r3]
  8001582:	f7fe ffe5 	bl	8000550 <__aeabi_dmul>
  8001586:	4602      	mov	r2, r0
@@ -2294,10 +2322,12 @@ void mV_To_DutyCycle(uint16 *mV_Value, uint8 *duty_Cylce_Value)
  80015a8:	e7e1fc09 	.word	0xe7e1fc09
  80015ac:	3f9f07bf 	.word	0x3f9f07bf
 
-080015b0 <move_From_Joystick>:
-
-/* Move commanded by joystick */
-void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
+080015b0 <Engine_Move_From_Joystick>:
+ * @brief  Move commanded by joystick
+ * @param  horizontal_Axis_Duty: uint8*, vertical_Axis_Duty: uint8*, speed_0: sint8*, speed_1: sint8*
+ * @return None
+ */
+void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, sint8 *speed_0, sint8 *speed_1)
 {
  80015b0:	b480      	push	{r7}
  80015b2:	b085      	sub	sp, #20
@@ -2306,11 +2336,12 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
  80015b8:	60b9      	str	r1, [r7, #8]
  80015ba:	607a      	str	r2, [r7, #4]
  80015bc:	603b      	str	r3, [r7, #0]
+	/* If vertical axis has a lower value than the treshold, then it means we move forward */
 	if(*vertical_Axis_Duty < ENGINE_TRESHOLD_FORWARD)
  80015be:	68bb      	ldr	r3, [r7, #8]
  80015c0:	781b      	ldrb	r3, [r3, #0]
  80015c2:	2b2c      	cmp	r3, #44	; 0x2c
- 80015c4:	d81e      	bhi.n	8001604 <move_From_Joystick+0x54>
+ 80015c4:	d81e      	bhi.n	8001604 <Engine_Move_From_Joystick+0x54>
 	{
 		*speed_0 = 100 - (*vertical_Axis_Duty * 2);
  80015c6:	68bb      	ldr	r3, [r7, #8]
@@ -2327,11 +2358,12 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
  80015dc:	f993 2000 	ldrsb.w	r2, [r3]
  80015e0:	683b      	ldr	r3, [r7, #0]
  80015e2:	701a      	strb	r2, [r3, #0]
+		/* If horizontal axis has a lower value than the treshold, then it means we move right */
 		if(*horizontal_Axis_Duty < ENGINE_TRESHOLD_RIGHT)
  80015e4:	68fb      	ldr	r3, [r7, #12]
  80015e6:	781b      	ldrb	r3, [r3, #0]
  80015e8:	2b2c      	cmp	r3, #44	; 0x2c
- 80015ea:	d803      	bhi.n	80015f4 <move_From_Joystick+0x44>
+ 80015ea:	d803      	bhi.n	80015f4 <Engine_Move_From_Joystick+0x44>
 		{
 			*speed_1 = 0;
  80015ec:	683b      	ldr	r3, [r7, #0]
@@ -2343,23 +2375,23 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
 		*speed_1 = 0;
 	}
 }
- 80015f2:	e030      	b.n	8001656 <move_From_Joystick+0xa6>
+ 80015f2:	e030      	b.n	8001656 <Engine_Move_From_Joystick+0xa6>
 		else if(*horizontal_Axis_Duty > ENGINE_TRESHOLD_LEFT)
  80015f4:	68fb      	ldr	r3, [r7, #12]
  80015f6:	781b      	ldrb	r3, [r3, #0]
  80015f8:	2b41      	cmp	r3, #65	; 0x41
- 80015fa:	d92c      	bls.n	8001656 <move_From_Joystick+0xa6>
+ 80015fa:	d92c      	bls.n	8001656 <Engine_Move_From_Joystick+0xa6>
 			*speed_0 = 0;
  80015fc:	687b      	ldr	r3, [r7, #4]
  80015fe:	2200      	movs	r2, #0
  8001600:	701a      	strb	r2, [r3, #0]
 }
- 8001602:	e028      	b.n	8001656 <move_From_Joystick+0xa6>
+ 8001602:	e028      	b.n	8001656 <Engine_Move_From_Joystick+0xa6>
 	else if(*vertical_Axis_Duty > ENGINE_TRESHOLD_BACKWARD)
  8001604:	68bb      	ldr	r3, [r7, #8]
  8001606:	781b      	ldrb	r3, [r3, #0]
  8001608:	2b3c      	cmp	r3, #60	; 0x3c
- 800160a:	d91e      	bls.n	800164a <move_From_Joystick+0x9a>
+ 800160a:	d91e      	bls.n	800164a <Engine_Move_From_Joystick+0x9a>
 		*speed_0 = -(*vertical_Axis_Duty - 50) * 2;
  800160c:	68bb      	ldr	r3, [r7, #8]
  800160e:	781b      	ldrb	r3, [r3, #0]
@@ -2379,24 +2411,24 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
  800162a:	68fb      	ldr	r3, [r7, #12]
  800162c:	781b      	ldrb	r3, [r3, #0]
  800162e:	2b2c      	cmp	r3, #44	; 0x2c
- 8001630:	d803      	bhi.n	800163a <move_From_Joystick+0x8a>
+ 8001630:	d803      	bhi.n	800163a <Engine_Move_From_Joystick+0x8a>
 			*speed_1 = 0;
  8001632:	683b      	ldr	r3, [r7, #0]
  8001634:	2200      	movs	r2, #0
  8001636:	701a      	strb	r2, [r3, #0]
 }
- 8001638:	e00d      	b.n	8001656 <move_From_Joystick+0xa6>
+ 8001638:	e00d      	b.n	8001656 <Engine_Move_From_Joystick+0xa6>
 		else if(*horizontal_Axis_Duty > ENGINE_TRESHOLD_LEFT)
  800163a:	68fb      	ldr	r3, [r7, #12]
  800163c:	781b      	ldrb	r3, [r3, #0]
  800163e:	2b41      	cmp	r3, #65	; 0x41
- 8001640:	d909      	bls.n	8001656 <move_From_Joystick+0xa6>
+ 8001640:	d909      	bls.n	8001656 <Engine_Move_From_Joystick+0xa6>
 			*speed_0 = 0;
  8001642:	687b      	ldr	r3, [r7, #4]
  8001644:	2200      	movs	r2, #0
  8001646:	701a      	strb	r2, [r3, #0]
 }
- 8001648:	e005      	b.n	8001656 <move_From_Joystick+0xa6>
+ 8001648:	e005      	b.n	8001656 <Engine_Move_From_Joystick+0xa6>
 		*speed_0 = 0;
  800164a:	687b      	ldr	r3, [r7, #4]
  800164c:	2200      	movs	r2, #0
@@ -2412,10 +2444,12 @@ void move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis_Duty, 
  800165c:	bc80      	pop	{r7}
  800165e:	4770      	bx	lr
 
-08001660 <set_Speed_And_Direction>:
-
-/* Set speed and direction */
-void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
+08001660 <Engine_Set_Speed_And_Direction>:
+ * @brief  Set speed and direction
+ * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
+ * @return None
+ */
+void Engine_Set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
 {
  8001660:	b480      	push	{r7}
  8001662:	b085      	sub	sp, #20
@@ -2424,17 +2458,19 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  8001668:	60b9      	str	r1, [r7, #8]
  800166a:	607a      	str	r2, [r7, #4]
  800166c:	603b      	str	r3, [r7, #0]
+	/* If motor 0 has value 0*/
 	if(*speed_0_s8 == 0)
  800166e:	68fb      	ldr	r3, [r7, #12]
  8001670:	f993 3000 	ldrsb.w	r3, [r3]
  8001674:	2b00      	cmp	r3, #0
- 8001676:	d135      	bne.n	80016e4 <set_Speed_And_Direction+0x84>
+ 8001676:	d135      	bne.n	80016e4 <Engine_Set_Speed_And_Direction+0x84>
 	{
+		/* If motor 1 has value 0 too, the speed is set to 0, and the direction is set to backward*/
 		if(*speed_1_s8 == 0)
  8001678:	68bb      	ldr	r3, [r7, #8]
  800167a:	f993 3000 	ldrsb.w	r3, [r3]
  800167e:	2b00      	cmp	r3, #0
- 8001680:	d109      	bne.n	8001696 <set_Speed_And_Direction+0x36>
+ 8001680:	d109      	bne.n	8001696 <Engine_Set_Speed_And_Direction+0x36>
 		{
 			*direction = ENGINE_BACKWARD_DIR;
  8001682:	69bb      	ldr	r3, [r7, #24]
@@ -2454,12 +2490,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
 
 	}
 }
- 8001694:	e0b1      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 8001694:	e0b1      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 > 0)
  8001696:	68bb      	ldr	r3, [r7, #8]
  8001698:	f993 3000 	ldrsb.w	r3, [r3]
  800169c:	2b00      	cmp	r3, #0
- 800169e:	dd0c      	ble.n	80016ba <set_Speed_And_Direction+0x5a>
+ 800169e:	dd0c      	ble.n	80016ba <Engine_Set_Speed_And_Direction+0x5a>
 			*speed_0_u8 = 0;
  80016a0:	687b      	ldr	r3, [r7, #4]
  80016a2:	2200      	movs	r2, #0
@@ -2475,12 +2511,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  80016b4:	2200      	movs	r2, #0
  80016b6:	701a      	strb	r2, [r3, #0]
 }
- 80016b8:	e09f      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 80016b8:	e09f      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 < 0)
  80016ba:	68bb      	ldr	r3, [r7, #8]
  80016bc:	f993 3000 	ldrsb.w	r3, [r3]
  80016c0:	2b00      	cmp	r3, #0
- 80016c2:	f280 809a 	bge.w	80017fa <set_Speed_And_Direction+0x19a>
+ 80016c2:	f280 809a 	bge.w	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 			*speed_0_u8 = 0;
  80016c6:	687b      	ldr	r3, [r7, #4]
  80016c8:	2200      	movs	r2, #0
@@ -2498,17 +2534,17 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  80016de:	2201      	movs	r2, #1
  80016e0:	701a      	strb	r2, [r3, #0]
 }
- 80016e2:	e08a      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 80016e2:	e08a      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 	else if(*speed_0_s8 > 0)
  80016e4:	68fb      	ldr	r3, [r7, #12]
  80016e6:	f993 3000 	ldrsb.w	r3, [r3]
  80016ea:	2b00      	cmp	r3, #0
- 80016ec:	dd3d      	ble.n	800176a <set_Speed_And_Direction+0x10a>
+ 80016ec:	dd3d      	ble.n	800176a <Engine_Set_Speed_And_Direction+0x10a>
 		if(*speed_1_s8 == 0)
  80016ee:	68bb      	ldr	r3, [r7, #8]
  80016f0:	f993 3000 	ldrsb.w	r3, [r3]
  80016f4:	2b00      	cmp	r3, #0
- 80016f6:	d10c      	bne.n	8001712 <set_Speed_And_Direction+0xb2>
+ 80016f6:	d10c      	bne.n	8001712 <Engine_Set_Speed_And_Direction+0xb2>
 			*speed_0_u8 = *speed_0_s8;
  80016f8:	68fb      	ldr	r3, [r7, #12]
  80016fa:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2524,12 +2560,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  800170c:	2200      	movs	r2, #0
  800170e:	701a      	strb	r2, [r3, #0]
 }
- 8001710:	e073      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 8001710:	e073      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 > 0)
  8001712:	68bb      	ldr	r3, [r7, #8]
  8001714:	f993 3000 	ldrsb.w	r3, [r3]
  8001718:	2b00      	cmp	r3, #0
- 800171a:	dd0f      	ble.n	800173c <set_Speed_And_Direction+0xdc>
+ 800171a:	dd0f      	ble.n	800173c <Engine_Set_Speed_And_Direction+0xdc>
 			*speed_0_u8 = *speed_0_s8;
  800171c:	68fb      	ldr	r3, [r7, #12]
  800171e:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2547,12 +2583,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  8001736:	2200      	movs	r2, #0
  8001738:	701a      	strb	r2, [r3, #0]
 }
- 800173a:	e05e      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 800173a:	e05e      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 < 0)
  800173c:	68bb      	ldr	r3, [r7, #8]
  800173e:	f993 3000 	ldrsb.w	r3, [r3]
  8001742:	2b00      	cmp	r3, #0
- 8001744:	da59      	bge.n	80017fa <set_Speed_And_Direction+0x19a>
+ 8001744:	da59      	bge.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 			*speed_0_u8 = *speed_0_s8;
  8001746:	68fb      	ldr	r3, [r7, #12]
  8001748:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2572,17 +2608,17 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  8001764:	2201      	movs	r2, #1
  8001766:	701a      	strb	r2, [r3, #0]
 }
- 8001768:	e047      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 8001768:	e047      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 	else if(*speed_0_s8 < 0)
  800176a:	68fb      	ldr	r3, [r7, #12]
  800176c:	f993 3000 	ldrsb.w	r3, [r3]
  8001770:	2b00      	cmp	r3, #0
- 8001772:	da42      	bge.n	80017fa <set_Speed_And_Direction+0x19a>
+ 8001772:	da42      	bge.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		if(*speed_1_s8 == 0)
  8001774:	68bb      	ldr	r3, [r7, #8]
  8001776:	f993 3000 	ldrsb.w	r3, [r3]
  800177a:	2b00      	cmp	r3, #0
- 800177c:	d10e      	bne.n	800179c <set_Speed_And_Direction+0x13c>
+ 800177c:	d10e      	bne.n	800179c <Engine_Set_Speed_And_Direction+0x13c>
 			*speed_0_u8 = -*speed_0_s8;
  800177e:	68fb      	ldr	r3, [r7, #12]
  8001780:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2600,12 +2636,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  8001796:	2201      	movs	r2, #1
  8001798:	701a      	strb	r2, [r3, #0]
 }
- 800179a:	e02e      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 800179a:	e02e      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 > 0)
  800179c:	68bb      	ldr	r3, [r7, #8]
  800179e:	f993 3000 	ldrsb.w	r3, [r3]
  80017a2:	2b00      	cmp	r3, #0
- 80017a4:	dd11      	ble.n	80017ca <set_Speed_And_Direction+0x16a>
+ 80017a4:	dd11      	ble.n	80017ca <Engine_Set_Speed_And_Direction+0x16a>
 			*speed_0_u8 = -*speed_0_s8;
  80017a6:	68fb      	ldr	r3, [r7, #12]
  80017a8:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2625,12 +2661,12 @@ void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_
  80017c4:	2200      	movs	r2, #0
  80017c6:	701a      	strb	r2, [r3, #0]
 }
- 80017c8:	e017      	b.n	80017fa <set_Speed_And_Direction+0x19a>
+ 80017c8:	e017      	b.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 		else if(*speed_1_s8 < 0)
  80017ca:	68bb      	ldr	r3, [r7, #8]
  80017cc:	f993 3000 	ldrsb.w	r3, [r3]
  80017d0:	2b00      	cmp	r3, #0
- 80017d2:	da12      	bge.n	80017fa <set_Speed_And_Direction+0x19a>
+ 80017d2:	da12      	bge.n	80017fa <Engine_Set_Speed_And_Direction+0x19a>
 			*speed_0_u8 = -*speed_0_s8;
  80017d4:	68fb      	ldr	r3, [r7, #12]
  80017d6:	f993 3000 	ldrsb.w	r3, [r3]
@@ -2722,14 +2758,14 @@ void Engine_MainFunction(void)
 		Rte_Read_ADC_1_Joystick_Voltage_u16(&g_Engine_Joystick_1_Voltage_mV_u16);
  8001850:	485b      	ldr	r0, [pc, #364]	; (80019c0 <Engine_MainFunction+0x1a4>)
  8001852:	f00a feed 	bl	800c630 <Rte_Read_AN2_Voltage_u16>
-		mV_To_DutyCycle(&g_Engine_Joystick_0_Voltage_mV_u16, &g_Engine_Joystick_0_Duty_Cycle_u8);
+		Engine_mV_To_DutyCycle(&g_Engine_Joystick_0_Voltage_mV_u16, &g_Engine_Joystick_0_Duty_Cycle_u8);
  8001856:	495b      	ldr	r1, [pc, #364]	; (80019c4 <Engine_MainFunction+0x1a8>)
  8001858:	4858      	ldr	r0, [pc, #352]	; (80019bc <Engine_MainFunction+0x1a0>)
- 800185a:	f7ff fe85 	bl	8001568 <mV_To_DutyCycle>
-		mV_To_DutyCycle(&g_Engine_Joystick_1_Voltage_mV_u16, &g_Engine_Joystick_1_Duty_Cycle_u8);
+ 800185a:	f7ff fe85 	bl	8001568 <Engine_mV_To_DutyCycle>
+		Engine_mV_To_DutyCycle(&g_Engine_Joystick_1_Voltage_mV_u16, &g_Engine_Joystick_1_Duty_Cycle_u8);
  800185e:	495a      	ldr	r1, [pc, #360]	; (80019c8 <Engine_MainFunction+0x1ac>)
  8001860:	4857      	ldr	r0, [pc, #348]	; (80019c0 <Engine_MainFunction+0x1a4>)
- 8001862:	f7ff fe81 	bl	8001568 <mV_To_DutyCycle>
+ 8001862:	f7ff fe81 	bl	8001568 <Engine_mV_To_DutyCycle>
 
 		/* Read Ultrasonic distance */
 		Rte_Read_Ultrasonic(&g_Engine_Ultrasonic_Distance_cm_f32);
@@ -2795,11 +2831,11 @@ void Engine_MainFunction(void)
  80018c0:	4b44      	ldr	r3, [pc, #272]	; (80019d4 <Engine_MainFunction+0x1b8>)
  80018c2:	2201      	movs	r2, #1
  80018c4:	701a      	strb	r2, [r3, #0]
-		else
 		{
 
 		}
 
+		/* If distance is less than critical distance and direction is forward */
 		if((g_Engine_Ultrasonic_Distance_cm_u16 < ENGINE_CRITICAL_DISTANCE_CM_F32) && (g_Engine_Direction_u8 == ENGINE_FORWARD_DIR))
  80018c6:	4b42      	ldr	r3, [pc, #264]	; (80019d0 <Engine_MainFunction+0x1b4>)
  80018c8:	881b      	ldrh	r3, [r3, #0]
@@ -2829,6 +2865,7 @@ void Engine_MainFunction(void)
 		}
 		else
 		{
+			/* If switch counter is even, the remote is activated */
 			if( g_Engine_Switch_CNT_u8 % 2 == 0)
  80018f6:	4b38      	ldr	r3, [pc, #224]	; (80019d8 <Engine_MainFunction+0x1bc>)
  80018f8:	781b      	ldrb	r3, [r3, #0]
@@ -2842,40 +2879,41 @@ void Engine_MainFunction(void)
  8001904:	2000      	movs	r0, #0
  8001906:	f00a fef1 	bl	800c6ec <Rte_Write_PB_13>
 				/* Moves from remote control */
-				move_Forward_Remote(&g_Engine_Remote_Control_Status_D2_u8, &g_Engine_Remote_Control_Previous_Status_D2_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_INCREMENT_SPEED);
+				Engine_Move_Forward_Remote(&g_Engine_Remote_Control_Status_D2_u8, &g_Engine_Remote_Control_Previous_Status_D2_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_INCREMENT_SPEED);
  800190a:	230a      	movs	r3, #10
  800190c:	9300      	str	r3, [sp, #0]
  800190e:	4b36      	ldr	r3, [pc, #216]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001910:	4a34      	ldr	r2, [pc, #208]	; (80019e4 <Engine_MainFunction+0x1c8>)
  8001912:	4936      	ldr	r1, [pc, #216]	; (80019ec <Engine_MainFunction+0x1d0>)
  8001914:	4826      	ldr	r0, [pc, #152]	; (80019b0 <Engine_MainFunction+0x194>)
- 8001916:	f7ff fce3 	bl	80012e0 <move_Forward_Remote>
-				move_Right_Remote(&g_Engine_Remote_Control_Status_D0_u8, &g_Engine_Remote_Control_Previous_Status_D0_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
+ 8001916:	f7ff fce3 	bl	80012e0 <Engine_Move_Forward_Remote>
+				Engine_Move_Right_Remote(&g_Engine_Remote_Control_Status_D0_u8, &g_Engine_Remote_Control_Previous_Status_D0_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
  800191a:	4b35      	ldr	r3, [pc, #212]	; (80019f0 <Engine_MainFunction+0x1d4>)
  800191c:	9300      	str	r3, [sp, #0]
  800191e:	4b32      	ldr	r3, [pc, #200]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001920:	4a30      	ldr	r2, [pc, #192]	; (80019e4 <Engine_MainFunction+0x1c8>)
  8001922:	4934      	ldr	r1, [pc, #208]	; (80019f4 <Engine_MainFunction+0x1d8>)
  8001924:	4820      	ldr	r0, [pc, #128]	; (80019a8 <Engine_MainFunction+0x18c>)
- 8001926:	f7ff fd35 	bl	8001394 <move_Right_Remote>
-				move_Left_Remote(&g_Engine_Remote_Control_Status_D3_u8, &g_Engine_Remote_Control_Previous_Status_D3_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
+ 8001926:	f7ff fd7c 	bl	8001422 <Engine_Move_Right_Remote>
+				Engine_Move_Left_Remote(&g_Engine_Remote_Control_Status_D3_u8, &g_Engine_Remote_Control_Previous_Status_D3_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_Before_s8);
  800192a:	4b31      	ldr	r3, [pc, #196]	; (80019f0 <Engine_MainFunction+0x1d4>)
  800192c:	9300      	str	r3, [sp, #0]
  800192e:	4b2e      	ldr	r3, [pc, #184]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001930:	4a2c      	ldr	r2, [pc, #176]	; (80019e4 <Engine_MainFunction+0x1c8>)
  8001932:	4931      	ldr	r1, [pc, #196]	; (80019f8 <Engine_MainFunction+0x1dc>)
  8001934:	481f      	ldr	r0, [pc, #124]	; (80019b4 <Engine_MainFunction+0x198>)
- 8001936:	f7ff fd74 	bl	8001422 <move_Left_Remote>
-				move_Backward_Remote(&g_Engine_Remote_Control_Status_D1_u8, &g_Engine_Remote_Control_Previous_Status_D1_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_DECREMENT_SPEED);
+ 8001936:	f7ff fd2d 	bl	8001394 <Engine_Move_Left_Remote>
+				Engine_Move_Backward_Remote(&g_Engine_Remote_Control_Status_D1_u8, &g_Engine_Remote_Control_Previous_Status_D1_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, ENGINE_DECREMENT_SPEED);
  800193a:	230a      	movs	r3, #10
  800193c:	9300      	str	r3, [sp, #0]
  800193e:	4b2a      	ldr	r3, [pc, #168]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001940:	4a28      	ldr	r2, [pc, #160]	; (80019e4 <Engine_MainFunction+0x1c8>)
  8001942:	492e      	ldr	r1, [pc, #184]	; (80019fc <Engine_MainFunction+0x1e0>)
  8001944:	4819      	ldr	r0, [pc, #100]	; (80019ac <Engine_MainFunction+0x190>)
- 8001946:	f7ff fdb3 	bl	80014b0 <move_Backward_Remote>
+ 8001946:	f7ff fdb3 	bl	80014b0 <Engine_Move_Backward_Remote>
  800194a:	e008      	b.n	800195e <Engine_MainFunction+0x142>
 			}
+			/* If switch counter is odd, the joystick is activated */
 			else
 			{
 				/* Lights up a LED that indicates that the joystick is giving the command now */
@@ -2883,25 +2921,25 @@ void Engine_MainFunction(void)
  800194c:	2001      	movs	r0, #1
  800194e:	f00a fecd 	bl	800c6ec <Rte_Write_PB_13>
 				/* Moves from joystick */
-				move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
+				Engine_Move_From_Joystick(&g_Engine_Joystick_0_Duty_Cycle_u8, &g_Engine_Joystick_1_Duty_Cycle_u8, &g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8);
  8001952:	4b25      	ldr	r3, [pc, #148]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001954:	4a23      	ldr	r2, [pc, #140]	; (80019e4 <Engine_MainFunction+0x1c8>)
  8001956:	491c      	ldr	r1, [pc, #112]	; (80019c8 <Engine_MainFunction+0x1ac>)
  8001958:	481a      	ldr	r0, [pc, #104]	; (80019c4 <Engine_MainFunction+0x1a8>)
- 800195a:	f7ff fe29 	bl	80015b0 <move_From_Joystick>
+ 800195a:	f7ff fe29 	bl	80015b0 <Engine_Move_From_Joystick>
 			}
 		}
 
 
 		/* Set speed and direction */
-		set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
+		Engine_Set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
  800195e:	4b20      	ldr	r3, [pc, #128]	; (80019e0 <Engine_MainFunction+0x1c4>)
  8001960:	9300      	str	r3, [sp, #0]
  8001962:	4b27      	ldr	r3, [pc, #156]	; (8001a00 <Engine_MainFunction+0x1e4>)
  8001964:	4a27      	ldr	r2, [pc, #156]	; (8001a04 <Engine_MainFunction+0x1e8>)
  8001966:	4920      	ldr	r1, [pc, #128]	; (80019e8 <Engine_MainFunction+0x1cc>)
  8001968:	481e      	ldr	r0, [pc, #120]	; (80019e4 <Engine_MainFunction+0x1c8>)
- 800196a:	f7ff fe79 	bl	8001660 <set_Speed_And_Direction>
+ 800196a:	f7ff fe79 	bl	8001660 <Engine_Set_Speed_And_Direction>
         /* Write on DC motor */
 		Rte_Speed_DCMotor(DC_MOTOR_ID_0, g_Engine_Speed_0_u8);
  800196e:	4b25      	ldr	r3, [pc, #148]	; (8001a04 <Engine_MainFunction+0x1e8>)
@@ -3144,52 +3182,52 @@ void LED_MainFunction(void)
  8001afc:	d007      	beq.n	8001b0e <LED_MainFunction+0x36>
  8001afe:	e014      	b.n	8001b2a <LED_MainFunction+0x52>
 		{
+		    /* If g_LED_CollisionWarning_Status is 0, then we need to turn off LEDs*/
 			case 0:
 			{
-				// Rte_Write_Green_LED_Status(TRUE);                               /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Yellow_LED_Status(FALSE);
  8001b00:	2000      	movs	r0, #0
  8001b02:	f00a fe0f 	bl	800c724 <Rte_Write_PB_14>
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Red_LED_Status(FALSE);
  8001b06:	2000      	movs	r0, #0
  8001b08:	f00a fe28 	bl	800c75c <Rte_Write_PB_15>
 			}break;
  8001b0c:	e014      	b.n	8001b38 <LED_MainFunction+0x60>
+			/* If g_LED_CollisionWarning_Status is 1, then we need to turn off Red LED and to light up Yellow LED*/
 			case 1:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(TRUE);                                 /* Yellow LED */
+				Rte_Write_Yellow_LED_Status(TRUE);
  8001b0e:	2001      	movs	r0, #1
  8001b10:	f00a fe08 	bl	800c724 <Rte_Write_PB_14>
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Red_LED_Status(FALSE);
  8001b14:	2000      	movs	r0, #0
  8001b16:	f00a fe21 	bl	800c75c <Rte_Write_PB_15>
 			}break;
  8001b1a:	e00d      	b.n	8001b38 <LED_MainFunction+0x60>
+			/* If g_LED_CollisionWarning_Status is 2, then we need to turn off Yellow LED and to light up Red LED*/
 			case 2:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Yellow_LED_Status(FALSE);
  8001b1c:	2000      	movs	r0, #0
  8001b1e:	f00a fe01 	bl	800c724 <Rte_Write_PB_14>
-				Rte_Write_Red_LED_Status(TRUE);                                    /* Red LED    */
+				Rte_Write_Red_LED_Status(TRUE);
  8001b22:	2001      	movs	r0, #1
  8001b24:	f00a fe1a 	bl	800c75c <Rte_Write_PB_15>
 			}break;
  8001b28:	e006      	b.n	8001b38 <LED_MainFunction+0x60>
+			 /* By default, we need to turn off LEDs*/
 			default:
 			{
-				// Rte_Write_Green_LED_Status(FALSE);                              /* Green LED  */
-				Rte_Write_Yellow_LED_Status(FALSE);                                /* Yellow LED */
+				Rte_Write_Yellow_LED_Status(FALSE);
  8001b2a:	2000      	movs	r0, #0
  8001b2c:	f00a fdfa 	bl	800c724 <Rte_Write_PB_14>
-				Rte_Write_Red_LED_Status(FALSE);                                   /* Red LED    */
+				Rte_Write_Red_LED_Status(FALSE);
  8001b30:	2000      	movs	r0, #0
  8001b32:	f00a fe13 	bl	800c75c <Rte_Write_PB_15>
 			}break;
  8001b36:	bf00      	nop
 		}
-		/* Read the blue button state */
+		/* Read the button state */
 		Rte_Read_Button_State(&g_LED_ButtonState_b);
  8001b38:	480d      	ldr	r0, [pc, #52]	; (8001b70 <LED_MainFunction+0x98>)
  8001b3a:	f00a fc67 	bl	800c40c <Rte_Read_PC13_Pin_State>
@@ -3316,10 +3354,11 @@ void Blinker_MainFunction(void)
  8001be0:	2b01      	cmp	r3, #1
  8001be2:	d167      	bne.n	8001cb4 <Blinker_MainFunction+0xdc>
 	{
+		/* Rte read the global variable */
 		Rte_Read_Blinker_Autobrakes_Status(&g_Bliker_Autobrakes_Status);
  8001be4:	4835      	ldr	r0, [pc, #212]	; (8001cbc <Blinker_MainFunction+0xe4>)
  8001be6:	f00a fc63 	bl	800c4b0 <Rte_Read_DIO_Autobrakes_State_b>
-
+		/* If current status is true and previous status is false, we light up blinkers*/
 		if(TRUE == g_Bliker_Autobrakes_Status && FALSE == g_Bliker_Autobrakes_Previous_Status)
  8001bea:	4b34      	ldr	r3, [pc, #208]	; (8001cbc <Blinker_MainFunction+0xe4>)
  8001bec:	781b      	ldrb	r3, [r3, #0]
@@ -3344,6 +3383,7 @@ void Blinker_MainFunction(void)
  8001c0a:	701a      	strb	r2, [r3, #0]
  8001c0c:	e048      	b.n	8001ca0 <Blinker_MainFunction+0xc8>
 		}
+		/* If current status is true and previous status is true */
 		else if(TRUE == g_Bliker_Autobrakes_Status && TRUE == g_Bliker_Autobrakes_Previous_Status)
  8001c0e:	4b2b      	ldr	r3, [pc, #172]	; (8001cbc <Blinker_MainFunction+0xe4>)
  8001c10:	781b      	ldrb	r3, [r3, #0]
@@ -3354,6 +3394,7 @@ void Blinker_MainFunction(void)
  8001c1a:	2b01      	cmp	r3, #1
  8001c1c:	d132      	bne.n	8001c84 <Blinker_MainFunction+0xac>
 		{
+			/* If counter is less than 45, we increent the value */
 			if(g_Blinker_Counter_u16 < 45)
  8001c1e:	4b2b      	ldr	r3, [pc, #172]	; (8001ccc <Blinker_MainFunction+0xf4>)
  8001c20:	881b      	ldrh	r3, [r3, #0]
@@ -3367,6 +3408,7 @@ void Blinker_MainFunction(void)
  8001c2c:	b29a      	uxth	r2, r3
  8001c2e:	4b27      	ldr	r3, [pc, #156]	; (8001ccc <Blinker_MainFunction+0xf4>)
  8001c30:	801a      	strh	r2, [r3, #0]
+				/* We toggle the values of the blinkers at each 5 conter values */
 				if(0 == g_Blinker_Counter_u16 % 5)
  8001c32:	4b26      	ldr	r3, [pc, #152]	; (8001ccc <Blinker_MainFunction+0xf4>)
  8001c34:	881a      	ldrh	r2, [r3, #0]
@@ -3444,7 +3486,7 @@ void Blinker_MainFunction(void)
 			if(g_Blinker_Counter_u16 < 45)
  8001c9e:	bf00      	nop
 		}
-
+		/* Rte write the global variable */
 		Rte_Write_Left_Blinker_Autobrakes_Status(g_Left_Blinker_Status_b);
  8001ca0:	4b08      	ldr	r3, [pc, #32]	; (8001cc4 <Blinker_MainFunction+0xec>)
  8001ca2:	781b      	ldrb	r3, [r3, #0]
@@ -31790,7 +31832,7 @@ void Rte_Call_Cdd_Ultrasonic_TriggerMeasurement(void)
  800c3ec:	0800c88c 	.word	0x0800c88c
 
 0800c3f0 <Rte_Read_Cdd_Ultrasonic_Distance_f32>:
- * @brief  Read ultrasonic distance
+ * @brief  Cdd_Ultrasonic: Read ultrasonic distance
  * @param  distance: float32
  * @return None
  */
@@ -31813,7 +31855,7 @@ void Rte_Read_Cdd_Ultrasonic_Distance_f32(float32 *distance)
 	...
 
 0800c40c <Rte_Read_PC13_Pin_State>:
- * @brief  Read PC13 pin state
+ * @brief  Read PC13 pin state- button state
  * @param  state: uint8*
  * @return None
  */
@@ -31863,7 +31905,7 @@ void Rte_Write_PC13_Pin_State(uint8 state)
  800c448:	20001571 	.word	0x20001571
 
 0800c44c <Rte_Read_PC6_Pin_State>:
- * @brief  Read PC6 pin state
+ * @brief  Read PC6 pin state- joystick switch
  * @param  state: uint8*
  * @return None
  */
@@ -32045,8 +32087,10 @@ void Rte_Write_PC_3(boolean state)
  800c534:	48000800 	.word	0x48000800
 
 0800c538 <Rte_Write_DIO_Autobrakes_State_b>:
-
-/* Write PC6 pin state */
+ * @brief  Write PC6 pin state
+ * @param  state: boolean
+ * @return None
+ */
 void Rte_Write_DIO_Autobrakes_State_b(boolean state)
 {
  800c538:	b480      	push	{r7}
@@ -32406,8 +32450,10 @@ void Rte_Write_PB_13(boolean state)
  800c720:	48000400 	.word	0x48000400
 
 0800c724 <Rte_Write_PB_14>:
-
-/* Write Yellow pin state */
+ * @brief  Write Yellow pin state, on pin PB14
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Write_PB_14(boolean state)
 {
  800c724:	b580      	push	{r7, lr}
@@ -32446,8 +32492,10 @@ void Rte_Write_PB_14(boolean state)
  800c758:	48000400 	.word	0x48000400
 
 0800c75c <Rte_Write_PB_15>:
-
-/* Write Red pin state */
+ * @brief  Write Red pin state, on pin PB15
+ * @param  status: uint8*
+ * @return None
+ */
 void Rte_Write_PB_15(boolean state)
 {
  800c75c:	b580      	push	{r7, lr}

@@ -289,7 +289,7 @@ void Engine_Move_From_Joystick(uint8 *horizontal_Axis_Duty, uint8 *vertical_Axis
  * @param  speed_0_s8: sint8*, speed_1_s8: sint8*, speed_0_u8: uint8*, speed_1_u8: uint8*, direction uint8*
  * @return None
  */
-void Engine_Set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
+void set_Speed_And_Direction(sint8 *speed_0_s8, sint8 *speed_1_s8, uint8 *speed_0_u8, uint8 *speed_1_u8, uint8 *direction)
 {
 	/* If motor 0 has value 0*/
 	if(*speed_0_s8 == 0)
@@ -488,7 +488,7 @@ void Engine_MainFunction(void)
 
 
 		/* Set speed and direction */
-		Engine_Set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
+		set_Speed_And_Direction(&g_Engine_Speed_0_s8, &g_Engine_Speed_1_s8, &g_Engine_Speed_0_u8, &g_Engine_Speed_1_u8, &g_Engine_Direction_u8);
         /* Write on DC motor */
 		Rte_Speed_DCMotor(DC_MOTOR_ID_0, g_Engine_Speed_0_u8);
 		Rte_Speed_DCMotor(DC_MOTOR_ID_1, g_Engine_Speed_1_u8);
